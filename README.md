@@ -19,18 +19,6 @@ You may also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run lint`
-
-Runs ESLint. it statically analyses our code and find the problems. It is present in most of the editors.ESLint fixes are syntax-aware so you won't experience errors introduced by traditional find-and-replace algorithms.
-
-### `npm run lint:fix`
-
-Runs ESLint with --fix option, to fix fixable errors as it is being executed.
-
-### `npm run format`
-
-Run Prettier to format your code according to configuration settings.
-
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
