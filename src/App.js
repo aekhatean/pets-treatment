@@ -10,6 +10,8 @@ import ClinicProfile from "./pages/ClinicProfile";
 import ClinicDashboard from "./pages/ClinicDashbord";
 import UserDashboard from "./pages/UserDashboard";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
 function App() {
   return (
     <div className="App">
@@ -26,6 +28,7 @@ function App() {
           <Route path="/dashboard/:id" component={ClinicDashboard} />
           <Route path="/clinic/:id" component={ClinicProfile} />
         </Switch>
+        <Footer />
       </BrowserRouter>
     </div>
   );
