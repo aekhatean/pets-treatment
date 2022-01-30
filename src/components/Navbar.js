@@ -13,6 +13,8 @@ import { content } from "../translation/translation";
 import { LanguageContext } from "../context/LanguageContext";
 import { Link } from "react-router-dom";
 import { routes } from "../routes/routes";
+import Logo from "../assets/Logo.png";
+
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElLang, setAnchorElLang] = useState(null);
@@ -74,16 +76,43 @@ function Navbar() {
               component="div"
               sx={{ mr: 2, display: { xs: "none", md: "flex" }, flexGrow: 1 }}
             >
-              {content[lang].brand}
-            </Typography>
+              <div className="my-auto">
+                <img
+                  src={Logo}
+                  className="img-fluid"
+                  alt="logo"
+                  style={{ width: 30 }}
+                  sx={{
+                    mr: 2,
+                    display: { xs: "none", md: "flex" },
+                    flexGrow: 1,
+                  }}
+                />
 
+                <h6>{content[lang].brand}</h6>
+              </div>
+            </Typography>
             <Typography
               variant="h6"
               noWrap
               component="div"
               sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
             >
-              {content[lang].brand}
+              <div className="my-auto">
+                <img
+                  src={Logo}
+                  className="img-fluid"
+                  alt="logo"
+                  style={{ width: 30 }}
+                  sx={{
+                    mr: 2,
+                    display: { xs: "none", md: "flex" },
+                    flexGrow: 1,
+                  }}
+                />
+
+                <h6>{content[lang].brand}</h6>
+              </div>
             </Typography>
             <Box
               sx={{
