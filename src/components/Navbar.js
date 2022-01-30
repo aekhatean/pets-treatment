@@ -59,7 +59,7 @@ function Navbar() {
   return (
     <>
       <AppBar
-        position="fixed"
+        position="static"
         sx={{
           bgcolor: colors.bgPrimary,
           boxShadow: "none",
@@ -191,8 +191,8 @@ function Navbar() {
         </Container>
       </AppBar>
 
-      <Container maxWidth="xl" sx={{ my: 3, py: 1 }}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1375 320">
+      <Container maxWidth="xl" sx={{ p: 0 }}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="100 160 1140 100">
           <path
             fill={colors.bgPrimary}
             fillOpacity="1"
