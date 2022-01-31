@@ -14,8 +14,8 @@ function About() {
     { name: "Adham Essam Khatean", src: Adham },
     { name: "Ahmed Alaa Ibrahim", src: Alaa },
     { name: "Ahmed Mahmoud Saleh", src: Saleh },
-    { name: "Aya Maged Zeid", src: AyaMaged },
-    { name: "Aya Mohammed Ibrahim", src: AyaMohammed },
+    { name: "Aya Maged Mohamed", src: AyaMaged },
+    { name: "Aya Mohamed Ibrahim", src: AyaMohammed },
   ];
 
   return (

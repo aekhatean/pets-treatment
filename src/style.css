@@ -43,3 +43,36 @@ li {
   width: 60px;
   height: 60px;
 }
+.dashed-line-container {
+  position: relative;
+  height: 1400px;
+  margin-bottom: 100px;
+}
+.dashed-line {
+  border-left: 3px dashed black;
+  height: 1400px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  z-index: -1;
+}
+
+.pet-paw {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  margin-left: -40px;
+  left: 50%;
+  z-index: 1;
+}
+
+.how-it-works-step-left {
+  position: absolute;
+  left: 0%;
+  z-index: 1;
+}
+.how-it-works-step-right {
+  position: absolute;
+  left: 100%;
+  z-index: 1;
+}
