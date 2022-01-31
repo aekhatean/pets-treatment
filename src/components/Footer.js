@@ -86,26 +86,15 @@ const Footer = () => {
             <ContactUs />
           </div>
           <div className="d-flex justify-content-center my-md-2 my-4">
-            <a href="#">
-              <img
-                src={Facebook}
-                alt="Facebook"
-                className="mx-5 contact-icons"
-              />
+            <a href="#" className="mx-5">
+              <img src={Facebook} alt="Facebook" className="contact-icons" />
             </a>
-            <a href="#">
-              <img
-                src={Instagram}
-                alt="Facebook"
-                className="mx-5 contact-icons"
-              />
+            <a href="#" className="mx-5">
+              {" "}
+              <img src={Instagram} alt="Facebook" className="contact-icons" />
             </a>
-            <a href="#">
-              <img
-                src={LinkedIn}
-                alt="Facebook"
-                className="mx-5 contact-icons"
-              />
+            <a href="#" className="mx-5">
+              <img src={LinkedIn} alt="Facebook" className="contact-icons" />
             </a>
           </div>
           <div

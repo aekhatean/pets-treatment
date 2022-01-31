@@ -24,6 +24,13 @@ code {
   color: #b8d8d6;
 }
 
+.secondary-bg {
+  background-color: #188b87;
+}
+
+.secondary-color {
+  color: #188b87;
+}
 ul {
   padding-inline-start: 0;
 }

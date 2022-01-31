@@ -45,3 +45,38 @@ export const TextAreaField = ({ label, ...props }) => {
     </div>
   );
 };
+
+// export const CheckBox = ({ label, ...props }) => {
+//   const [field] = useField(props);
+//   return (
+//     <>
+//       <input {...field} {...props} />
+//       <label className="mx-2" htmlFor={field.name}>
+//         {label}
+//       </label>
+//     </>
+//   );
+// };
+
+// export const CheckBoxGroup = ({ options, ...props }) => {
+//   const [field] = useField(props);
+//   return (
+//     <Field className={`form-control`}>
+//       {({ field }) => {
+//         console.log(field);
+//         return options.map((option) => {
+//           return (
+//             <CheckBox
+//               key={option.key}
+//               id={option.value}
+//               label={option.key}
+//               name={field.name}
+//               value={option.value}
+//               checked={field.value.includes(option.value)}
+//             />
+//           );
+//         });
+//       }}
+//     </Field>
+//   );
+// };
