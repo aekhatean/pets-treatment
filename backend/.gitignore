@@ -1,0 +1,3 @@
+venv/
+pets_treatment/*/migrations
+pets_treatment/pets_treatment/.env
