@@ -11,3 +11,4 @@ sqlparse==0.4.2
 tzdata==2021.5
 django-cors-headers==3.11.0
 django-extra-views==0.14.0
+cryptography==36.0.1
