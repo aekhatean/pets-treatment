@@ -43,6 +43,7 @@ class DoctorSpecialization(models.Model):
     specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
 
+
 # Doctor Clinic Rel
 # Doctor rating
 
