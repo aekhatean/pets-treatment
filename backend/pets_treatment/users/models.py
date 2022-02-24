@@ -46,3 +46,28 @@ class DoctorSpecialization(models.Model):
 # Doctor Clinic Rel
 # Doctor rating
 
+
+######################## Profile Models ############################
+
+def profile_image_upload(instance, filename):
+    return f'profile_images/{instance.user.id}/{filename}'
+
+class Profile(models.Model):
+    DOCTOR = 'DR'
+    PATIENT = 'PT'
+    ROLE_CHOICES = [
+        (PATIENT, 'Pet Owner'),
+        (DOCTOR, 'Doctor'),
+    ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    country = models.CharField(max_length=40)
+    city = models.CharField(max_length=40)
+    area = models.CharField(max_length=40)
+    phone = models.CharField(max_length=20)
+    picture = models.ImageField(upload_to= profile_image_upload)
+    role = models.CharField(
+        max_length=2,
+        choices=ROLE_CHOICES,
+        default=PATIENT,
+    )
+

@@ -187,3 +187,30 @@ class SpecializationsList(APIView):
 
 
 
+################## Profile ######################
+class ViewProfile(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            user = request.user
+            return Response({
+                'data':ProfileSerializer(user.profile).data
+            },status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                'error':'Something wrong happened',
+                'exc': f'{e}'
+            },status=status.HTTP_400_BAD_REQUEST)
+
+
+# @api_view(['POST'])
+# def post_profile(request):
+#     data = request.data
+#     serializer= ProfileSerializer(data)
+
+#     if not serializer.is_valid():
+#         return Response({'errors':serializer.errors,'message': 'Somthing is wrong'})
+
+#     serializer.save()
+#     return Response({'payload':serializer.data,'message':'Data recived'})

@@ -1,3 +1,4 @@
+import profile
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth import authenticate
@@ -72,3 +73,45 @@ class DoctorSpecializationSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorSpecialization
         fields = '__all__'
+
+######### Profile Serialziers ##########
+
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
+
+    def create(self, validated_data):
+        username = validated_data.pop('username')
+        password = validated_data.pop('password')
+        user = User.objects.create_user(username=username,password=password)
+        profile= Profile.objects.create(**validated_data,user=user)
+        return profile
+
+    # def update(self, instance, validated_data):
+    #     users = validated_data.pop('users')
+    #     instance.phone = validated_data.get("phone", instance.phone)
+    #     instance.save()
+    #     keep_users = []
+    #     for user in users:
+    #         if "id" in user.keys():
+    #             if User.objects.filter(id=user["id"]).exists():
+    #                 c = User.objects.get(id=user["id"])
+    #                 c.text = user.get('text', c.text)
+    #                 c.save()
+    #                 keep_users.append(c.id)
+    #             else:
+    #                 continue
+    #         else:
+    #             c = User.objects.create(**user, profile=instance)
+    #             keep_users.append(c.id)
+
+    #     for user in instance.users:
+    #         if user.id not in keep_users:
+    #             user.delete()
+
+    #     return instance
+
+    
