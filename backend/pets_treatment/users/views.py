@@ -145,7 +145,7 @@ class DoctorsPublicProfile(APIView):
         return Response({'data':data},status=status.HTTP_200_OK)
 
 # doctor authed profile
-class DoctorPofile(APIView):
+class DoctorProfile(APIView):
     permission_classes = [IsAuthenticated]
     def get_object(self, request):
         try:

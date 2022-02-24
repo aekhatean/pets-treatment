@@ -11,7 +11,7 @@ urlpatterns = [
     path('logout/', Logout.as_view()),
     path('doctors/',DoctorsList.as_view(),name='doctorslist' ),
     path('doctors/<int:pk>',DoctorsPublicProfile.as_view(),name='doctorpublicprofile'),
-    path('doctors/doctorprofile',DoctorPofile.as_view(),name='doctorprofile'),
+    path('doctors/doctorprofile',DoctorProfile.as_view(),name='doctorprofile'),
     path('doctors/new',AddDoctor.as_view()),
     path('doctors/specialities/',SpecializationsList.as_view()),
     path('doctors/specialists/<int:pk>',UpdateDoctorSpecialization.as_view()),
