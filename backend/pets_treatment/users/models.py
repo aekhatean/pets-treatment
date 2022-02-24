@@ -28,6 +28,9 @@ class Doctor(models.Model):
     national_id = models.FileField(upload_to=nid_upload,null=True)
     is_varified = models.BooleanField(default=False)
 
+    def __str__(self):
+        return str(self.user.first_name)
+
 # Specialization (id , name) 
 class Specialization(models.Model):
     name = models.CharField(max_length=100)

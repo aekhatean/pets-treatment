@@ -1,10 +1,12 @@
-from rest_framework import status
+from django.http import Http404
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
 from .serializers import *
 from users.models import *
 from django.contrib.auth.models import User
@@ -92,3 +94,56 @@ class Logout(APIView):
 #             return Response({
 #                 'errors':'username and email and password are required',
 #             },status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+################## Doctor ######################
+
+class DoctorsList(APIView):
+    """ Doctors list for public view"""
+    def get(self, request):
+        doctors = Doctor.objects.filter(is_varified=True)
+        data = DoctorPublicSerializer(doctors,many=True).data
+        return Response({'data':data},status=status.HTTP_200_OK)
+
+class DoctorsPublicProfile(APIView):
+    """ Doctor profile for public view"""
+    def get_object(self, pk):
+        try:
+            return Doctor.objects.get(is_varified=True,id=pk)
+        except Doctor.DoesNotExist:
+            raise Http404
+    def get(self, request,pk):
+        doctor = self.get_object(pk)
+        data = DoctorPublicSerializer(doctor).data
+        return Response({'data':data},status=status.HTTP_200_OK)
+
+# doctor authed profile
+class DoctorPofile(APIView):
+    permission_classes = [IsAuthenticated]
+    def get_object(self, pk):
+        try:
+            return Doctor.objects.get(pk=pk)
+        except Doctor.DoesNotExist:
+            raise Http404
+
+    def get(self, request,pk):
+        doctor = self.get_object(pk)
+        data = DoctorSerializer(doctor).data
+        return Response({'data':data},status=status.HTTP_200_OK)
+
+    def put(self,request,pk):
+        doctor = self.get_object(pk)
+        serializer = DoctorSerializer(doctor,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg':'Profile has been updated','data':serializer.data},status=status.HTTP_200_OK)
+        return Response({'msg':"Error doctor profile cann't be edited.",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+   
+    
+
+
+
