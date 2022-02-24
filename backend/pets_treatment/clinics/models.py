@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 import re
 from django.core.exceptions import ValidationError
+from users.models import *
 
 # Clinic (id, name, address, area, city, country , phone, is_varified(manual bool),
 #  tax_registration(file), technical_registration(file), technical_registration_number, 
@@ -11,14 +12,14 @@ from django.core.exceptions import ValidationError
 # files uploading functions
 def tax_upload(instance, filename):
     extension = filename.split(".")[1]
-    return "clinics/%s/taxid.%s" % (instance.clinic.id, extension)
+    return "clinics/%s/taxid.%s" % (instance.id, extension)
 
 def tech_upload(instance, filename):
     extension = filename.split(".")[1]
-    return "clinics/%s/techid.%s" % (instance.clinic.id, extension)
+    return "clinics/%s/techid.%s" % (instance.id, extension)
 
 def image_upload(instance, filename):
-    return f'clinics/{instance.clinic.id}/galary/{filename}'
+    return f'clinics/{instance.id}/galary/{filename}'
 
 # egyptian phone number validation
 def validate_egyptian_number(value):
@@ -44,6 +45,11 @@ class Clinic(models.Model):
     technical_registration_number = models.CharField(max_length=100) # edit after discuss
     price = models.IntegerField()
     clinic_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+class ClinicDoctor(models.Model):
+    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
 
 
 
