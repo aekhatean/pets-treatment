@@ -50,29 +50,39 @@ class UserPublicInfoSerializer(serializers.ModelSerializer):
         model = User
         fields = ('first_name','last_name')
 
+
 ######### doctor serialziers ##########
 class DoctorSerializer(serializers.ModelSerializer):
+    specialization = serializers.SerializerMethodField('doctor_specialties')
+    def doctor_specialties(self, instance):
+        return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
     class Meta:
         model = Doctor
-        fields = '__all__'
+        fields = ('user','is_varified','description','syndicate_id','national_id','specialization')
+        read_only_fields = ['is_varified']
         depth = 1
 
 class DoctorPublicSerializer(serializers.ModelSerializer):
     user = UserPublicInfoSerializer()
+    specialization = serializers.SerializerMethodField('doctor_specialties')
+    def doctor_specialties(self, instance):
+        return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
     class Meta:
         model = Doctor
-        fields = ('user','description')
+        fields = ('user','description','specialization')
         depth = 1
 
 class SpecializationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialization
-        fields = '__all__'
+        fields = ('name',)
     
 class DoctorSpecializationSerializer(serializers.ModelSerializer):
+    specialization = SpecializationSerializer()
     class Meta:
         model = DoctorSpecialization
-        fields = '__all__'
+        fields = ('specialization',)
+        depth = 1
 
 ######### Profile Serialziers ##########
 
@@ -114,4 +124,4 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     #     return instance
 
-    
+
