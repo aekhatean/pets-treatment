@@ -1,6 +1,8 @@
 from unicodedata import name
 from django.db import models
 from django.conf import settings
+import re
+from django.core.exceptions import ValidationError
 
 # Clinic (id, name, address, area, city, country , phone, is_varified(manual bool),
 #  tax_registration(file), technical_registration(file), technical_registration_number, 
@@ -9,11 +11,22 @@ from django.conf import settings
 # files uploading functions
 def tax_upload(instance, filename):
     extension = filename.split(".")[1]
-    return "clinics/tax/%s/taxid.%s" % (instance.clinic.id, extension)
+    return "clinics/%s/taxid.%s" % (instance.clinic.id, extension)
 
 def tech_upload(instance, filename):
     extension = filename.split(".")[1]
-    return "clinics/tech/%s/techid.%s" % (instance.clinic.id, extension)
+    return "clinics/%s/techid.%s" % (instance.clinic.id, extension)
+
+def image_upload(instance, filename):
+    return f'clinics/{instance.clinic.id}/galary/{filename}'
+
+# egyptian phone number validation
+def validate_egyptian_number(value):
+    if not any(re.match(pattern, value) for pattern in [r"011+[0-9]{8}", r"012+[0-9]{8}", r"015+[0-9]{8}",r"010+[0-9]{8}"]):
+        raise ValidationError(
+            _('%(value)s is not a valid egyptian number'),
+            params={'value': value},
+        )
 
 
 class Clinic(models.Model):
@@ -22,7 +35,9 @@ class Clinic(models.Model):
     area = models.CharField(max_length=40)
     city = models.CharField(max_length=40)
     country = models.CharField(max_length=40)
-    phone = models.CharField(max_length=20) # edit after discuss
+    phone = models.CharField(max_length=11,null=True,validators=[validate_egyptian_number],error_messages ={
+                    "required":"this is not a valid egyptian number"
+                    })
     is_verified = models.BooleanField(default=False)
     tax_registration = models.FileField(upload_to=tax_upload,null=True)
     technical_registration = models.FileField(upload_to=tech_upload,null=True)
@@ -31,8 +46,6 @@ class Clinic(models.Model):
     clinic_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
-def image_upload(instance, filename):
-    return f'clinic_images/{instance.clinic.id}/{filename}'
 
 class ClinicPicture(models.Model):
     picture = models.ImageField(upload_to= image_upload)
