@@ -1,6 +1,8 @@
 from unicodedata import name
 from django.db import models
 from django.conf import settings
+import re
+from django.core.exceptions import ValidationError
 
 # Clinic (id, name, address, area, city, country , phone, is_varified(manual bool),
 #  tax_registration(file), technical_registration(file), technical_registration_number, 
@@ -18,6 +20,14 @@ def tech_upload(instance, filename):
 def image_upload(instance, filename):
     return f'clinics/{instance.clinic.id}/galary/{filename}'
 
+# egyptian phone number validation
+def validate_egyptian_number(value):
+    if not any(re.match(pattern, value) for pattern in [r"011+[0-9]{8}", r"012+[0-9]{8}", r"015+[0-9]{8}",r"010+[0-9]{8}"]):
+        raise ValidationError(
+            _('%(value)s is not a valid egyptian number'),
+            params={'value': value},
+        )
+
 
 class Clinic(models.Model):
     name = models.CharField(max_length=40)
@@ -25,7 +35,9 @@ class Clinic(models.Model):
     area = models.CharField(max_length=40)
     city = models.CharField(max_length=40)
     country = models.CharField(max_length=40)
-    phone = models.CharField(max_length=20) # edit after discuss
+    phone = models.CharField(max_length=11,null=True,validators=[validate_egyptian_number],error_messages ={
+                    "required":"this is not a valid egyptian number"
+                    })
     is_verified = models.BooleanField(default=False)
     tax_registration = models.FileField(upload_to=tax_upload,null=True)
     technical_registration = models.FileField(upload_to=tech_upload,null=True)
