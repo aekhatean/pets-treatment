@@ -134,7 +134,6 @@ class DoctorsList(APIView):
 
 class DoctorsPublicProfile(APIView):
     """ Doctor profile for public view"""
-    permission_classes =[IsAuthenticated]
     def get_object(self, pk):
         try:
             return Doctor.objects.get(is_varified=True,id=pk)
@@ -160,9 +159,31 @@ class DoctorPofile(APIView):
         return Response({'data':data},status=status.HTTP_200_OK)
 
     def put(self,request):
-        doctor = self.get_object(request.user)
+        doctor = self.get_object(request)
         serializer = DoctorSerializer(doctor,data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'msg':'Profile has been updated','data':serializer.data},status=status.HTTP_200_OK)
-        return Response({'msg':"Error doctor profile cann't be edited.",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'msg':"Error doctor profile cann't be edited, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddDoctor(APIView):
+    """ Create new Doctor"""
+    def post(self, request):
+        serializer = DoctorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response({'msg':'New Doctor has been added','data':serializer.data},status=status.HTTP_200_OK)
+        return Response({'msg':"Error can't create new doctor, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+# availble specializations
+class SpecializationsList(APIView):
+    def get(self,request):
+        specializations = Specialization.objects.all()
+        data = SpecializationSerializer(specializations,many=True).data
+        return Response({'data':data},status=status.HTTP_200_OK)
+
+
+

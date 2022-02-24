@@ -34,6 +34,9 @@ class Doctor(models.Model):
 # Specialization (id , name) 
 class Specialization(models.Model):
     name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+
 
 # Rel_spec_doctor (id, spec , doctor)
 class DoctorSpecialization(models.Model):
