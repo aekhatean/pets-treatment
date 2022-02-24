@@ -130,7 +130,7 @@ class DoctorsList(APIView):
     def get(self, request):
         doctors = Doctor.objects.filter(is_varified=True)
         data = DoctorPublicSerializer(doctors,many=True).data
-        return Response({'data':data},status=status.HTTP_200_OK)
+        return Response(data,status=status.HTTP_200_OK)
 
 class DoctorsPublicProfile(APIView):
     """ Doctor profile for public view"""
@@ -142,10 +142,10 @@ class DoctorsPublicProfile(APIView):
     def get(self, request,pk):
         doctor = self.get_object(pk)
         data = DoctorPublicSerializer(doctor).data
-        return Response({'data':data},status=status.HTTP_200_OK)
+        return Response(data,status=status.HTTP_200_OK)
 
 # doctor authed profile
-class DoctorPofile(APIView):
+class DoctorProfile(APIView):
     permission_classes = [IsAuthenticated]
     def get_object(self, request):
         try:
@@ -156,7 +156,7 @@ class DoctorPofile(APIView):
     def get(self, request):
         doctor = self.get_object(request)
         data = DoctorSerializer(doctor).data
-        return Response({'data':data},status=status.HTTP_200_OK)
+        return Response(data,status=status.HTTP_200_OK)
 
     def put(self,request):
         doctor = self.get_object(request)
@@ -183,7 +183,7 @@ class SpecializationsList(APIView):
     def get(self,request):
         specializations = Specialization.objects.all()
         data = SpecializationSerializer(specializations,many=True).data
-        return Response({'data':data},status=status.HTTP_200_OK)
+        return Response(data,status=status.HTTP_200_OK)
 
 
 
@@ -199,7 +199,7 @@ class DoctorSpecializations(APIView):
     def get(self,request):
         doctor_speciality = DoctorSpecialization.objects.all()
         data = DoctorSpecializationSerializer(doctor_speciality,many=True).data
-        return Response({'data':data},status=status.HTTP_200_OK)
+        return Response(data,status=status.HTTP_200_OK)
     def post(self,request):
         doctor =self.get_object(request)
         try:
