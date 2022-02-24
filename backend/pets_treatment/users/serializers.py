@@ -1,7 +1,7 @@
-import profile
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth import authenticate
+from drf_extra_fields.fields import Base64ImageField
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
@@ -88,15 +88,15 @@ class DoctorSpecializationSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
+    picture = Base64ImageField()
     class Meta:
         model = Profile
         fields = '__all__'
 
 
     def create(self, validated_data):
-        username = validated_data.pop('username')
-        password = validated_data.pop('password')
-        user = User.objects.create_user(username=username,password=password)
+        user_data = validated_data.pop('user')
+        user = User.objects.create(**user_data,is_active=False)
         profile= Profile.objects.create(**validated_data,user=user)
         return profile
 

@@ -46,7 +46,7 @@ class Logout(APIView):
 
 class Register(APIView):
 
-    parser_classes = [MultiPartParser, FormParser]
+
 
     def send_mail_user(self,fname,link,to_email):
         msg=MIMEMultipart('alternative')
@@ -65,35 +65,22 @@ class Register(APIView):
         server.login(settings.EMAIL_HOST_USER,settings.EMAIL_HOST_PASSWORD)
         server.sendmail(from_addr=msg['From'],to_addrs=to_email,msg=msg_str)
         server.quit()
-
-    user = None
     
     def post(self, request):
-        
-        user_serializer = UserSerializer(data=request.data)
-                
-        if user_serializer.is_valid():
-            try:
-                self.user = user_serializer.save(is_active=False)
-                token, created = Token.objects.get_or_create(user=self.user)
-                key = Fernet.generate_key()
-                fernet = Fernet(key)
-                enc_token = fernet.encrypt(token.key.encode())
-                activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
-                self.send_mail_user(self.user.first_name,activation_link,self.user.email)
-                return Response({
-                    'data':'we sent you a verification email, please check it and click the link',
-                },status=status.HTTP_200_OK)
-            except Exception as e:
-                if isinstance(self.user,User):
-                    self.user.delete()
-                return Response({
-                    'errors':f'Error : {e}',
-                },status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response({
-                'errors':f'Error: {user_serializer.errors}',
-            },status=status.HTTP_400_BAD_REQUEST)
+
+        profile_serializer = ProfileSerializer(data=request.data)
+        profile_serializer.is_valid(raise_exception=True)
+        profile = profile_serializer.save()
+        token, created = Token.objects.get_or_create(user=profile.user)
+        key = Fernet.generate_key()
+        fernet = Fernet(key)
+        enc_token = fernet.encrypt(token.key.encode())
+        activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
+        self.send_mail_user(profile.user.first_name,activation_link,profile.user.email)
+        return Response({
+            'data':'we sent you a verification email, please check it and click the link',
+        },status=status.HTTP_200_OK)
+
 
 class ActivateUser(APIView):
     def get(self, request, key, enc_token):
