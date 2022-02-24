@@ -134,6 +134,7 @@ class DoctorsList(APIView):
 
 class DoctorsPublicProfile(APIView):
     """ Doctor profile for public view"""
+    permission_classes =[IsAuthenticated]
     def get_object(self, pk):
         try:
             return Doctor.objects.get(is_varified=True,id=pk)
@@ -147,19 +148,19 @@ class DoctorsPublicProfile(APIView):
 # doctor authed profile
 class DoctorPofile(APIView):
     permission_classes = [IsAuthenticated]
-    def get_object(self, pk):
+    def get_object(self, request):
         try:
-            return Doctor.objects.get(pk=pk)
+            return Doctor.objects.get(user=request.user)
         except Doctor.DoesNotExist:
             raise Http404
 
-    def get(self, request,pk):
-        doctor = self.get_object(pk)
+    def get(self, request):
+        doctor = self.get_object(request)
         data = DoctorSerializer(doctor).data
         return Response({'data':data},status=status.HTTP_200_OK)
 
-    def put(self,request,pk):
-        doctor = self.get_object(pk)
+    def put(self,request):
+        doctor = self.get_object(request.user)
         serializer = DoctorSerializer(doctor,data=request.data)
         if serializer.is_valid():
             serializer.save()
