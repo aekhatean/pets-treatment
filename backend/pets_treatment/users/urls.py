@@ -12,6 +12,7 @@ urlpatterns = [
     path('doctors/',DoctorsList.as_view(),name='doctorslist' ),
     path('doctors/<int:pk>',DoctorsPublicProfile.as_view(),name='doctorpublicprofile'),
     path('doctors/doctorprofile',DoctorPofile.as_view(),name='doctorprofile'),
+    path('doctors/new',AddDoctor.as_view()),
     path('register/', Register.as_view()),
     path('<str:key>/<str:enc_token>', ActivateUser.as_view()),
    
