@@ -219,16 +219,6 @@ function Navbar() {
           </Toolbar>
         </Container>
       </AppBar>
-
-      {/* <Container maxWidth="xl" sx={{ p: 0 }}> */}
-      {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="100 160 1140 100">
-          <path
-            fill={colors.bgPrimary}
-            fillOpacity="1"
-            d="M0,32L80,64C160,96,320,160,480,192C640,224,800,224,960,186.7C1120,149,1280,75,1360,37.3L1440,0L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-          ></path>
-        </svg> */}
-      {/* </Container> */}
     </>
   );
 }

@@ -11,6 +11,7 @@ import "bootstrap/dist/css/bootstrap.css";
 //import redux devtools
 //import { composeWithDevTools } from 'redux-devtools-extension';
 import { LanguageContextProvider } from "./context/LanguageContext";
+
 //import middleware from './middlewares';
 //createStore
 //const store = createStore(reducer, composeWithDevTools(middleware));

@@ -1,0 +1,140 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.App {
+  text-align: center;
+}
+
+.primary-bg {
+  background-color: #b8d8d6;
+}
+
+.primary-color {
+  color: #b8d8d6;
+}
+
+.secondary-bg {
+  background-color: #188b87;
+}
+
+.secondary-color {
+  color: #188b87;
+}
+ul {
+  padding-inline-start: 0;
+}
+
+li {
+  padding: 0.5em 0;
+}
+
+.contact-icons {
+  width: 60px;
+  height: 60px;
+}
+.form {
+  position: relative;
+  margin: 4em 0px;
+}
+.form-content {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.home-img {
+  max-width: 90%;
+  height: auto;
+}
+#city,
+#area,
+#specialization {
+  border-radius: 6px;
+  padding: 4px;
+  margin: 1px;
+}
+.search {
+  margin-bottom: 10px;
+}
+.search > input {
+  border-radius: 6px;
+  border: none;
+  padding: 3px;
+}
+.get-started {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.get-started > img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  flex-basis: 40%;
+}
+.btn-1 {
+  background: #264653;
+  border: none;
+  color: #ffffff;
+  padding: 0.5em;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin: 1em;
+}
+.btn-2 {
+  background: #b8d8d6;
+  border: none;
+  color: #000000;
+  padding: 0.5em;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin: 1em;
+}
+@media screen and (max-width: 1150px) {
+  .get-started > img {
+    max-width: 300px;
+  }
+  .btn-1,
+  .btn-2 {
+    font-size: 1em;
+  }
+}
+@media screen and (max-width: 700px) {
+  .get-started > img {
+    max-width: 200px;
+  }
+  #city,
+  #area,
+  #specialization {
+    padding: 1px;
+  }
+  .search > input {
+    padding: 1px;
+  }
+  .form-content {
+    top: 50%;
+  }
+  .btn-1,
+  .btn-2 {
+    font-size: 0.8em;
+  }
+}
+@media screen and (max-width: 500px) {
+  .get-started {
+    flex-direction: column;
+  }
+}
