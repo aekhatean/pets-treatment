@@ -9,11 +9,14 @@ from django.conf import settings
 # files uploading functions
 def tax_upload(instance, filename):
     extension = filename.split(".")[1]
-    return "clinics/tax/%s/taxid.%s" % (instance.clinic.id, extension)
+    return "clinics/%s/taxid.%s" % (instance.clinic.id, extension)
 
 def tech_upload(instance, filename):
     extension = filename.split(".")[1]
-    return "clinics/tech/%s/techid.%s" % (instance.clinic.id, extension)
+    return "clinics/%s/techid.%s" % (instance.clinic.id, extension)
+
+def image_upload(instance, filename):
+    return f'clinics/{instance.clinic.id}/galary/{filename}'
 
 
 class Clinic(models.Model):
@@ -31,8 +34,6 @@ class Clinic(models.Model):
     clinic_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
-def image_upload(instance, filename):
-    return f'clinic_images/{instance.clinic.id}/{filename}'
 
 class ClinicPicture(models.Model):
     picture = models.ImageField(upload_to= image_upload)
