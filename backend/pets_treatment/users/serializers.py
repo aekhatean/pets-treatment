@@ -100,28 +100,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         profile= Profile.objects.create(**validated_data,user=user)
         return profile
 
-    # def update(self, instance, validated_data):
-    #     users = validated_data.pop('users')
-    #     instance.phone = validated_data.get("phone", instance.phone)
-    #     instance.save()
-    #     keep_users = []
-    #     for user in users:
-    #         if "id" in user.keys():
-    #             if User.objects.filter(id=user["id"]).exists():
-    #                 c = User.objects.get(id=user["id"])
-    #                 c.text = user.get('text', c.text)
-    #                 c.save()
-    #                 keep_users.append(c.id)
-    #             else:
-    #                 continue
-    #         else:
-    #             c = User.objects.create(**user, profile=instance)
-    #             keep_users.append(c.id)
 
-    #     for user in instance.users:
-    #         if user.id not in keep_users:
-    #             user.delete()
 
-    #     return instance
 
 
