@@ -1,13 +1,18 @@
+from this import d
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth import authenticate
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework.authtoken.models import Token
+from cryptography.fernet import Fernet
+from .email_utils import send_mail_user
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
     class Meta:
         model = User
         fields = ('id','username','first_name','last_name','email','password')
+        read_only_fields = ['id']
 
 class TokenSerializer(serializers.Serializer):
     email = serializers.CharField(
@@ -50,6 +55,21 @@ class UserPublicInfoSerializer(serializers.ModelSerializer):
         model = User
         fields = ('first_name','last_name')
 
+######### Profile Serialziers ##########
+
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    picture = Base64ImageField(required=False)
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = User.objects.create_user(**user_data,is_active=False)
+        profile= Profile.objects.create(**validated_data,user=user)
+        return profile
 
 ######### doctor serialziers ##########
 class SpecializationSerializer(serializers.ModelSerializer):
@@ -63,20 +83,32 @@ class DoctorSerializer(serializers.ModelSerializer):
     #     return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
     syndicate_id=Base64ImageField()
     specialization=SpecializationSerializer(many=True)
+    profile = ProfileSerializer()
+
     class Meta:
         model = Doctor
-        fields = ('user','is_varified','description','syndicate_id','national_id','specialization')
+        fields = ('is_varified','description','syndicate_id','national_id','specialization','profile')
         read_only_fields = ['is_varified']
         depth = 1
 
+
     def create(self, validated_data):
         specialization_data = validated_data.pop('specialization')
-        user = validated_data.pop('user')
-        Doctor.objects.create(user=user,**validated_data)
+        profile = validated_data.pop('profile')
+        profile_serializer = ProfileSerializer(data=profile)
+        profile_serializer.is_valid(raise_exception=True)
+        profile = profile_serializer.save()
+        doctor = Doctor.objects.create(user=profile.user,profile=profile,**validated_data)
         for spec in specialization_data:
             spec_inst = Specialization.objects.get(name=dict(spec)['name'])
-            Doctor.objects.get(user=user).specialization.add(spec_inst)
-        newdoctor = Doctor.objects.get(user=user)
+            Doctor.objects.get(user=profile.user).specialization.add(spec_inst)
+        token, created = Token.objects.get_or_create(user=doctor.user)
+        key = Fernet.generate_key()
+        fernet = Fernet(key)
+        enc_token = fernet.encrypt(token.key.encode())
+        activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
+        send_mail_user(doctor.user.first_name,activation_link,doctor.user.email)
+        newdoctor = Doctor.objects.get(user=profile.user)
         return newdoctor
 
     def update(self, instance, validated_data):
@@ -105,28 +137,9 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
 
 
     
-# class DoctorSpecializationSerializer(serializers.ModelSerializer):
-#     specialization = SpecializationSerializer()
-#     class Meta:
-#         model = DoctorSpecialization
-#         fields = ('specialization',)
-#         depth = 1
-
-######### Profile Serialziers ##########
-
-class ProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    picture = Base64ImageField()
-    class Meta:
-        model = Profile
-        fields = '__all__'
 
 
-    def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = User.objects.create(**user_data,is_active=False)
-        profile= Profile.objects.create(**validated_data,user=user)
-        return profile
+
 
 
 

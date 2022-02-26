@@ -10,16 +10,10 @@ from rest_framework.decorators import api_view
 from .serializers import *
 from users.models import *
 from django.contrib.auth.models import User
-import smtplib
-from email.utils import formataddr
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from pets_treatment import settings
 from django.utils import timezone
 from datetime import timedelta
 from cryptography.fernet import Fernet
-from django.template.loader import render_to_string
-
+from .email_utils import send_mail_user
 class Login(ObtainAuthToken):
 
     def post(self, request):
@@ -45,46 +39,20 @@ class Logout(APIView):
         return Response({'msg':'Successfully logged out'},status.HTTP_200_OK)
 
 class Register(APIView):
-
-
-
-    def send_mail_user(self,fname,link,to_email):
-        msg=MIMEMultipart('alternative')
-        msg['From']=formataddr(('Petsania', settings.EMAIL_HOST_USER))
-        msg['To']=to_email
-        msg['Subject']='Petsania Account Activation'
-        
-        html_email = render_to_string("activation_user_email.html", {'first_name': fname,'activation_link': link})
-        html_part = MIMEText(html_email, 'html')
-        msg.attach(html_part)
-        msg_str=msg.as_string()
-
-        server=smtplib.SMTP(host=settings.EMAIL_HOST,port=settings.EMAIL_PORT)
-        server.ehlo()
-        server.starttls()
-        server.login(settings.EMAIL_HOST_USER,settings.EMAIL_HOST_PASSWORD)
-        server.sendmail(from_addr=msg['From'],to_addrs=to_email,msg=msg_str)
-        server.quit()
-    
     def post(self, request):
 
         profile_serializer = ProfileSerializer(data=request.data)
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
-        if(request.data.get('role') == 'DR'):
-            return Response({
-                'data': profile_serializer.data
-            },status=status.HTTP_200_OK)
-        else:
-            token, created = Token.objects.get_or_create(user=profile.user)
-            key = Fernet.generate_key()
-            fernet = Fernet(key)
-            enc_token = fernet.encrypt(token.key.encode())
-            activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
-            self.send_mail_user(profile.user.first_name,activation_link,profile.user.email)
-            return Response({
-                'data':'we sent you a verification email, please check it and click the link',
-            },status=status.HTTP_200_OK)
+        token, created = Token.objects.get_or_create(user=profile.user)
+        key = Fernet.generate_key()
+        fernet = Fernet(key)
+        enc_token = fernet.encrypt(token.key.encode())
+        activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
+        send_mail_user(profile.user.first_name,activation_link,profile.user.email)
+        return Response({
+            'data':'we sent you a verification email, please check it and click the link',
+        },status=status.HTTP_200_OK)
 class ActivateUser(APIView):
     def get(self, request, key, enc_token):
         try:
@@ -100,7 +68,7 @@ class ActivateUser(APIView):
                 user.save()
                 token.delete()
                 return Response({
-                    'msg':'User Activated Successfully'
+                    'msg':'User Activated Successfully, You can login now'
                 },status=status.HTTP_200_OK)
             else:
                     return Response({
@@ -160,10 +128,12 @@ class DoctorProfile(APIView):
 class AddDoctor(APIView):
     """ Create new Doctor"""
     def post(self, request):
+        # print(request.data)
         serializer = DoctorSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=User.objects.get(id=request.data['user_id']))
-            return Response({'msg':'New Doctor has been added','data':serializer.data},status=status.HTTP_200_OK)
+            serializer.save()
+            return Response({'msg':'New Doctor has been added,\
+we sent you a verification email, please check it and click the link','data':serializer.data},status=status.HTTP_200_OK)
         return Response({'msg':"Error can't create new doctor, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
