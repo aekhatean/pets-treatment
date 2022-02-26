@@ -7,6 +7,7 @@ class ClinicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Clinic
         fields = '__all__'
+        read_only_fields = ['is_verified', 'clinic_owner']
         depth = 1
 
 class ClinicImageSerializer(serializers.ModelSerializer):

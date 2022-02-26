@@ -26,7 +26,8 @@ def clinicCreate(request):
     clinic_serializer = ClinicSerializer(data=request.data)
 
     if clinic_serializer.is_valid():
-        clinic = clinic_serializer.save()
+        doctor = Doctor.objects.get(user = request.user)
+        clinic = clinic_serializer.save(clinic_owner=doctor)
 
         for image in request.FILES.getlist('images'):
                 clinic_image_serializer = ClinicImageSerializer(data={'clinic':clinic,'picture':image})
@@ -38,10 +39,10 @@ def clinicCreate(request):
                         "msg":"There is a problem with clinic images.",
                         "errors": clinic_image_serializer.errors
                     }, status=status.HTTP_400_BAD_REQUEST)
-                return Response({
-                        "msg":"Clinic created successfully",
-                        "data":clinic_serializer.data
-                    }, status=status.HTTP_201_CREATED)
+        return Response({
+                "msg":"Clinic created successfully",
+                "data":clinic_serializer.data
+            }, status=status.HTTP_201_CREATED)
 
     else:
             return Response({
@@ -54,7 +55,8 @@ def clinicCreate(request):
 def clinicUpdate(request, pk):
     try:
         clinic = Clinic.objects.get(id=pk)
-        if clinic.clinic_owner == request.user:
+        #edit
+        if clinic.clinic_owner == Doctor.objects.get(user=request.user):
             request_images = request.FILES.getlist('images')
             clinic_serializer = ClinicSerializer(instance=clinic, data=request.data)
 

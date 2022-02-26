@@ -44,7 +44,7 @@ class Clinic(models.Model):
     technical_registration = models.FileField(upload_to=tech_upload,null=True)
     technical_registration_number = models.CharField(max_length=100) # edit after discuss
     price = models.IntegerField()
-    clinic_owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    clinic_owner = models.ForeignKey(Doctor, on_delete=models.CASCADE)
 
 
 class ClinicDoctor(models.Model):
