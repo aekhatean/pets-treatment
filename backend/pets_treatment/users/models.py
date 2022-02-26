@@ -46,4 +46,14 @@ class DoctorSpecialization(models.Model):
 
 # Doctor Clinic Rel
 # Doctor rating
+class DoctorRating(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
+    details = models.CharField(max_length=600)
+    
+    class Meta:
+        db_table = 'doctor_rating'
+        unique_together = (('doctor', 'user'),)
+
 

@@ -83,3 +83,8 @@ class DoctorSpecializationSerializer(serializers.ModelSerializer):
         fields = ('specialization',)
         depth = 1
 
+
+class DoctorRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorRating
+        fields = '__all__'

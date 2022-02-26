@@ -19,6 +19,8 @@ from django.utils import timezone
 from datetime import timedelta
 from cryptography.fernet import Fernet
 from django.template.loader import render_to_string
+from django.db.models import Q
+
 
 class Login(ObtainAuthToken):
 
@@ -230,3 +232,59 @@ class UpdateDoctorSpecialization(APIView):
             return Response({'msg':'Specialization for Doctor has been Deleted'},status=status.HTTP_200_OK)
         except:
             return Response({'msg':"Error can't delete speciality for doctor, please recheck your data"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RateDoctor(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+            try:
+                doctor = Doctor.objects.get(id=pk)
+                user = request.user
+                print(request.data)
+                print(doctor, user)
+                serializer = DoctorRatingSerializer(data={
+                    "details": request.data["details"],
+                    "rating": request.data["rating"],
+                    "user": user.id,
+                    "doctor": doctor.id
+                })
+                if (DoctorRating.objects.filter(user=user, doctor=doctor)):
+                    return Response({'msg':"You have reviewed this doctor before, you cannot do it again."},status.HTTP_404_NOT_FOUND)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                return Response({'msg':"There is no such doctor, make sure id is correct"},status.HTTP_404_NOT_FOUND)
+
+
+    def put(self, request, pk):
+        try:
+            doctor = Doctor.objects.get(id=pk)
+            user = request.user
+            doctor_rating = DoctorRating.objects.get(doctor__id=pk)
+            serializer = DoctorRatingSerializer(doctor_rating, data={
+                        "details": request.data["details"],
+                        "rating": request.data["rating"],
+                        "user": user.id,
+                        "doctor": doctor.id
+            })
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({'msg': "make sure this doctor was rated by the same user before"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FindDoctor(APIView):
+    def get(self, request, search_term):
+        search_terms_list = search_term.split()
+        doctors = []
+        for term in search_terms_list:
+            doctors += Doctor.objects.filter(
+                Q(user__first_name__icontains=term)| Q(user__last_name__icontains=term)| Q(description__icontains=term)  #| Q(clinics__name__contains=search_term)
+            )
+        data = DoctorPublicSerializer(doctors,many=True).data
+        return Response({'data':data},status=status.HTTP_200_OK)
