@@ -6,6 +6,7 @@ from drf_extra_fields.fields import Base64ImageField
 from rest_framework.authtoken.models import Token
 from cryptography.fernet import Fernet
 from .email_utils import send_mail_user
+from clinics.serializers import ClinicSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
@@ -78,16 +79,14 @@ class SpecializationSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 class DoctorSerializer(serializers.ModelSerializer):
-    # specialization = serializers.SerializerMethodField('doctor_specialties')
-    # def doctor_specialties(self, instance):
-    #     return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
     syndicate_id=Base64ImageField()
     specialization=SpecializationSerializer(many=True)
+    clinics = ClinicSerializer(many=True,required=False)
     profile = ProfileSerializer()
 
     class Meta:
         model = Doctor
-        fields = ('is_varified','description','syndicate_id','national_id','specialization','profile')
+        fields = ('is_varified','description','syndicate_id','national_id','specialization','profile','clinics')
         read_only_fields = ['is_varified']
         depth = 1
 
@@ -95,6 +94,7 @@ class DoctorSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         specialization_data = validated_data.pop('specialization')
         profile = validated_data.pop('profile')
+        # clinics = validated_data.pop('clinics')
         profile_serializer = ProfileSerializer(data=profile)
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
@@ -102,6 +102,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         for spec in specialization_data:
             spec_inst = Specialization.objects.get(name=dict(spec)['name'])
             Doctor.objects.get(user=profile.user).specialization.add(spec_inst)
+        
         token, created = Token.objects.get_or_create(user=doctor.user)
         key = Fernet.generate_key()
         fernet = Fernet(key)
@@ -126,10 +127,6 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 class DoctorPublicSerializer(serializers.ModelSerializer):
     user = UserPublicInfoSerializer()
-
-    # specialization = serializers.SerializerMethodField('doctor_specialties')
-    # def doctor_specialties(self, instance):
-    #     return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
     class Meta:
         model = Doctor
         fields = ('user','description')
@@ -145,3 +142,8 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
 
 
 
+
+class DoctorRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorRating
+        fields = '__all__'

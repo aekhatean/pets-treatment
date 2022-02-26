@@ -1,5 +1,5 @@
+from pydoc import doc
 from wsgiref.util import application_uri
-from xmlrpc import client
 from django.shortcuts import render
 from rest_framework.response import Response
 from clinics.models import *
@@ -7,7 +7,7 @@ from .serializers import *
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-
+from users.models import *
 @api_view(['GET'])
 def clinicList(request):
     clinics = Clinic.objects.all()
@@ -26,8 +26,10 @@ def clinicCreate(request):
     clinic_serializer = ClinicSerializer(data=request.data)
 
     if clinic_serializer.is_valid():
+        # print(request.user.id)
+        doctor = Doctor.objects.get(user=request.user)
         clinic = clinic_serializer.save()
-
+        DoctorClinics.objects.create(doctor=doctor,clinic=clinic,clinic_owner=True)
         for image in request.FILES.getlist('images'):
                 clinic_image_serializer = ClinicImageSerializer(data={'clinic':clinic,'picture':image})
                 if clinic_image_serializer.is_valid():
@@ -38,10 +40,10 @@ def clinicCreate(request):
                         "msg":"There is a problem with clinic images.",
                         "errors": clinic_image_serializer.errors
                     }, status=status.HTTP_400_BAD_REQUEST)
-                return Response({
-                        "msg":"Clinic created successfully",
-                        "data":clinic_serializer.data
-                    }, status=status.HTTP_201_CREATED)
+        return Response({
+                "msg":"Clinic created successfully",
+                "data":clinic_serializer.data
+            }, status=status.HTTP_201_CREATED)
 
     else:
             return Response({
@@ -54,7 +56,10 @@ def clinicCreate(request):
 def clinicUpdate(request, pk):
     try:
         clinic = Clinic.objects.get(id=pk)
-        if clinic.clinic_owner == request.user:
+        doctor = Doctor.objects.get(user=request.user)
+        #edit
+        # doctorclinic.objects.get(clinic=clinic, doctor=doctor).clinic_owner == True
+        if DoctorClinics.objects.get(clinic=clinic, doctor=doctor).clinic_owner == True:
             request_images = request.FILES.getlist('images')
             clinic_serializer = ClinicSerializer(instance=clinic, data=request.data)
 
@@ -106,7 +111,8 @@ def clinicUpdate(request, pk):
 def clinicDelete(request, pk):
     try:
         clinic = Clinic.objects.get(id=pk)
-        if clinic.clinic_owner == request.user:  
+        doctor = Doctor.objects.get(user=request.user)
+        if DoctorClinics.objects.get(clinic=clinic, doctor=doctor).clinic_owner == True:  
             clinic.delete()
             return Response({'msg':'Clinic Deleted Successfully'},status.HTTP_200_OK)
         else:
@@ -117,3 +123,28 @@ def clinicDelete(request, pk):
     except Clinic.DoesNotExist:
                 return Response({'msg':"Can't find clinic with given id"},status.HTTP_404_NOT_FOUND)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addDoctorClinic(request, pk):
+    try:
+        clinic = Clinic.objects.get(id=pk)
+        clinic_owner = Doctor.objects.get(user=request.user)
+        doctor = Doctor.objects.get(national_id=request.data["doctor_nid"])
+        if DoctorClinics.objects.get(clinic=clinic, clinic_owner=True).doctor==clinic_owner:
+            if DoctorClinics.objects.get(clinic=clinic, doctor=doctor):
+                return Response({
+                        'errors':"Doctor already exists!"
+                    },status=status.HTTP_400_BAD_REQUEST)
+            else:
+                doctor_clinics = DoctorClinics.objects.create(doctor=doctor,clinic=clinic)
+                doctor_clinics.save()
+                return Response({
+                                'msg':'Doctor added to clinic Successfully',
+                            },status=status.HTTP_200_OK)
+        else:
+            return Response({'msg':"You can't add doctor to clinic you are not it's owner!"},
+                status.HTTP_401_UNAUTHORIZED) 
+    except:                  
+        return Response({
+                'error':'Data is not valid',
+            },status=status.HTTP_404_NOT_FOUND)

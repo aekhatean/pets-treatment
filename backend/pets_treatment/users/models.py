@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from clinics.models import Clinic
 User._meta.get_field('email')._unique = True
 User._meta.get_field('email').blank = False
 User._meta.get_field('email').null = False
@@ -54,19 +54,32 @@ class Doctor(models.Model):
     is_varified = models.BooleanField(default=False)
     specialization = models.ManyToManyField(Specialization)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    clinics = models.ManyToManyField(Clinic,through='DoctorClinics')
+
     def __str__(self):
         return str(self.user.first_name)
 
 
 
-# Rel_spec_doctor (id, spec , doctor)
-# class DoctorSpecialization(models.Model):
-#     specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE)
-#     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+
 
 
 # Doctor Clinic Rel
+class DoctorClinics(models.Model):
+     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
+     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+     clinic_owner = models.BooleanField(default=False)
 # Doctor rating
+class DoctorRating(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
+    details = models.CharField(max_length=600)
+    
+    class Meta:
+        db_table = 'doctor_rating'
+        unique_together = (('doctor', 'user'),)
+
 
 
 ######################## Profile Models ############################

@@ -17,9 +17,7 @@ urlpatterns = [
     path('doctors/specialists/<int:pk>',UpdateDoctorSpecialization.as_view()),
     path('register/', Register.as_view()),
     path('<str:key>/<str:enc_token>', ActivateUser.as_view()),
+    path('doctors/rating/<int:pk>', RateDoctor.as_view()),
+    path('doctors/search/<str:search_term>', FindDoctor.as_view()),
     path('profilelist',ViewProfile.as_view()),
-    
-   
-   
-  
 ]
