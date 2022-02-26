@@ -124,3 +124,19 @@ def clinicDelete(request, pk):
     except Clinic.DoesNotExist:
                 return Response({'msg':"Can't find clinic with given id"},status.HTTP_404_NOT_FOUND)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addDoctorClinic(request, pk):
+    clinic = Clinic.objects.get(id=pk)
+    doctor = Doctor.objects.get(user=request.user)
+    try:
+        if DoctorClinics.objects.get(clinic=clinic, doctor=doctor):
+            return Response({
+                    'errors':"Doctor already exists!"
+                },status=status.HTTP_400_BAD_REQUEST)
+    except:
+        doctor_clinics = DoctorClinics.objects.create(doctor=doctor,clinic=clinic)
+        doctor_clinics.save()
+        return Response({
+                        'msg':'Clinic Updated Successfully',
+                    },status=status.HTTP_200_OK)
