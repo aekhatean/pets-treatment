@@ -71,17 +71,20 @@ class Register(APIView):
         profile_serializer = ProfileSerializer(data=request.data)
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
-        token, created = Token.objects.get_or_create(user=profile.user)
-        key = Fernet.generate_key()
-        fernet = Fernet(key)
-        enc_token = fernet.encrypt(token.key.encode())
-        activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
-        self.send_mail_user(profile.user.first_name,activation_link,profile.user.email)
-        return Response({
-            'data':'we sent you a verification email, please check it and click the link',
-        },status=status.HTTP_200_OK)
-
-
+        if(request.data.get('role') == 'DR'):
+            return Response({
+                'data': profile_serializer.data
+            },status=status.HTTP_200_OK)
+        else:
+            token, created = Token.objects.get_or_create(user=profile.user)
+            key = Fernet.generate_key()
+            fernet = Fernet(key)
+            enc_token = fernet.encrypt(token.key.encode())
+            activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
+            self.send_mail_user(profile.user.first_name,activation_link,profile.user.email)
+            return Response({
+                'data':'we sent you a verification email, please check it and click the link',
+            },status=status.HTTP_200_OK)
 class ActivateUser(APIView):
     def get(self, request, key, enc_token):
         try:
