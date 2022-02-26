@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth import authenticate
+from drf_extra_fields.fields import Base64ImageField
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
@@ -51,35 +52,83 @@ class UserPublicInfoSerializer(serializers.ModelSerializer):
 
 
 ######### doctor serialziers ##########
+class SpecializationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialization
+        fields = ('name',)
+
 class DoctorSerializer(serializers.ModelSerializer):
-    specialization = serializers.SerializerMethodField('doctor_specialties')
-    def doctor_specialties(self, instance):
-        return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
+    # specialization = serializers.SerializerMethodField('doctor_specialties')
+    # def doctor_specialties(self, instance):
+    #     return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
+    syndicate_id=Base64ImageField()
+    specialization=SpecializationSerializer(many=True)
     class Meta:
         model = Doctor
         fields = ('user','is_varified','description','syndicate_id','national_id','specialization')
         read_only_fields = ['is_varified']
         depth = 1
 
+    def create(self, validated_data):
+        specialization_data = validated_data.pop('specialization')
+        user = validated_data.pop('user')
+        Doctor.objects.create(user=user,**validated_data)
+        for spec in specialization_data:
+            spec_inst = Specialization.objects.get(name=dict(spec)['name'])
+            Doctor.objects.get(user=user).specialization.add(spec_inst)
+        newdoctor = Doctor.objects.get(user=user)
+        return newdoctor
+
+    def update(self, instance, validated_data):
+        specialization_data = validated_data.pop('specialization')
+        Doctor.objects.get(id=instance.id).specialization.clear()
+        for spec in specialization_data:
+            spec_inst = Specialization.objects.get(name=dict(spec)['name'])
+            Doctor.objects.get(id=instance.id).specialization.add(spec_inst)
+        Doctor.objects.update(id=instance.id,**validated_data)
+        updatedoctor = Doctor.objects.get(id=instance.id)
+        return updatedoctor
+
+        
+
+
 class DoctorPublicSerializer(serializers.ModelSerializer):
     user = UserPublicInfoSerializer()
-    specialization = serializers.SerializerMethodField('doctor_specialties')
-    def doctor_specialties(self, instance):
-        return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
+
+    # specialization = serializers.SerializerMethodField('doctor_specialties')
+    # def doctor_specialties(self, instance):
+    #     return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
     class Meta:
         model = Doctor
-        fields = ('user','description','specialization')
+        fields = ('user','description')
         depth = 1
 
-class SpecializationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Specialization
-        fields = ('name',)
+
     
-class DoctorSpecializationSerializer(serializers.ModelSerializer):
-    specialization = SpecializationSerializer()
+# class DoctorSpecializationSerializer(serializers.ModelSerializer):
+#     specialization = SpecializationSerializer()
+#     class Meta:
+#         model = DoctorSpecialization
+#         fields = ('specialization',)
+#         depth = 1
+
+######### Profile Serialziers ##########
+
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    picture = Base64ImageField()
     class Meta:
-        model = DoctorSpecialization
-        fields = ('specialization',)
-        depth = 1
+        model = Profile
+        fields = '__all__'
+
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = User.objects.create(**user_data,is_active=False)
+        profile= Profile.objects.create(**validated_data,user=user)
+        return profile
+
+
+
+
 
