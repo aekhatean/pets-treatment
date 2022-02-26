@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from clinics.models import Clinic
 User._meta.get_field('email')._unique = True
 User._meta.get_field('email').blank = False
 User._meta.get_field('email').null = False
@@ -30,19 +30,21 @@ class Doctor(models.Model):
     national_id = models.CharField(max_length=1000)
     is_varified = models.BooleanField(default=False)
     specialization = models.ManyToManyField(Specialization)
+    clinics = models.ManyToManyField(Clinic,through='DoctorClinics')
 
     def __str__(self):
         return str(self.user.first_name)
 
 
 
-# Rel_spec_doctor (id, spec , doctor)
-# class DoctorSpecialization(models.Model):
-#     specialization = models.ForeignKey(Specialization, on_delete=models.CASCADE)
-#     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+
 
 
 # Doctor Clinic Rel
+class DoctorClinics(models.Model):
+     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
+     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+     clinic_owner = models.BooleanField(default=False)
 # Doctor rating
 
 

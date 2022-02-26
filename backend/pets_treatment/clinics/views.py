@@ -1,3 +1,4 @@
+from pydoc import doc
 from wsgiref.util import application_uri
 from xmlrpc import client
 from django.shortcuts import render
@@ -7,7 +8,7 @@ from .serializers import *
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-
+from users.models import *
 @api_view(['GET'])
 def clinicList(request):
     clinics = Clinic.objects.all()
@@ -26,9 +27,10 @@ def clinicCreate(request):
     clinic_serializer = ClinicSerializer(data=request.data)
 
     if clinic_serializer.is_valid():
-        doctor = Doctor.objects.get(user = request.user)
-        clinic = clinic_serializer.save(clinic_owner=doctor)
-
+        # print(request.user.id)
+        doctor = Doctor.objects.get(user=request.user)
+        clinic = clinic_serializer.save()
+        DoctorClinics.objects.create(doctor=doctor,clinic=clinic,clinic_owner=True)
         for image in request.FILES.getlist('images'):
                 clinic_image_serializer = ClinicImageSerializer(data={'clinic':clinic,'picture':image})
                 if clinic_image_serializer.is_valid():
@@ -55,8 +57,10 @@ def clinicCreate(request):
 def clinicUpdate(request, pk):
     try:
         clinic = Clinic.objects.get(id=pk)
+        doctor = Doctor.objects.get(user=request.user)
         #edit
-        if clinic.clinic_owner == Doctor.objects.get(user=request.user):
+        # doctorclinic.objects.get(clinic=clinic, doctor=doctor).clinic_owner == True
+        if DoctorClinics.objects.get(clinic=clinic, doctor=doctor).clinic_owner == True:
             request_images = request.FILES.getlist('images')
             clinic_serializer = ClinicSerializer(instance=clinic, data=request.data)
 
@@ -108,7 +112,8 @@ def clinicUpdate(request, pk):
 def clinicDelete(request, pk):
     try:
         clinic = Clinic.objects.get(id=pk)
-        if clinic.clinic_owner == request.user:  
+        doctor = Doctor.objects.get(user=request.user)
+        if DoctorClinics.objects.get(clinic=clinic, doctor=doctor).clinic_owner == True:  
             clinic.delete()
             return Response({'msg':'Clinic Deleted Successfully'},status.HTTP_200_OK)
         else:

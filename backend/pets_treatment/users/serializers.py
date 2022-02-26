@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 from django.contrib.auth import authenticate
 from drf_extra_fields.fields import Base64ImageField
+from clinics.serializers import ClinicSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
@@ -58,14 +59,12 @@ class SpecializationSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 class DoctorSerializer(serializers.ModelSerializer):
-    # specialization = serializers.SerializerMethodField('doctor_specialties')
-    # def doctor_specialties(self, instance):
-    #     return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
     syndicate_id=Base64ImageField()
     specialization=SpecializationSerializer(many=True)
+    clinics = ClinicSerializer(many=True,required=False)
     class Meta:
         model = Doctor
-        fields = ('user','is_varified','description','syndicate_id','national_id','specialization')
+        fields = ('user','is_varified','description','syndicate_id','national_id','specialization','clinics')
         read_only_fields = ['is_varified']
         depth = 1
 
@@ -94,23 +93,12 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 class DoctorPublicSerializer(serializers.ModelSerializer):
     user = UserPublicInfoSerializer()
-
-    # specialization = serializers.SerializerMethodField('doctor_specialties')
-    # def doctor_specialties(self, instance):
-    #     return DoctorSpecializationSerializer(DoctorSpecialization.objects.filter(doctor=instance),many=True).data
     class Meta:
         model = Doctor
         fields = ('user','description')
         depth = 1
 
 
-    
-# class DoctorSpecializationSerializer(serializers.ModelSerializer):
-#     specialization = SpecializationSerializer()
-#     class Meta:
-#         model = DoctorSpecialization
-#         fields = ('specialization',)
-#         depth = 1
 
 ######### Profile Serialziers ##########
 
