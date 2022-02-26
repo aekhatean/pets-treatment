@@ -71,6 +71,7 @@ class Register(APIView):
         profile_serializer = ProfileSerializer(data=request.data)
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
+        # if profile.role == 'Doctor' ---> create doctor profile else pass
         token, created = Token.objects.get_or_create(user=profile.user)
         key = Fernet.generate_key()
         fernet = Fernet(key)
@@ -159,7 +160,7 @@ class AddDoctor(APIView):
     def post(self, request):
         serializer = DoctorSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
+            serializer.save(user=User.objects.get(id=request.data['user_id']))
             return Response({'msg':'New Doctor has been added','data':serializer.data},status=status.HTTP_200_OK)
         return Response({'msg':"Error can't create new doctor, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
