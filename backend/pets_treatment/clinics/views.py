@@ -1,6 +1,5 @@
 from pydoc import doc
 from wsgiref.util import application_uri
-from xmlrpc import client
 from django.shortcuts import render
 from rest_framework.response import Response
 from clinics.models import *
@@ -127,16 +126,25 @@ def clinicDelete(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addDoctorClinic(request, pk):
-    clinic = Clinic.objects.get(id=pk)
-    doctor = Doctor.objects.get(user=request.user)
     try:
-        if DoctorClinics.objects.get(clinic=clinic, doctor=doctor):
-            return Response({
-                    'errors':"Doctor already exists!"
-                },status=status.HTTP_400_BAD_REQUEST)
-    except:
-        doctor_clinics = DoctorClinics.objects.create(doctor=doctor,clinic=clinic)
-        doctor_clinics.save()
+        clinic = Clinic.objects.get(id=pk)
+        clinic_owner = Doctor.objects.get(user=request.user)
+        doctor = Doctor.objects.get(id=request.data["doctor_id"])
+        if DoctorClinics.objects.get(clinic=clinic, clinic_owner=True).doctor==clinic_owner:
+            if DoctorClinics.objects.get(clinic=clinic, doctor=doctor):
+                return Response({
+                        'errors':"Doctor already exists!"
+                    },status=status.HTTP_400_BAD_REQUEST)
+            else:
+                doctor_clinics = DoctorClinics.objects.create(doctor=doctor,clinic=clinic)
+                doctor_clinics.save()
+                return Response({
+                                'msg':'Doctor added to clinic Successfully',
+                            },status=status.HTTP_200_OK)
+        else:
+            return Response({'msg':"You can't add doctor to clinic you are not it's owner!"},
+                status.HTTP_401_UNAUTHORIZED) 
+    except:                  
         return Response({
-                        'msg':'Doctor added to clinic Successfully',
-                    },status=status.HTTP_200_OK)
+                'error':'Data is not valid',
+            },status=status.HTTP_404_NOT_FOUND)
