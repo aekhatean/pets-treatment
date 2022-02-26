@@ -138,5 +138,5 @@ def addDoctorClinic(request, pk):
         doctor_clinics = DoctorClinics.objects.create(doctor=doctor,clinic=clinic)
         doctor_clinics.save()
         return Response({
-                        'msg':'Clinic Updated Successfully',
+                        'msg':'Doctor added to clinic Successfully',
                     },status=status.HTTP_200_OK)
