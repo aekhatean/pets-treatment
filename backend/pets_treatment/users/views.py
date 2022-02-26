@@ -162,7 +162,7 @@ class AddDoctor(APIView):
     def post(self, request):
         serializer = DoctorSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
+            serializer.save(user=User.objects.get(id=request.data['user_id']))
             return Response({'msg':'New Doctor has been added','data':serializer.data},status=status.HTTP_200_OK)
         return Response({'msg':"Error can't create new doctor, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -238,16 +238,17 @@ class ViewProfile(APIView):
                 'error':'Something wrong happened',
                 'exc': f'{e}'
             },status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request):
+        user = request.user
+        profile=user.profile
+        profile_serializer= ProfileSerializer(profile,data=request.data)
+        profile=profile_serializer.is_valid(raise_exception=True)
+        profile=profile_serializer.save()
+        return Response({
+            'data':'Profile has been updated',
+        },status=status.HTTP_200_OK)
 
 
-# @api_view(['POST'])
-# def post_profile(request):
-#     data = request.data
-#     serializer= ProfileSerializer(data)
 
-#     if not serializer.is_valid():
-#         return Response({'errors':serializer.errors,'message': 'Somthing is wrong'})
-
-#     serializer.save()
-#     return Response({'payload':serializer.data,'message':'Data recived'})
 
