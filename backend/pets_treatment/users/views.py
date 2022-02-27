@@ -231,7 +231,8 @@ class ViewProfile(APIView):
         profile=profile_serializer.is_valid(raise_exception=True)
         profile=profile_serializer.save()
         return Response({
-            'data':'Profile has been updated',
+            'msg':'Profile has been updated',
+            'data':profile_serializer.data
         },status=status.HTTP_200_OK)
 
 
