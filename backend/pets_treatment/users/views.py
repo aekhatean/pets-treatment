@@ -1,4 +1,5 @@
 from codecs import lookup_error
+from re import search
 # from msilib.schema import Class
 from django.http import Http404
 from rest_framework import status, viewsets
@@ -199,15 +200,46 @@ class RateDoctor(APIView):
 
 
 class FindDoctor(APIView):
-    def get(self, request, search_term):
+    def get(self, request):
+        search_term = request.data['find']
+        # Filters
+        areas = request.data['filters']['areas']  # List
+        cities = request.data['filters']['cities']  # List
+        countries = request.data['filters']['countries']  # List
+        specializations = request.data['filters']['specializations'] # List
+
         search_terms_list = search_term.split()
         doctors = []
+
+        # Create filters
+        query_filters = Q()
+        if len(areas) > 0:
+            query_filters.add(Q(clinics__area__in=areas), Q.AND)
+        if len(cities) > 0:
+            query_filters.add(Q(clinics__city__in=cities), Q.AND)
+        if len(countries) > 0:
+            query_filters.add(Q(clinics__country__in=countries), Q.AND)
+        if len(specializations) > 0:
+            query_filters.add(Q(specialization__name__in=specializations), Q.AND)
+
+        # Search for the term
         for term in search_terms_list:
-            doctors += Doctor.objects.filter(
-                Q(user__first_name__icontains=term)| Q(user__last_name__icontains=term)| Q(description__icontains=term)  #| Q(clinics__name__contains=search_term)
-            )
+            query_terms = Q(user__first_name__icontains=term)
+            query_terms.add(Q(user__last_name__icontains=term), Q.OR)
+            query_terms.add(Q(description__icontains=term), Q.OR)
+            query_terms.add(Q(clinics__name__contains=search_term), Q.OR)
+
+            # Combine term and filters
+            query = query_filters
+            query.add(query_terms, Q.AND)
+
+            # Apply query
+            doctors += Doctor.objects.filter(query)
+
         data = DoctorPublicSerializer(doctors,many=True).data
         return Response({'data':data},status=status.HTTP_200_OK)
+
+
 ################## Profile ######################
 class ViewProfile(APIView):
     permission_classes = [IsAuthenticated]
