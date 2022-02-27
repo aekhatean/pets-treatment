@@ -1,3 +1,5 @@
+from codecs import lookup_error
+from msilib.schema import Class
 from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.response import Response
@@ -16,7 +18,7 @@ from cryptography.fernet import Fernet
 from .email_utils import send_mail_user
 from django.template.loader import render_to_string
 from django.db.models import Q
-
+from rest_framework import generics
 
 class Login(ObtainAuthToken):
 
@@ -234,3 +236,26 @@ class ViewProfile(APIView):
 
 
 
+# ################## Schedule ######################
+class ScheduleList(generics.ListCreateAPIView):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+    permission_classes = [IsAuthenticated]
+# ################## Schedule modification (delete,update,list one ) ######################
+class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class=ScheduleSerializer
+    lookup_url_kwarg = 'pk'
+    queryset = Schedule.objects.all()
+    permission_classes = [IsAuthenticated]
+
+class AppointmentList(generics.ListCreateAPIView):
+    queryset = Appiontments.objects.all()
+    serializer_class = AppointmentSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class=AppointmentSerializer
+    lookup_url_kwarg = 'pk'
+    queryset = Appiontments.objects.all()
+    permission_classes = [IsAuthenticated]
