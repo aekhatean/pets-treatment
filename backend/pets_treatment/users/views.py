@@ -127,7 +127,9 @@ class DoctorProfile(APIView):
         doctor = self.get_object(request)
         serializer = DoctorSerializer(doctor,data=request.data)
         # print(doctor.profile)
+        # print('from view',doctor.user)
         if serializer.is_valid():
+            # print('from valid',doctor.profile)
             serializer.save()
             return Response({'msg':'Profile has been updated','data':serializer.data},status=status.HTTP_200_OK)
         return Response({'msg':"Error doctor profile cann't be edited, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -263,7 +265,8 @@ class ViewProfile(APIView):
         profile=profile_serializer.is_valid(raise_exception=True)
         profile=profile_serializer.save()
         return Response({
-            'data':'Profile has been updated',
+            'msg':'Profile has been updated',
+            'data':profile_serializer.data
         },status=status.HTTP_200_OK)
 
 
