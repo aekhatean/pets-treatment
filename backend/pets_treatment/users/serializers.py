@@ -136,3 +136,13 @@ class DoctorRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorRating
         fields = '__all__'
+######### doctor serialziers ##########
+class ScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Schedule
+        fields = '__all__'
+######### doctor serialziers ##########
+class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appiontments
+        fields = '__all__'
