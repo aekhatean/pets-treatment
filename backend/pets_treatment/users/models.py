@@ -36,18 +36,17 @@ class Profile(models.Model):
 
 ######################## doctor models ############################
 
-# files uploading functions
 def synd_upload(instance, filename):
     extension = filename.split(".")[1]
     return "users/doctors/%s/syndid.%s" % (instance.user.id, extension)
+######################## Specialization Models ############################
 
-# Specialization (id , name) 
 class Specialization(models.Model):
     name = models.CharField(max_length=100)
     def __str__(self):
         return self.name
 
-# Doctor (id, user(one2one), is_varified(manual bool),  syndicate_id(file), national_id, description) 
+######################## Doctor Models ############################
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=1000,blank=True,null=True)
@@ -61,17 +60,13 @@ class Doctor(models.Model):
     def __str__(self):
         return str(self.user.first_name)
 
-
-
-
-
-
-# Doctor Clinic Rel
+######################## DoctorClinics Models ############################
 class DoctorClinics(models.Model):
      clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
      doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
      clinic_owner = models.BooleanField(default=False)
-# Doctor rating
+
+######################## DoctorRating Models ############################
 class DoctorRating(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -82,7 +77,23 @@ class DoctorRating(models.Model):
         db_table = 'doctor_rating'
         unique_together = (('doctor', 'user'),)
 
-
-
-
+######################## week_days var ############################
+week_days=(('Saturday','Saturday'),('Sunday','Sunday'),('Monday','Monday'),('Tuesday','Tuesday'),('Wednesday','Wednesday'),('Thursday','Thursday'),('Friday','Friday'))
+######################## Schedule Models ############################
+class Schedule(models.Model):
+    from_time=models.TimeField(null=False)
+    to_time=models.TimeField(null=False)
+    day=models.CharField(max_length=25,choices=week_days)
+    appointment_duration=models.FloatField()
+    date=models.DateField()
+    doctor=models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    clinic=models.ForeignKey(Clinic, on_delete=models.CASCADE)
+    active=models.BooleanField(default=True)
+    
+######################## Appiontments Models ############################
+class Appiontments(models.Model):
+    visiting_time=models.TimeField(null=False)
+    active=models.BooleanField(default=True)
+    schedule=models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
 
