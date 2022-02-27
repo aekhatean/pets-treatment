@@ -14,7 +14,6 @@ urlpatterns = [
     path('doctors/doctorprofile',DoctorProfile.as_view(),name='doctorprofile'),
     path('doctors/new',AddDoctor.as_view()),
     path('doctors/specialities/',SpecializationsList.as_view()),
-    path('doctors/specialists/<int:pk>',UpdateDoctorSpecialization.as_view()),
     path('register/', Register.as_view()),
     path('<str:key>/<str:enc_token>', ActivateUser.as_view()),
     path('doctors/rating/<int:pk>', RateDoctor.as_view()),

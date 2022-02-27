@@ -10,10 +10,23 @@ from clinics.serializers import ClinicSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
+    email = serializers.EmailField(required=False)
     class Meta:
         model = User
         fields = ('id','username','first_name','last_name','email','password')
         read_only_fields = ['id']
+    
+
+    def update(self, instance, validated_data):
+        for key in validated_data:
+            if key in self.fields:
+                if key != 'password':
+                    setattr(instance,key,validated_data.get(key))
+                else:
+                    instance.set_password(validated_data.get(key))
+        instance.save()
+        return instance
+
 
 class TokenSerializer(serializers.Serializer):
     email = serializers.CharField(
@@ -71,6 +84,18 @@ class ProfileSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**user_data,is_active=False)
         profile= Profile.objects.create(**validated_data,user=user)
         return profile
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user')
+        user_serializer = UserSerializer(instance.user,data=user_data)
+        user_serializer.is_valid(raise_exception=True)
+        user = user_serializer.save()
+        for key in validated_data:
+            if key in self.fields:
+                    setattr(instance,key,validated_data.get(key))
+        instance.save()
+        return instance
+        
 
 ######### doctor serialziers ##########
 class SpecializationSerializer(serializers.ModelSerializer):
