@@ -112,12 +112,26 @@ class DoctorSerializer(serializers.ModelSerializer):
         return newdoctor
 
     def update(self, instance, validated_data):
+        # if validated_data.get('profile'):
+        # profile_data = validated_data.pop('profile')
+        # updatedprofile=Profile.objects.update(id=instance.profile.id)
+            # profile_serializer = ProfileSerializer(data=profile_data)
+            # if profile_serializer.is_valid():
+            #     profile = profile_serializer.update(instance=instance.profile)
+            #     validated_data['profile'] = profile
         specialization_data = validated_data.pop('specialization')
+        # profile = validated_data.pop('profile')
+        # # currentProfile=Profile.objects.get(id=instance.profile.id)
+        # # print("curentprofile",instance)
+        # # profile_serializer = ProfileSerializer(currentProfile,data=profile)
+        # # profile_serializer.is_valid(raise_exception=True)
+        # # profile_serializer.save()
         Doctor.objects.get(id=instance.id).specialization.clear()
         for spec in specialization_data:
             spec_inst = Specialization.objects.get(name=dict(spec)['name'])
             Doctor.objects.get(id=instance.id).specialization.add(spec_inst)
-        Doctor.objects.update(id=instance.id,**validated_data)
+        # Profile.objects.update(id=Doctor.objects.get(id=instance.id).profile.id,**profile)
+        Doctor.objects.update(profile=instance.profile,**validated_data)
         updatedoctor = Doctor.objects.get(id=instance.id)
         return updatedoctor
 

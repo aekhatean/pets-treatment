@@ -51,7 +51,7 @@ class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=1000,blank=True,null=True)
     syndicate_id = models.FileField(upload_to=synd_upload,null=True)
-    national_id = models.CharField(max_length=1000)
+    national_id = models.CharField(max_length=14,unique=True)
     is_varified = models.BooleanField(default=False)
     specialization = models.ManyToManyField(Specialization)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)

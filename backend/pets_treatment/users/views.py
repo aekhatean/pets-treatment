@@ -1,5 +1,5 @@
 from codecs import lookup_error
-from msilib.schema import Class
+# from msilib.schema import Class
 from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.response import Response
@@ -125,6 +125,7 @@ class DoctorProfile(APIView):
     def put(self,request):
         doctor = self.get_object(request)
         serializer = DoctorSerializer(doctor,data=request.data)
+        # print(doctor.profile)
         if serializer.is_valid():
             serializer.save()
             return Response({'msg':'Profile has been updated','data':serializer.data},status=status.HTTP_200_OK)
