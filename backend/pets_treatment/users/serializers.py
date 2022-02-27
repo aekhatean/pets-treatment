@@ -94,7 +94,6 @@ class DoctorSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         specialization_data = validated_data.pop('specialization')
         profile = validated_data.pop('profile')
-        # clinics = validated_data.pop('clinics')
         profile_serializer = ProfileSerializer(data=profile)
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
@@ -131,16 +130,6 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
         model = Doctor
         fields = ('user','description')
         depth = 1
-
-
-    
-
-
-
-
-
-
-
 
 
 class DoctorRatingSerializer(serializers.ModelSerializer):

@@ -132,7 +132,6 @@ class DoctorProfile(APIView):
 class AddDoctor(APIView):
     """ Create new Doctor"""
     def post(self, request):
-        # print(request.data)
         serializer = DoctorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -150,52 +149,6 @@ class SpecializationsList(APIView):
         return Response(data,status=status.HTTP_200_OK)
 
 
-
-
-
-# doctor specioalizations
-# class DoctorSpecializations(APIView):
-#     permission_classes = [IsAuthenticated]
-#     def get_object(self, request):
-#         try:
-#             return Doctor.objects.get(user=request.user)
-#         except Doctor.DoesNotExist:
-#             raise Http404
-
-#     def get(self,request):
-#         doctor_speciality = DoctorSpecialization.objects.all()
-#         data = DoctorSpecializationSerializer(doctor_speciality,many=True).data
-#         return Response(data,status=status.HTTP_200_OK)
-#     def post(self,request):
-#         doctor =self.get_object(request)
-#         try:
-#             DoctorSpecialization.objects.create(doctor=doctor, specialization=Specialization.objects.get(name=request.data['specialization']))
-#             return Response({'msg':'New Specialization for Doctor has been added'},status=status.HTTP_200_OK)
-#         except:
-#             return Response({'msg':"Error can't add new speciality for doctor, please recheck your data"}, status=status.HTTP_400_BAD_REQUEST)
-    
-# class UpdateDoctorSpecialization(APIView):
-#     permission_classes = [IsAuthenticated]
-#     def get_object(self, request):
-#         try:
-#             return Doctor.objects.get(user=request.user)
-#         except Doctor.DoesNotExist:
-#             raise Http404
-#     def put(self,request,pk):
-#         doctor =self.get_object(request)
-#         try:
-#             DoctorSpecialization.objects.filter(id=pk).update(specialization=Specialization.objects.get(name=request.data['specialization']))
-#             return Response({'msg':'Specialization for Doctor has been updated'},status=status.HTTP_200_OK)
-#         except:
-#             return Response({'msg':"Error can't update speciality for doctor, please recheck your data"}, status=status.HTTP_400_BAD_REQUEST)
-
-#     def delete(self,request,pk):
-#         doctor =self.get_object(request)
-#         try:
-#             DoctorSpecialization.objects.filter(id=pk).delete()
-#             return Response({'msg':'Specialization for Doctor has been Deleted'},status=status.HTTP_200_OK)
-#         except:
-#             return Response({'msg':"Error can't delete speciality for doctor, please recheck your data"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RateDoctor(APIView):

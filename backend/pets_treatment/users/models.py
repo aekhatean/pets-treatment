@@ -9,6 +9,8 @@ User.USERNAME_FIELD = 'email'
 
 #Create your models here
 
+
+######################## Profile Models ############################
 def profile_image_upload(instance, filename):
     return f'profile_images/{instance.user.id}/{filename}'
 
@@ -82,6 +84,5 @@ class DoctorRating(models.Model):
 
 
 
-######################## Profile Models ############################
 
 
