@@ -166,7 +166,7 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
     profile=ProfilePublicSerializer()
     class Meta:
         model = Doctor
-        fields = ('user','description','profile')
+        fields = ('user','description','profile','specialization','clinics')
         depth = 1
 
 
