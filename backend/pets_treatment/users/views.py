@@ -5,7 +5,7 @@ from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
@@ -155,17 +155,19 @@ class SpecializationsList(APIView):
         return Response(data,status=status.HTTP_200_OK)
 
 
-
-
 class RateDoctor(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+    def get(self,request, pk):
+        rating = DoctorRating.objects.get(doctor__id=pk)
+        data = DoctorRatingSerializer(rating).data
+        return Response(data,status=status.HTTP_200_OK)
+
 
     def post(self, request, pk):
             try:
                 doctor = Doctor.objects.get(id=pk)
                 user = request.user
-                print(request.data)
-                print(doctor, user)
                 serializer = DoctorRatingSerializer(data={
                     "details": request.data["details"],
                     "rating": request.data["rating"],
