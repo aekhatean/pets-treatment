@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'extra_views',
     'users.apps.UsersConfig',
-    'clinics.apps.ClinicsConfig'
+    'clinics.apps.ClinicsConfig',
+    'support.apps.SupportConfig'
 ]
 
 MIDDLEWARE = [

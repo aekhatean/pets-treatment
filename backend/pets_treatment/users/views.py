@@ -1,8 +1,11 @@
+from codecs import lookup_error
+from re import search
+# from msilib.schema import Class
 from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
@@ -10,15 +13,13 @@ from rest_framework.decorators import api_view
 from .serializers import *
 from users.models import *
 from django.contrib.auth.models import User
-import smtplib
-from email.utils import formataddr
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from pets_treatment import settings
 from django.utils import timezone
 from datetime import timedelta
 from cryptography.fernet import Fernet
+from .email_utils import send_mail_user
 from django.template.loader import render_to_string
+from django.db.models import Q
+from rest_framework import generics
 
 class Login(ObtainAuthToken):
 
@@ -45,44 +46,20 @@ class Logout(APIView):
         return Response({'msg':'Successfully logged out'},status.HTTP_200_OK)
 
 class Register(APIView):
-
-
-
-    def send_mail_user(self,fname,link,to_email):
-        msg=MIMEMultipart('alternative')
-        msg['From']=formataddr(('Petsania', settings.EMAIL_HOST_USER))
-        msg['To']=to_email
-        msg['Subject']='Petsania Account Activation'
-        
-        html_email = render_to_string("activation_user_email.html", {'first_name': fname,'activation_link': link})
-        html_part = MIMEText(html_email, 'html')
-        msg.attach(html_part)
-        msg_str=msg.as_string()
-
-        server=smtplib.SMTP(host=settings.EMAIL_HOST,port=settings.EMAIL_PORT)
-        server.ehlo()
-        server.starttls()
-        server.login(settings.EMAIL_HOST_USER,settings.EMAIL_HOST_PASSWORD)
-        server.sendmail(from_addr=msg['From'],to_addrs=to_email,msg=msg_str)
-        server.quit()
-    
     def post(self, request):
 
         profile_serializer = ProfileSerializer(data=request.data)
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
-        # if profile.role == 'Doctor' ---> create doctor else pass
         token, created = Token.objects.get_or_create(user=profile.user)
         key = Fernet.generate_key()
         fernet = Fernet(key)
         enc_token = fernet.encrypt(token.key.encode())
         activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
-        self.send_mail_user(profile.user.first_name,activation_link,profile.user.email)
+        send_mail_user(profile.user.first_name,activation_link,profile.user.email)
         return Response({
             'data':'we sent you a verification email, please check it and click the link',
         },status=status.HTTP_200_OK)
-
-
 class ActivateUser(APIView):
     def get(self, request, key, enc_token):
         try:
@@ -98,7 +75,7 @@ class ActivateUser(APIView):
                 user.save()
                 token.delete()
                 return Response({
-                    'msg':'User Activated Successfully'
+                    'msg':'User Activated Successfully, You can login now'
                 },status=status.HTTP_200_OK)
             else:
                     return Response({
@@ -149,7 +126,10 @@ class DoctorProfile(APIView):
     def put(self,request):
         doctor = self.get_object(request)
         serializer = DoctorSerializer(doctor,data=request.data)
+        # print(doctor.profile)
+        # print('from view',doctor.user)
         if serializer.is_valid():
+            # print('from valid',doctor.profile)
             serializer.save()
             return Response({'msg':'Profile has been updated','data':serializer.data},status=status.HTTP_200_OK)
         return Response({'msg':"Error doctor profile cann't be edited, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -160,9 +140,9 @@ class AddDoctor(APIView):
     def post(self, request):
         serializer = DoctorSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
-            # serializer.save(user=User.objects.get(id=request.data['user_id']))
-            return Response({'msg':'New Doctor has been added','data':serializer.data},status=status.HTTP_200_OK)
+            serializer.save()
+            return Response({'msg':'New Doctor has been added,\
+we sent you a verification email, please check it and click the link','data':serializer.data},status=status.HTTP_200_OK)
         return Response({'msg':"Error can't create new doctor, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -175,52 +155,94 @@ class SpecializationsList(APIView):
         return Response(data,status=status.HTTP_200_OK)
 
 
-
-
-
-# doctor specioalizations
-class DoctorSpecializations(APIView):
-    permission_classes = [IsAuthenticated]
-    def get_object(self, request):
-        try:
-            return Doctor.objects.get(user=request.user)
-        except Doctor.DoesNotExist:
-            raise Http404
-
-    def get(self,request):
-        doctor_speciality = DoctorSpecialization.objects.all()
-        data = DoctorSpecializationSerializer(doctor_speciality,many=True).data
-        return Response(data,status=status.HTTP_200_OK)
-    def post(self,request):
-        doctor =self.get_object(request)
-        try:
-            DoctorSpecialization.objects.create(doctor=doctor, specialization=Specialization.objects.get(name=request.data['specialization']))
-            return Response({'msg':'New Specialization for Doctor has been added'},status=status.HTTP_200_OK)
-        except:
-            return Response({'msg':"Error can't add new speciality for doctor, please recheck your data"}, status=status.HTTP_400_BAD_REQUEST)
+class RateDoctor(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
-class UpdateDoctorSpecialization(APIView):
-    permission_classes = [IsAuthenticated]
-    def get_object(self, request):
-        try:
-            return Doctor.objects.get(user=request.user)
-        except Doctor.DoesNotExist:
-            raise Http404
-    def put(self,request,pk):
-        doctor =self.get_object(request)
-        try:
-            DoctorSpecialization.objects.filter(id=pk).update(specialization=Specialization.objects.get(name=request.data['specialization']))
-            return Response({'msg':'Specialization for Doctor has been updated'},status=status.HTTP_200_OK)
-        except:
-            return Response({'msg':"Error can't update speciality for doctor, please recheck your data"}, status=status.HTTP_400_BAD_REQUEST)
+    def get(self,request, pk):
+        rating = DoctorRating.objects.get(doctor__id=pk)
+        data = DoctorRatingSerializer(rating).data
+        return Response(data,status=status.HTTP_200_OK)
 
-    def delete(self,request,pk):
-        doctor =self.get_object(request)
+
+    def post(self, request, pk):
+            try:
+                doctor = Doctor.objects.get(id=pk)
+                user = request.user
+                serializer = DoctorRatingSerializer(data={
+                    "details": request.data["details"],
+                    "rating": request.data["rating"],
+                    "user": user.id,
+                    "doctor": doctor.id
+                })
+                if (DoctorRating.objects.filter(user=user, doctor=doctor)):
+                    return Response({'msg':"You have reviewed this doctor before, you cannot do it again."},status.HTTP_404_NOT_FOUND)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                return Response({'msg':"There is no such doctor, make sure id is correct"},status.HTTP_404_NOT_FOUND)
+
+
+    def put(self, request, pk):
         try:
-            DoctorSpecialization.objects.filter(id=pk).delete()
-            return Response({'msg':'Specialization for Doctor has been Deleted'},status=status.HTTP_200_OK)
+            doctor = Doctor.objects.get(id=pk)
+            user = request.user
+            doctor_rating = DoctorRating.objects.get(doctor__id=pk)
+            serializer = DoctorRatingSerializer(doctor_rating, data={
+                        "details": request.data["details"],
+                        "rating": request.data["rating"],
+                        "user": user.id,
+                        "doctor": doctor.id
+            })
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
-            return Response({'msg':"Error can't delete speciality for doctor, please recheck your data"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'msg': "make sure this doctor was rated by the same user before"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FindDoctor(APIView):
+    def get(self, request):
+        search_term = request.data['find']
+        # Filters
+        areas = request.data['filters']['areas']  # List
+        cities = request.data['filters']['cities']  # List
+        countries = request.data['filters']['countries']  # List
+        specializations = request.data['filters']['specializations'] # List
+
+        search_terms_list = search_term.split()
+        doctors = []
+
+        # Create filters
+        query_filters = Q()
+        if len(areas) > 0:
+            query_filters.add(Q(clinics__area__in=areas), Q.AND)
+        if len(cities) > 0:
+            query_filters.add(Q(clinics__city__in=cities), Q.AND)
+        if len(countries) > 0:
+            query_filters.add(Q(clinics__country__in=countries), Q.AND)
+        if len(specializations) > 0:
+            query_filters.add(Q(specialization__name__in=specializations), Q.AND)
+
+        # Search for the term
+        for term in search_terms_list:
+            query_terms = Q(user__first_name__icontains=term)
+            query_terms.add(Q(user__last_name__icontains=term), Q.OR)
+            query_terms.add(Q(description__icontains=term), Q.OR)
+            query_terms.add(Q(clinics__name__contains=search_term), Q.OR)
+
+            # Combine term and filters
+            query = query_filters
+            query.add(query_terms, Q.AND)
+
+            # Apply query
+            doctors += Doctor.objects.filter(query)
+
+        data = DoctorPublicSerializer(doctors,many=True).data
+        return Response({'data':data},status=status.HTTP_200_OK)
+
 
 ################## Profile ######################
 class ViewProfile(APIView):
@@ -245,9 +267,33 @@ class ViewProfile(APIView):
         profile=profile_serializer.is_valid(raise_exception=True)
         profile=profile_serializer.save()
         return Response({
-            'data':'Profile has been updated',
+            'msg':'Profile has been updated',
+            'data':profile_serializer.data
         },status=status.HTTP_200_OK)
 
 
 
 
+# ################## Schedule ######################
+class ScheduleList(generics.ListCreateAPIView):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+# ################## Schedule modification (delete,update,list one ) ######################
+class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class=ScheduleSerializer
+    lookup_url_kwarg = 'pk'
+    queryset = Schedule.objects.all()
+    permission_classes = [IsAuthenticated]
+
+class AppointmentList(generics.ListCreateAPIView):
+    queryset = Appiontments.objects.all()
+    serializer_class = AppointmentSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class=AppointmentSerializer
+    lookup_url_kwarg = 'pk'
+    queryset = Appiontments.objects.all()
+    permission_classes = [IsAuthenticated]

@@ -129,7 +129,7 @@ def addDoctorClinic(request, pk):
     try:
         clinic = Clinic.objects.get(id=pk)
         clinic_owner = Doctor.objects.get(user=request.user)
-        doctor = Doctor.objects.get(id=request.data["doctor_id"])
+        doctor = Doctor.objects.get(national_id=request.data["doctor_nid"])
         if DoctorClinics.objects.get(clinic=clinic, clinic_owner=True).doctor==clinic_owner:
             if DoctorClinics.objects.get(clinic=clinic, doctor=doctor):
                 return Response({

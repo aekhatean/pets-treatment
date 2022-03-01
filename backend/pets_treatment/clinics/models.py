@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 import re
 from django.core.exceptions import ValidationError
+
 from users.models import *
 
 # Clinic (id, name, address, area, city, country , phone, is_varified(manual bool),
@@ -28,8 +29,7 @@ def validate_egyptian_number(value):
             _('%(value)s is not a valid egyptian number'),
             params={'value': value},
         )
-
-
+######################## Clinic Models ############################
 class Clinic(models.Model):
     name = models.CharField(max_length=40)
     address = models.CharField(max_length=100)
@@ -44,15 +44,8 @@ class Clinic(models.Model):
     technical_registration = models.FileField(upload_to=tech_upload,null=True)
     technical_registration_number = models.CharField(max_length=100) # edit after discuss
     price = models.IntegerField()
-    # clinic_owner = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-
-
-# class ClinicDoctor(models.Model):
-#     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
-#     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-
-
-
+######################## ClinicPicture Models ############################
 class ClinicPicture(models.Model):
     picture = models.ImageField(upload_to= image_upload)
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='images')
+    

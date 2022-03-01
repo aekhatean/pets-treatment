@@ -1,14 +1,35 @@
+import profile
+from this import d
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth import authenticate
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework.authtoken.models import Token
+from cryptography.fernet import Fernet
+from .email_utils import send_mail_user
 from clinics.serializers import ClinicSerializer
+from django.db.models import Sum
+
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
+    email = serializers.EmailField(required=False)
     class Meta:
         model = User
-        fields = ('username','first_name','last_name','email','password')
+        fields = ('id','username','first_name','last_name','email','password')
+        read_only_fields = ['id']
+    
+
+    def update(self, instance, validated_data):
+        for key in validated_data:
+            if key in self.fields:
+                if key != 'password':
+                    setattr(instance,key,validated_data.get(key))
+                else:
+                    instance.set_password(validated_data.get(key))
+        instance.save()
+        return instance
+
 
 class TokenSerializer(serializers.Serializer):
     email = serializers.CharField(
@@ -51,6 +72,40 @@ class UserPublicInfoSerializer(serializers.ModelSerializer):
         model = User
         fields = ('first_name','last_name')
 
+######### Public Profile Serialziers ##########
+class ProfilePublicSerializer(serializers.ModelSerializer):
+    picture = Base64ImageField(required=False)
+    class Meta:
+        model = Profile
+        exclude = ['user']
+
+######### Profile Serialziers ##########
+
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    picture = Base64ImageField(required=False)
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = User.objects.create_user(**user_data,is_active=False)
+        profile= Profile.objects.create(**validated_data,user=user)
+        return profile
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user')
+        user_serializer = UserSerializer(instance.user,data=user_data)
+        user_serializer.is_valid(raise_exception=True)
+        user = user_serializer.save()
+        for key in validated_data:
+            if key in self.fields:
+                    setattr(instance,key,validated_data.get(key))
+        instance.save()
+        return instance
+        
 
 ######### doctor serialziers ##########
 class SpecializationSerializer(serializers.ModelSerializer):
@@ -62,20 +117,40 @@ class DoctorSerializer(serializers.ModelSerializer):
     syndicate_id=Base64ImageField()
     specialization=SpecializationSerializer(many=True)
     clinics = ClinicSerializer(many=True,required=False)
+    profile = ProfileSerializer()
+    average_rate = serializers.SerializerMethodField('calc_average_rate')
+    def calc_average_rate(self, doctor):
+        try:
+            average_rate = DoctorRating.objects.filter(doctor=doctor).aggregate(Sum('rating')).get('rating__sum') / DoctorRating.objects.filter(doctor=doctor).count()
+            return average_rate
+        except:
+            return 0 
+
     class Meta:
         model = Doctor
-        fields = ('user','is_varified','description','syndicate_id','national_id','specialization','clinics')
+        fields = ('is_varified','description','syndicate_id','national_id','specialization','profile','clinics','average_rate')
         read_only_fields = ['is_varified']
         depth = 1
 
+
     def create(self, validated_data):
         specialization_data = validated_data.pop('specialization')
-        user = validated_data.pop('user')
-        Doctor.objects.create(user=user,**validated_data)
+        profile = validated_data.pop('profile')
+        profile_serializer = ProfileSerializer(data=profile)
+        profile_serializer.is_valid(raise_exception=True)
+        profile = profile_serializer.save()
+        doctor = Doctor.objects.create(user=profile.user,profile=profile,**validated_data)
         for spec in specialization_data:
             spec_inst = Specialization.objects.get(name=dict(spec)['name'])
-            Doctor.objects.get(user=user).specialization.add(spec_inst)
-        newdoctor = Doctor.objects.get(user=user)
+            Doctor.objects.get(user=profile.user).specialization.add(spec_inst)
+        
+        token, created = Token.objects.get_or_create(user=doctor.user)
+        key = Fernet.generate_key()
+        fernet = Fernet(key)
+        enc_token = fernet.encrypt(token.key.encode())
+        activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
+        send_mail_user(doctor.user.first_name,activation_link,doctor.user.email)
+        newdoctor = Doctor.objects.get(user=profile.user)
         return newdoctor
 
     def update(self, instance, validated_data):
@@ -84,6 +159,10 @@ class DoctorSerializer(serializers.ModelSerializer):
         for spec in specialization_data:
             spec_inst = Specialization.objects.get(name=dict(spec)['name'])
             Doctor.objects.get(id=instance.id).specialization.add(spec_inst)
+        profile_data = validated_data.pop('profile')
+        profile_serializer = ProfileSerializer(instance.profile,data=profile_data)
+        profile_serializer.is_valid(raise_exception=True)
+        profile = profile_serializer.save()
         Doctor.objects.update(id=instance.id,**validated_data)
         updatedoctor = Doctor.objects.get(id=instance.id)
         return updatedoctor
@@ -93,30 +172,32 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 class DoctorPublicSerializer(serializers.ModelSerializer):
     user = UserPublicInfoSerializer()
+    profile=ProfilePublicSerializer()
+    average_rate = serializers.SerializerMethodField('calc_average_rate')
+    def calc_average_rate(self, doctor):
+        try:
+            average_rate = DoctorRating.objects.filter(doctor=doctor).aggregate(Sum('rating')).get('rating__sum') / DoctorRating.objects.filter(doctor=doctor).count()
+            return average_rate
+        except:
+            return 0 
     class Meta:
         model = Doctor
-        fields = ('user','description')
+        fields = ('user','description','profile','specialization','clinics','average_rate')
         depth = 1
 
 
-
-######### Profile Serialziers ##########
-
-class ProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    picture = Base64ImageField()
+class DoctorRatingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profile
+        model = DoctorRating
         fields = '__all__'
-
-
-    def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = User.objects.create(**user_data,is_active=False)
-        profile= Profile.objects.create(**validated_data,user=user)
-        return profile
-
-
-
-
-
+        depth = 1
+######### doctor serialziers ##########
+class ScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Schedule
+        fields = '__all__'
+######### doctor serialziers ##########
+class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appiontments
+        fields = '__all__'
