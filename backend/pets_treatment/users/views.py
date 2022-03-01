@@ -5,7 +5,7 @@ from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
@@ -276,7 +276,7 @@ class ViewProfile(APIView):
 class ScheduleList(generics.ListCreateAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 # ################## Schedule modification (delete,update,list one ) ######################
 class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=ScheduleSerializer
