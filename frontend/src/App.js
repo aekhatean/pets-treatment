@@ -6,7 +6,7 @@ import HowItWorks from "./pages/HowItWorks";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import ClinicProfile from "./pages/ClinicProfile";
+import DoctorPublicProfile from "./pages/DoctorPublicProfile";
 import ClinicDashboard from "./pages/ClinicDashbord";
 import UserDashboard from "./pages/UserDashboard";
 import Navbar from "./components/Navbar";
@@ -26,7 +26,7 @@ function App() {
           <Route path="/register" component={Register} />
           <Route path="/user/:id" component={UserDashboard} />
           <Route path="/dashboard/:id" component={ClinicDashboard} />
-          <Route path="/clinic/:id" component={ClinicProfile} />
+          <Route path="/doctors/:id" component={DoctorPublicProfile} />
         </Switch>
         <Footer />
       </BrowserRouter>
