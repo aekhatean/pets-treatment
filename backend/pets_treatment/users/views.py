@@ -155,17 +155,19 @@ class SpecializationsList(APIView):
         return Response(data,status=status.HTTP_200_OK)
 
 
-
-
 class RateDoctor(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+    def get(self,request, pk):
+        rating = DoctorRating.objects.get(doctor__id=pk)
+        data = DoctorRatingSerializer(rating).data
+        return Response(data,status=status.HTTP_200_OK)
+
 
     def post(self, request, pk):
             try:
                 doctor = Doctor.objects.get(id=pk)
                 user = request.user
-                print(request.data)
-                print(doctor, user)
                 serializer = DoctorRatingSerializer(data={
                     "details": request.data["details"],
                     "rating": request.data["rating"],

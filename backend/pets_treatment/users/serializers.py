@@ -190,6 +190,7 @@ class DoctorRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorRating
         fields = '__all__'
+        depth = 1
 ######### doctor serialziers ##########
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
