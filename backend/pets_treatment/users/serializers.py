@@ -1,3 +1,4 @@
+import profile
 from this import d
 from rest_framework import serializers
 from .models import *
@@ -68,6 +69,13 @@ class UserPublicInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('first_name','last_name')
+
+######### Public Profile Serialziers ##########
+class ProfilePublicSerializer(serializers.ModelSerializer):
+    picture = Base64ImageField(required=False)
+    class Meta:
+        model = Profile
+        exclude = ['user']
 
 ######### Profile Serialziers ##########
 
@@ -155,9 +163,10 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 class DoctorPublicSerializer(serializers.ModelSerializer):
     user = UserPublicInfoSerializer()
+    profile=ProfilePublicSerializer()
     class Meta:
         model = Doctor
-        fields = ('user','description')
+        fields = ('user','description','profile','specialization','clinics')
         depth = 1
 
 
