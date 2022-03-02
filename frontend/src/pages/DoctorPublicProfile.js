@@ -6,6 +6,11 @@ import StarIcon from "@mui/icons-material/Star";
 import { Tabs, Tab } from "react-bootstrap";
 import ClinicPanel from "../components/ClinicPanel";
 import FeedbacksList from "../components/FeedbacksList";
+import Ratings from "../components/Ratings";
+import TagList from "../components/TagList";
+import DescriptionText from "../components/DescriptionText";
+import TitleText from "../components/TitleText";
+import SubtitleText from "../components/SubtitleText";
 
 function DoctorPublicProfile(props) {
   const { id } = props.match.params;
@@ -45,18 +50,18 @@ function DoctorPublicProfile(props) {
       {/* doctor picture */}
       <ProfilePicture src={`http://localhost:8000${doctor.picture}`} />
       {/* doctor fullname */}
-      {doctor.first_name} {doctor.last_name}
+      <TitleText title={`${doctor.first_name} ${doctor.last_name}`} />
       {/* doctor location muted */}
       {/* doctor description */}
-      {doctor.description}
+      <div>
+        <SubtitleText subtitle="about the doctor" />
+        <DescriptionText description={doctor.description} />
+      </div>
+
       {/* doctor  specializations --> tags/badges */}
-      {doctor.specializations.map((specialty) => (
-        <Tag key={specialty.name} name={specialty.name} />
-      ))}
+      <TagList tags={doctor.specializations} />
       {/* doctor  total ratings ---> stars*/}
-      {[...Array(doctor.rating)].map((el, index) => (
-        <StarIcon key={index} className="text-warning" />
-      ))}
+      <Ratings rating={doctor.rating} />
       {/* doctor  clinics tabs*/}
       <Tabs
         id="controlled-tab-example"
