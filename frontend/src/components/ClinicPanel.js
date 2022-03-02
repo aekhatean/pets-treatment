@@ -7,6 +7,7 @@ import SubtitleText from "./SubtitleText";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import { Container } from "react-bootstrap";
 function ClinicPanel(props) {
   const { clinic_id, doctor_id } = props;
   const [clinic, setClinic] = useState({
@@ -32,10 +33,11 @@ function ClinicPanel(props) {
   }, [clinic_id]);
 
   return (
-    <div>
+    <Container>
       {/* clinic name */}
-
-      <SubtitleText subtitle={clinic.name} />
+      <div className="text-start mb-4">
+        <SubtitleText subtitle={clinic.name} />
+      </div>
       {/* clinic address/location */}
       <div className="fs-6 text-start">
         <LocationOnIcon className="text-danger" />
@@ -51,7 +53,7 @@ function ClinicPanel(props) {
       <ClinicSchedule clinic_id={clinic_id} doctor_id={doctor_id} />
       {/* clinic pictures gallary */}
       <ClinicGallary clinic_id={clinic_id} />
-    </div>
+    </Container>
   );
 }
 

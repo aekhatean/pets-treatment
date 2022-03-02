@@ -49,24 +49,42 @@ function DoctorPublicProfile(props) {
     <Container>
       <Row>
         <Col>
-          <div className="float-start">
-            {/* doctor picture */}
-            <ProfilePicture src={`http://localhost:8000${doctor.picture}`} />
-            {/* doctor fullname */}
-            <TitleText title={`Dr.${doctor.first_name} ${doctor.last_name}`} />
-
-            <Ratings rating={doctor.rating} />
-            <div>
-              <SubtitleText subtitle="about the doctor" />
-              <DescriptionText description={doctor.description} />
+          <div className="">
+            <Row>
+              <Col className="m-4">
+                {/* doctor picture */}
+                <ProfilePicture
+                  src={`http://localhost:8000${doctor.picture}`}
+                />
+                {/* doctor fullname */}
+                <div>
+                  <TitleText
+                    title={`Dr.${doctor.first_name} ${doctor.last_name}`}
+                  />
+                  {/* doctor  total ratings ---> stars*/}
+                  <div>
+                    <Ratings rating={doctor.rating} />
+                  </div>
+                </div>
+              </Col>
+            </Row>
+            {/* doctor description */}
+            <div
+              className="shadow-sm m-2 p-3 text-start"
+              style={{
+                borderRadius: 10,
+              }}
+            >
+              <SubtitleText subtitle="About Doctor" />
+              <div className="m-1">
+                <DescriptionText description={doctor.description} />
+              </div>
             </div>
 
-            {/* doctor location muted */}
-            {/* doctor description */}
-
             {/* doctor  specializations --> tags/badges */}
-            <TagList tags={doctor.specializations} />
-            {/* doctor  total ratings ---> stars*/}
+            <div className="fs-5 text-start m-2">
+              <TagList tags={doctor.specializations} />
+            </div>
 
             {/* doctor  clinics tabs*/}
           </div>
