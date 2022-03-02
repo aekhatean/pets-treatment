@@ -159,8 +159,8 @@ class RateDoctor(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get(self,request, pk):
-        rating = DoctorRating.objects.get(doctor__id=pk)
-        data = DoctorRatingSerializer(rating).data
+        rating = DoctorRating.objects.filter(doctor__id=pk)
+        data = DoctorRatingSerializer(rating, many=True).data
         return Response(data,status=status.HTTP_200_OK)
 
 
