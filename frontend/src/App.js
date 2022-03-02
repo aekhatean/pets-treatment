@@ -15,6 +15,7 @@ import "react-chatbot-kit/build/main.css";
 import Bot from "./chatbot/bot";
 import { ConditionallyRender } from "react-util-kit";
 import { ReactComponent as ButtonIcon } from "./assets/robot.svg";
+import Doctors from "./pages/Doctors";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(true);
@@ -32,6 +33,7 @@ function App() {
           <Route path="/user/:id" component={UserDashboard} />
           <Route path="/dashboard/:id" component={ClinicDashboard} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
+          <Route path="/doctors/" component={Doctors} />
         </Switch>
         <div className="app-chatbot-container">
           <ConditionallyRender ifTrue={showChatbot} show={<Bot />} />

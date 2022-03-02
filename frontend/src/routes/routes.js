@@ -4,5 +4,6 @@ export const routes = {
   about: "about",
   register: "register",
   login: "login",
-  // dashboard: "dashboard",
+  doctors:"doctors",
+  search_page:"searchpage"
 };

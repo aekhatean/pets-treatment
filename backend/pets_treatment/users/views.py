@@ -301,11 +301,11 @@ class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
 class AppointmentList(generics.ListCreateAPIView):
     queryset = Appiontments.objects.all()
     serializer_class = AppointmentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=AppointmentSerializer
     lookup_url_kwarg = 'pk'
     queryset = Appiontments.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
