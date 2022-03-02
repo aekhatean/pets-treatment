@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import TextFeild from '../components/TextField';
 import * as Yup from 'yup';
 import {Input} from "reactstrap";
@@ -32,12 +32,15 @@ function Register() {
         // edit phone num with regex
         phone:Yup.string()
         .max(11, "Eqyptian num")
-        .required("Phone is required"),
-
+        .required("Phone is required")
+        .matches(
+            /^01[0-2,5]\d{8}$/,
+            "Must be egyptian number"
+          ),
 
         // edit next 3 to be drop down
-        country:Yup.string()
-        .required("Country is required"),
+        // country:Yup.string()
+        // .required("Country is required"),
         city:Yup.string()
         .required("City is required"),
         area:Yup.string()
@@ -57,7 +60,7 @@ function Register() {
                 description: '',
                 national_id: '',
                 phone: '',
-                country: '',
+                country: 'egypt',
                 city: '',
                 area: '',
                 syndicate_id: '',
@@ -83,10 +86,23 @@ function Register() {
                         <TextFeild label="Description" name="description" type="text"/>
                         <TextFeild label="National_id" name="national_id" type="text"/>
                         <TextFeild label="Phone" name="phone" type="text"/>
-                        <Input type="file" name="photo" onChange={(event) => formProps.setFieldValue('photo', event.target.files[0])}/>
-                        <Input type="file" name="syndicate_id" onChange={(event) => formProps.setFieldValue('syndicate_id', event.target.files[0])}/>
-                        {/* edit to be drop down */}
-                        <TextFeild label="Country" name="country" type="text"/>
+
+
+                        <label for="doc_photo">Upload your Photo</label>
+                        <Input type="file" id="doc_photo" name="photo" onChange={(event) => formProps.setFieldValue('photo', event.target.files[0])}/>
+                        <label for="synd_id">Upload your Syndicate id</label>
+                        <Input type="file" id="synd_id" name="syndicate_id" onChange={(event) => formProps.setFieldValue('syndicate_id', event.target.files[0])}/>
+                        
+
+                        <label for="country">Country</label>
+                        <Field as="select" name="country" id="country">
+                            <option value="egypt">Egypt</option>
+                        </Field>
+
+
+
+            
+
                         <TextFeild label="City" name="city" type="text"/>
                         <TextFeild label="Area" name="area" type="text"/>
                         
