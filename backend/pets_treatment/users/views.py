@@ -279,6 +279,18 @@ class ScheduleList(generics.ListCreateAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+# ################## Schedule for one doctor ######################
+class ScheduleList_one_doctor(APIView):
+    def get(self, request,pk):
+        scheduals = Schedule.objects.filter(doctor=pk)
+        data = ScheduleSerializer(scheduals,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
+# ################## Schedule for one doctor ######################
+class ScheduleList_one_clinic(APIView):
+    def get(self, request,pk):
+        scheduals = Schedule.objects.filter(clinic=pk)
+        data = ScheduleSerializer(scheduals,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
 # ################## Schedule modification (delete,update,list one ) ######################
 class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=ScheduleSerializer
