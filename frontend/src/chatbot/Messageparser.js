@@ -5,9 +5,10 @@ class MessageParser {
     this.state = state;
   }
 
-  parse(message) {
-    console.log(message);
-  }
+  parse = message => {
+    const lowerCase = message.toLowerCase();
+    return this.actionProvider.handleDefault();
+  };
 }
 
 export default MessageParser;
