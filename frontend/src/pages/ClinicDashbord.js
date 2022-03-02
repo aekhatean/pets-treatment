@@ -6,19 +6,20 @@ import { axiosInstance } from "../api";
 
 function ClinicDashbord(props) {
   const { id } = props.match.params;
-  const [ appointments, setAppointments ] = useState([])
+  const [appointments, setAppointments] = useState([]);
   useEffect(() => {
-    axiosInstance
-    .get(`appointment/${id}`).then(res => {
+    axiosInstance.get(`users/appointment/${id}`).then((res) => {
       if (res.status === 200) {
-        setAppointments(res.data)
+        const appointmentsList = [];
+        appointmentsList.push(res.data);
+        setAppointments(appointmentsList);
       }
-    })
-  },[id])
+    });
+  }, [id]);
 
   return (
     <div id="clinic-dashbaord">
-      <DynamicTable tableContent={appointments}/>
+      <DynamicTable tableContent={appointments} />
     </div>
   );
 }
