@@ -33,7 +33,7 @@ function ClinicPanel(props) {
   }, [clinic_id]);
 
   return (
-    <Container>
+    <Container className="shadow-sm">
       {/* clinic name */}
       <div className="text-start mb-4">
         <SubtitleText subtitle={clinic.name} />
