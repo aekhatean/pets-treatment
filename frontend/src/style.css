@@ -104,6 +104,79 @@ li {
   font-size: 1.2em;
   margin: 1em;
 }
+
+/* ChatBot */
+.app-chatbot-container {
+  height: 500px;
+  margin: 40px 0;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  z-index: 9999;
+  box-shadow: 5px 5px 13px rgba(91, 81, 81, 0.4);
+  border-radius: 5px;
+}
+
+.app-chatbot-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #188b87;
+  border: none;
+  position: fixed;
+  bottom: 15px;
+  z-index: 9999;
+  right: 40px;
+}
+
+.app-quickstart-button {
+  color: #fff;
+  border: 1px solid #fff;
+  text-decoration: none;
+  padding: 10px;
+
+  display: block;
+  margin: 30px auto;
+  width: 150px;
+}
+
+.app-chatbot-button-icon {
+  width: 30px;
+  height: 30px;
+  fill: #fff;
+}
+
+.app-header {
+  color: #fff;
+}
+
+.app-paragraph {
+  color: #fff;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.app-overview {
+  margin-top: 5rem;
+}
+.react-chatbot-kit-user-avatar-container {
+  background-color: #188b87;
+}
+
+.react-chatbot-kit-chat-bot-message-container > svg {
+  width: 48px;
+  fill: #188b87;
+  height: 40px;
+}
+
+@media (max-width: 600px) {
+  .app-chatbot-container {
+    transform: scale(0.9) translateY(26px);
+  }
+}
+
 @media screen and (max-width: 1150px) {
   .get-started > img {
     max-width: 300px;
