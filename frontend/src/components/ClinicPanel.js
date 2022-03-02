@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../api";
 import ClinicGallary from "./ClinicGallary";
 import ClinicSchedule from "./ClinicSchedule";
-
+import DescriptionText from "./DescriptionText";
+import SubtitleText from "./SubtitleText";
+import PaymentsIcon from "@mui/icons-material/Payments";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 function ClinicPanel(props) {
   const { clinic_id, doctor_id } = props;
   const [clinic, setClinic] = useState({
@@ -30,11 +34,19 @@ function ClinicPanel(props) {
   return (
     <div>
       {/* clinic name */}
-      {clinic.name}
+
+      <SubtitleText subtitle={clinic.name} />
       {/* clinic address/location */}
-      {clinic.location}
+      <div className="fs-6 text-start">
+        <LocationOnIcon className="text-danger" />
+        <span className="fw-light">{clinic.location}</span>
+      </div>
       {/* clinic price */}
-      {clinic.price}
+      <div className="fs-6 text-start">
+        <PaymentsIcon className="text-success" />
+        <span className="fw-light"> {clinic.price}</span>
+      </div>
+
       {/* clinic schedule */}
       <ClinicSchedule clinic_id={clinic_id} doctor_id={doctor_id} />
       {/* clinic pictures gallary */}

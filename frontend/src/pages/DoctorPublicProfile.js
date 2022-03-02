@@ -3,7 +3,7 @@ import { axiosInstance } from "../api";
 import ProfilePicture from "../components/ProfilePicture";
 import Tag from "../components/Tag";
 import StarIcon from "@mui/icons-material/Star";
-import { Tabs, Tab } from "react-bootstrap";
+import { Tabs, Tab, Container, Row, Col } from "react-bootstrap";
 import ClinicPanel from "../components/ClinicPanel";
 import FeedbacksList from "../components/FeedbacksList";
 import Ratings from "../components/Ratings";
@@ -46,38 +46,47 @@ function DoctorPublicProfile(props) {
   }, [id]);
 
   return (
-    <>
-      {/* doctor picture */}
-      <ProfilePicture src={`http://localhost:8000${doctor.picture}`} />
-      {/* doctor fullname */}
-      <TitleText title={`${doctor.first_name} ${doctor.last_name}`} />
-      {/* doctor location muted */}
-      {/* doctor description */}
-      <div>
-        <SubtitleText subtitle="about the doctor" />
-        <DescriptionText description={doctor.description} />
-      </div>
+    <Container>
+      <Row>
+        <Col>
+          <div className="float-start">
+            {/* doctor picture */}
+            <ProfilePicture src={`http://localhost:8000${doctor.picture}`} />
+            {/* doctor fullname */}
+            <TitleText title={`Dr.${doctor.first_name} ${doctor.last_name}`} />
 
-      {/* doctor  specializations --> tags/badges */}
-      <TagList tags={doctor.specializations} />
-      {/* doctor  total ratings ---> stars*/}
-      <Ratings rating={doctor.rating} />
-      {/* doctor  clinics tabs*/}
-      <Tabs
-        id="controlled-tab-example"
-        activeKey={key}
-        onSelect={(k) => setKey(k)}
-        className="mb-3"
-      >
-        {doctor.clinics.map((clinic) => (
-          <Tab key={clinic.id} eventKey={clinic.id} title={clinic.area}>
-            <ClinicPanel clinic_id={clinic.id} doctor_id={id} />
-          </Tab>
-        ))}
-      </Tabs>
-      {/* doctor  all ratings with feedbacks */}
-      <FeedbacksList doctor_id={id} />
-    </>
+            <Ratings rating={doctor.rating} />
+            <div>
+              <SubtitleText subtitle="about the doctor" />
+              <DescriptionText description={doctor.description} />
+            </div>
+
+            {/* doctor location muted */}
+            {/* doctor description */}
+
+            {/* doctor  specializations --> tags/badges */}
+            <TagList tags={doctor.specializations} />
+            {/* doctor  total ratings ---> stars*/}
+
+            {/* doctor  clinics tabs*/}
+          </div>
+          <Tabs
+            id="controlled-tab-example"
+            activeKey={key}
+            onSelect={(k) => setKey(k)}
+            className="mb-3"
+          >
+            {doctor.clinics.map((clinic) => (
+              <Tab key={clinic.id} eventKey={clinic.id} title={clinic.area}>
+                <ClinicPanel clinic_id={clinic.id} doctor_id={id} />
+              </Tab>
+            ))}
+          </Tabs>
+          {/* doctor  all ratings with feedbacks */}
+          <FeedbacksList doctor_id={id} />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
