@@ -50,6 +50,7 @@ export const content = {
     rating: "Rating",
     feedback_details: "What user say's ",
     pagenotfound: "Opps! No Page Found",
+    gallary: "Photo Gallary",
   },
   ar: {
     brand: "بيتسانيا",
@@ -101,5 +102,6 @@ export const content = {
     rating: "التقيم",
     feedback_details: "رأي المستخدم في الطبيب ",
     pagenotfound: "اوبس! هذه الصفحة ليست موجودة",
+    gallary: "استديو الصور",
   },
 };

@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { axiosInstance } from "../api";
 import ProfilePicture from "../components/ProfilePicture";
-import Tag from "../components/Tag";
-import StarIcon from "@mui/icons-material/Star";
 import { Tabs, Tab, Container, Row, Col } from "react-bootstrap";
 import ClinicPanel from "../components/ClinicPanel";
 import FeedbacksList from "../components/FeedbacksList";
@@ -15,7 +13,6 @@ import SubtitleText from "../components/SubtitleText";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { colors } from "../colors/colors";
-import NotFoundPage from "./NotFoundPage";
 
 function DoctorPublicProfile(props) {
   const { id } = props.match.params;
@@ -67,9 +64,7 @@ function DoctorPublicProfile(props) {
             <Row>
               <Col className="m-4">
                 {/* doctor picture */}
-                <ProfilePicture
-                  src={`http://localhost:8000${doctor.picture}`}
-                />
+                <ProfilePicture src={doctor.picture} />
                 {/* doctor fullname */}
                 <div>
                   <TitleText
