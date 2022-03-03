@@ -232,7 +232,9 @@ class FindDoctor(APIView):
             query_terms = Q(user__first_name__icontains=term)
             query_terms.add(Q(user__last_name__icontains=term), Q.OR)
             query_terms.add(Q(description__icontains=term), Q.OR)
-            query_terms.add(Q(clinics__name__contains=search_term), Q.OR)
+            query_terms.add(Q(clinics__name__icontains=search_term), Q.OR)
+            query_terms.add(Q(clinics__city__icontains=search_term), Q.OR)
+            query_terms.add(Q(clinics__area__icontains=search_term), Q.OR)
 
             # Combine term and filters
             query = query_filters
@@ -320,3 +322,7 @@ class AppointmentsListByDoctor(generics.ListAPIView):
     lookup_url_kwarg = 'pk'
     queryset = Appiontments.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class AppointmentsListByUser(generics.ListAPIView):
+    pass
