@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import SearchPage from "./pages/SearchPage";
@@ -11,8 +11,14 @@ import DoctorDashboard from "./pages/DoctorDashboard";
 import UserDashboard from "./pages/UserDashboard";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import "react-chatbot-kit/build/main.css";
+import Bot from "./chatbot/bot";
+import { ConditionallyRender } from "react-util-kit";
+import { ReactComponent as ButtonIcon } from "./assets/robot.svg";
+import Doctors from "./pages/Doctors";
 
 function App() {
+  const [showChatbot, toggleChatbot] = useState(true);
   return (
     <div className="App">
       <BrowserRouter>
@@ -27,7 +33,16 @@ function App() {
           <Route path="/doctor_dashboard" component={DoctorDashboard} />
           <Route path="/user/:id" component={UserDashboard} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
+          <Route path="/doctors/" component={Doctors} />
         </Switch>
+        <div className="app-chatbot-container">
+          <ConditionallyRender ifTrue={showChatbot} show={<Bot />} />
+        </div>
+        <button
+          className="app-chatbot-button"
+          onClick={() => toggleChatbot(prev => !prev)}>
+          <ButtonIcon className="app-chatbot-button-icon" />
+        </button>
         <Footer />
       </BrowserRouter>
     </div>

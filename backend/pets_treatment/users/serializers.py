@@ -8,6 +8,8 @@ from rest_framework.authtoken.models import Token
 from cryptography.fernet import Fernet
 from .email_utils import send_mail_user
 from clinics.serializers import ClinicSerializer
+from django.db.models import Sum
+
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
@@ -116,10 +118,17 @@ class DoctorSerializer(serializers.ModelSerializer):
     specialization=SpecializationSerializer(many=True)
     clinics = ClinicSerializer(many=True,required=False)
     profile = ProfileSerializer()
+    average_rate = serializers.SerializerMethodField('calc_average_rate')
+    def calc_average_rate(self, doctor):
+        try:
+            average_rate = DoctorRating.objects.filter(doctor=doctor).aggregate(Sum('rating')).get('rating__sum') / DoctorRating.objects.filter(doctor=doctor).count()
+            return average_rate
+        except:
+            return 0 
 
     class Meta:
         model = Doctor
-        fields = ('is_varified','description','syndicate_id','national_id','specialization','profile','clinics')
+        fields = ('is_varified','description','syndicate_id','national_id','specialization','profile','clinics','average_rate')
         read_only_fields = ['is_varified']
         depth = 1
 
@@ -164,9 +173,16 @@ class DoctorSerializer(serializers.ModelSerializer):
 class DoctorPublicSerializer(serializers.ModelSerializer):
     user = UserPublicInfoSerializer()
     profile=ProfilePublicSerializer()
+    average_rate = serializers.SerializerMethodField('calc_average_rate')
+    def calc_average_rate(self, doctor):
+        try:
+            average_rate = DoctorRating.objects.filter(doctor=doctor).aggregate(Sum('rating')).get('rating__sum') / DoctorRating.objects.filter(doctor=doctor).count()
+            return average_rate
+        except:
+            return 0 
     class Meta:
         model = Doctor
-        fields = ('user','description','profile','specialization','clinics')
+        fields = ('user','description','profile','specialization','clinics','average_rate')
         depth = 1
 
 

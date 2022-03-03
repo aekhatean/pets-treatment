@@ -1,0 +1,9 @@
+.doctor_card{
+    width: 60vw;
+    height: 60vh;
+    background-color: white;
+    margin:auto ;
+    margin-top:20px;
+    border-radius: 25px;
+    box-shadow: 3px 3px 10px 1px gray;
+}

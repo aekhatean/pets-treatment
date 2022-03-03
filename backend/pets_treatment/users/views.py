@@ -5,7 +5,7 @@ from django.http import Http404
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
@@ -159,8 +159,8 @@ class RateDoctor(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get(self,request, pk):
-        rating = DoctorRating.objects.get(doctor__id=pk)
-        data = DoctorRatingSerializer(rating).data
+        rating = DoctorRating.objects.filter(doctor__id=pk)
+        data = DoctorRatingSerializer(rating, many=True).data
         return Response(data,status=status.HTTP_200_OK)
 
 
@@ -278,7 +278,19 @@ class ViewProfile(APIView):
 class ScheduleList(generics.ListCreateAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+# ################## Schedule for one doctor ######################
+class ScheduleList_one_doctor(APIView):
+    def get(self, request,pk):
+        scheduals = Schedule.objects.filter(doctor=pk)
+        data = ScheduleSerializer(scheduals,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
+# ################## Schedule for one doctor ######################
+class ScheduleList_one_clinic(APIView):
+    def get(self, request,pk):
+        scheduals = Schedule.objects.filter(clinic=pk)
+        data = ScheduleSerializer(scheduals,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
 # ################## Schedule modification (delete,update,list one ) ######################
 class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
     serializer_class=ScheduleSerializer
