@@ -49,6 +49,7 @@ export const content = {
     feedbacks: "Feedbacks",
     rating: "Rating",
     feedback_details: "What user say's ",
+    pagenotfound: "Opps! No Page Found",
   },
   ar: {
     brand: "بيتسانيا",
@@ -99,5 +100,6 @@ export const content = {
     feedbacks: "التقيمات",
     rating: "التقيم",
     feedback_details: "رأي المستخدم في الطبيب ",
+    pagenotfound: "اوبس! هذه الصفحة ليست موجودة",
   },
 };

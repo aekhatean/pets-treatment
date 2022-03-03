@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Redirect } from "react-router-dom";
 import { axiosInstance } from "../api";
 import ProfilePicture from "../components/ProfilePicture";
 import Tag from "../components/Tag";
@@ -14,10 +15,12 @@ import SubtitleText from "../components/SubtitleText";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { colors } from "../colors/colors";
+import NotFoundPage from "./NotFoundPage";
 
 function DoctorPublicProfile(props) {
   const { id } = props.match.params;
   const { lang, setLang } = useContext(LanguageContext);
+  const [noDoctor, setDoctorNotFound] = useState(false);
 
   const [doctor, setDoctor] = useState({
     first_name: "",
@@ -45,11 +48,17 @@ function DoctorPublicProfile(props) {
             rating: res.data.average_rate,
             clinics: [...res.data.clinics],
           });
+          setDoctorNotFound(false);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        return setDoctorNotFound(true);
+      });
   }, [id]);
-
+  if (noDoctor) {
+    return <Redirect to="/error404" />;
+  }
   return (
     <Container dir={lang === "ar" ? "rtl" : "ltr"}>
       <Row>
