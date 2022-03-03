@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DynamicTable from "../components/DynamicTable";
+// import Paginator from "../components/Paginator";
 
 // API consumption
 import { axiosInstance } from "../api";
@@ -44,37 +45,43 @@ const getAppointmentJSTimeDuration = (pyTime, duration) => {
 function ClinicDashbord(props) {
   const { id } = props.match.params;
   const [appointments, setAppointments] = useState([]);
+  const docAppointmentspath = `users/doctor-appointment/${id}`;
 
   // Get apponitmnets
   useEffect(() => {
-    axiosInstance.get(`users/appointment/${id}`).then((res) => {
+    axiosInstance.get(docAppointmentspath).then((res) => {
+      console.log(res);
       if (res.status === 200) {
         const appointmentsList = [];
-        const { date, appointment_duration } = res.data.schedule;
-        const { first_name, last_name } = res.data.user;
-        const { visiting_time } = res.data;
 
-        const { from, to } = getAppointmentJSTimeDuration(
-          visiting_time,
-          appointment_duration
-        );
-        const newAppointment = {
-          name: `${first_name} ${last_name}`,
-          date: getAppointmentJSDate(date),
-          from: from,
-          to: to,
-        };
-        appointmentsList.push(newAppointment);
+        for (const result of res.data.results) {
+          const { date, appointment_duration } = result.schedule;
+          const { first_name, last_name } = result.user;
+          const { visiting_time } = result;
+
+          const { from, to } = getAppointmentJSTimeDuration(
+            visiting_time,
+            appointment_duration
+          );
+          const newAppointment = {
+            name: `${first_name} ${last_name}`,
+            date: getAppointmentJSDate(date),
+            from: from,
+            to: to,
+          };
+          appointmentsList.push(newAppointment);
+        }
         setAppointments(appointmentsList);
       }
     });
-  }, [id]);
+  }, [docAppointmentspath, id]);
 
   console.log(appointments);
 
   return (
     <div id="clinic-dashbaord">
       <DynamicTable tableContent={appointments} />
+      {/* <Paginator api={axiosInstance} path={docAppointmentspath}/> */}
     </div>
   );
 }

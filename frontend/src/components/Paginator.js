@@ -1,59 +1,41 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Pagination } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
-// Redux related
-import { useDispatch } from "react-redux";
-
-// Contexts
-import { langContext } from "../contexts/LanguageContext";
-
 export default function Paginator(props) {
-  const { page, currIndex, api } = props;
-  const { contextLang } = useContext(langContext);
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const { path, api } = props;
+  const [pageNumber, setPageNumber] = useState(1);
+  const [nexPage, setNextPage] = useState();
+  const [prevPage, setPrevPage] = useState();
 
   useEffect(() => {
-    dispatch(api(currIndex, contextLang));
-  }, [dispatch, api, currIndex, contextLang]);
+    api.get(`${path}?page=${pageNumber}`).then((res) => {
+      setNextPage(res.data.links.next);
+      setPrevPage(res.data.links.previous);
+    });
+  }, [api, pageNumber, path]);
 
-  const firstPage = () => {
-    dispatch(api(1, contextLang));
-    history.push(`/${page}/1`);
+  const goFirstPage = () => {
+    api.get(`${path}?page=1`);
   };
 
-  const prevPage = () => {
-    const prevIndex = parseInt(currIndex) - 1;
-
-    try {
-      if (prevIndex > 0) {
-        dispatch(api(prevIndex, contextLang));
-        history.push(`/${page}/${prevIndex}`);
-      }
-    } catch (err) {
-      if (err) {
-        console.log("No previous page");
-      }
+  const goPrevPage = () => {
+    if (prevPage != null) {
+      api.get(`${path}?page=${prevPage}`);
     }
   };
-  const nextPage = () => {
-    const nextIndex = parseInt(currIndex) + 1;
-    try {
-      dispatch(api(nextIndex, contextLang));
-      history.push(`/${page}/${nextIndex}`);
-    } catch (err) {
-      if (err) {
-        console.log("No next page");
-      }
+
+  const goNextPage = () => {
+    if (nexPage != null) {
+      api.get(`${path}?page=${nexPage}`);
     }
   };
 
   return (
     <Pagination>
-      <Pagination.First onClick={firstPage} />
-      <Pagination.Prev onClick={prevPage} />
-      <Pagination.Next onClick={nextPage} />
+      <Pagination.First onClick={goFirstPage} />
+      <Pagination.Prev onClick={goPrevPage} />
+      <Pagination.Next onClick={goNextPage} />
     </Pagination>
   );
 }

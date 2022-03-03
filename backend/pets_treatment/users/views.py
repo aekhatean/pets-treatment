@@ -10,6 +10,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
+from .paginations import StandardResultsSetPagination
 from .serializers import *
 from users.models import *
 from django.contrib.auth.models import User
@@ -301,11 +302,21 @@ class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
 class AppointmentList(generics.ListCreateAPIView):
     queryset = Appiontments.objects.all()
     serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class=AppointmentSerializer
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    lookup_url_kwarg = 'pk'
+    queryset = Appiontments.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+
+class AppointmentsListByDoctor(generics.ListAPIView):
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
     lookup_url_kwarg = 'pk'
     queryset = Appiontments.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly]
