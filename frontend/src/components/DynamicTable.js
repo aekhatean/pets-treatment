@@ -9,9 +9,9 @@ export default function DynamicTable(props) {
     const columns = Object.keys(tableContent[0]);
 
     return (
-      <div>
-        <Table responsive>
-          <thead>
+      <div className="panel panel-default">
+        <Table responsive striped bordered hover>
+          <thead className="secondary-bg">
             <tr>
               <th>#</th>
               {columns.map((title, index) => (
