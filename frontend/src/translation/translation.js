@@ -7,6 +7,7 @@ export const content = {
     about: "About us",
     register: "Register",
     login: "Login",
+    test: "Doctor Dashboard",
     language: "Language",
     services: "Services",
     informations: "Informations",

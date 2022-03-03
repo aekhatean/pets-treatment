@@ -55,7 +55,7 @@ const ContactUs = () => {
               className="btn text-white mx-5 mt-2 w-25 align-self-end"
               name="submit"
               type="submit"
-              style={{ backgroundColor: "#188B87" }}
+              style={{ backgroundColor: "#413c58" }}
             >
               {lang === "ar" ? content.ar.send : content.en.send}
             </button>

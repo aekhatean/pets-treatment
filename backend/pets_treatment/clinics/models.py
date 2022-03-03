@@ -26,7 +26,7 @@ def image_upload(instance, filename):
 def validate_egyptian_number(value):
     if not any(re.match(pattern, value) for pattern in [r"011+[0-9]{8}", r"012+[0-9]{8}", r"015+[0-9]{8}",r"010+[0-9]{8}"]):
         raise ValidationError(
-            _('%(value)s is not a valid egyptian number'),
+            ('%(value)s is not a valid egyptian number'),
             params={'value': value},
         )
 ######################## Clinic Models ############################
