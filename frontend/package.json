@@ -17,6 +17,7 @@
     "bootstrap-icons": "^1.8.1",
     "formik": "^2.2.9",
     "formik-file-and-image-input": "^0.0.6",
+    "image-to-base64": "^2.2.0",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",

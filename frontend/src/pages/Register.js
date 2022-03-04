@@ -1,10 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik'
 import TextFeild from '../components/TextField';
 import * as Yup from 'yup';
 import {Input} from "reactstrap";
-
+import axios from 'axios';
+import imageToBase64 from 'image-to-base64/browser';
+// import SuccessModal from '../components/SuccessModal';
+// import ErrorModal from '../components/ErrorModal';
+// import axios from 'axios';
+// const imageToBase64 = require('image-to-base64');
 function Register() {
+  // image
+  const [baseImage, setBaseImage] = useState("");
+  const [syncId, setSyncId] = useState("");
+
+  const uploadImage = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertBase64(file);
+    setBaseImage(base64);
+    console.log(baseImage)
+  };
+
+  const uploadSyncId = async (e) => {
+    const file = e.target.files[0];
+    const base64 = await convertBase64(file);
+    setSyncId(base64);
+    console.log(syncId)
+  };
+
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+  // end image
+    const [modal, setModal] = useState(undefined);
+    const [errorModal, setErrorModal] = useState(undefined);
     const validate = Yup.object({
         firstName:Yup.string()
         .max(15, "First Name can't be more than 20 character")
@@ -24,9 +64,14 @@ function Register() {
         description:Yup.string()
         .max(1000, "Can't write a description more than 1000 character")
         .required("Description is required"),
-        national_id:Yup.string()
-        .max(14, "National id acn't be more than 14 character")
+        // numbers not chars
+        national_id:Yup.string() 
+        .max(14, "National id must be 14 number")
+        .min(14, "National id must be 14 number")
         .required("National id is required"),
+        username:Yup.string()
+        .max(20, "Username can't be more than 20 character")
+        .required("Username is required"),
 
         phone:Yup.string()
         .max(11, "Eqyptian num")
@@ -36,7 +81,11 @@ function Register() {
             "Must be egyptian number"
           ),
 
+        // syndicate_id:Yup.string()
+        // .required("Syndicate id is reqired"),
 
+        // photo:Yup.string()
+        // .required("Photo is required"),
 
     })
 
@@ -83,9 +132,52 @@ function Register() {
 
             }}
             validationSchema={validate}
-            onSubmit = {async values => {
-                await new Promise(resolve => setTimeout(resolve, 500));
-                alert(JSON.stringify(values, null, 2));
+            onSubmit = {(values) => {
+              var x = [{name:"general"},]
+              var b= JSON.stringify(x);
+              console.log(JSON.parse(b))
+              console.log(typeof baseImage)
+              // console.log(syncId)
+                const data = {
+                    profile:{
+                    user:{
+                    first_name: values.firstName,
+                    last_name: values.lastName,
+                    password: values.password,
+                    email: values.email,
+                    username: values.username
+                  },     
+                    country: values.country,
+                    city: values.city,
+                    area: values.area,
+                    phone: values.phone,
+                    picture: baseImage,
+                    // syndicate_id: values.syndicate_id,
+                  },
+                    description: values.description,
+                    syndicate_id: syncId,
+                    national_id: values.national_id,
+                    specialization: JSON.parse(b)
+                          
+                };
+
+                console.log(data)
+
+                axios.post(
+                  "http://127.0.0.1:8000/users/doctors/new",
+                  data,
+                )
+
+                .then(response => {
+                  // setModal(true)
+                  console.log(response)
+                  console.log("sucess")
+                })
+
+                .catch(e => {
+                  // setErrorModal(true)
+                  console.error(e.response)
+                });
               }}
               
         >
@@ -102,6 +194,7 @@ function Register() {
           return (
                 <div>
                     <h1 className='my-4 font-weight-bold-display-4'>Register as a Doctor</h1>
+
                     <Form onSubmit={handleSubmit}>
                         <TextFeild label="First Name" name="firstName" type="text"/>
                         <TextFeild label="Last Name" name="lastName" type="text"/>
@@ -114,62 +207,79 @@ function Register() {
                         <TextFeild label="Phone" name="phone" type="text"/>
 
 
-                        <label for="doc_photo">Upload your Photo</label>
-                        <Input type="file" id="doc_photo" name="photo" onChange={(event) => formProps.setFieldValue('photo', event.target.files[0])}/>
-                        <label for="synd_id">Upload your Syndicate id</label>
-                        <Input type="file" id="synd_id" name="syndicate_id" 
-                        onChange={(event) => formProps.setFieldValue('syndicate_id', event.target.files[0])}/>
+
+                        <label htmlFor="doc_photo">Upload your Photo</label>
+                        <Input
+                          name='photo'
+                          type="file"
+                          onChange={(e) => {
+                            uploadImage(e);
+                          }}
+                        />
+                          <br></br>
+                              {/* <img src={baseImage} height="200px" /> */}
+
+                        <label htmlFor="synd_id">Upload your Syndicate id</label>
+                        <Input
+                          id="synd_id" 
+                          name="syndicate_id"
+                          type="file"
+                          onChange={(e) => {
+                            uploadSyncId(e);
+                          }}
+                        />
+                        <br></br>
                         
 
-                        <label for="country">Country</label>
+                        <label htmlFor="country">Country</label>
                         <Field as="select" name="country" id="country">
                             <option value="egypt">Egypt</option>
                         </Field>
 
 
                         <label htmlFor="city">city</label>
-              <Field
-                id="city"
-                name="city"
-                as="select"
-                value={values.city}
-                onChange={async e => {
-                  const { value } = e.target;
-                  const _areas = await getareas(value);
-                  console.log(_areas);
-                  setFieldValue("city", value);
-                  setFieldValue("area", "");
-                  setFieldValue("areas", _areas);
-                }}
-              >
-                <option value="None">Select city</option>
-                <option value="Giza">Giza</option>
-                <option value="Cairo">Cairo</option>
-              </Field>
+                        <Field
+                            id="city"
+                            name="city"
+                            as="select"
+                            value={values.city}
+                            onChange={async e => {
+                            const { value } = e.target;
+                            const _areas = await getareas(value);
+                            // console.log(_areas);
+                            setFieldValue("city", value);
+                            setFieldValue("area", "");
+                            setFieldValue("areas", _areas);
+                            }}
+                        >
+                            <option value="None">Select city</option>
+                            <option value="Giza">Giza</option>
+                            <option value="Cairo">Cairo</option>
+                        </Field>
 
-              <label htmlFor="area">area</label>
-              <Field
-                value={values.area}
-                id="area"
-                name="area"
-                as="select"
-                onChange={handleChange}
-              >
-                <option value="None">Select area</option>
-                {values.areas &&
-                  values.areas.map(a => (
-                    <option key={a.value} value={a.value}>
-                      {a.label}
-                    </option>
-                  ))}
-              </Field>
+                        <label htmlFor="area">area</label>
+                        <Field
+                            value={values.area}
+                            id="area"
+                            name="area"
+                            as="select"
+                            onChange={handleChange}
+                        >
+                            <option value="None">Select area</option>
+                            {values.areas &&
+                            values.areas.map(a => (
+                                <option key={a.value} value={a.value}>
+                                {a.label}
+                                </option>
+                            ))}
+                        </Field><br/>
             
                         
                         
                         
-                        <button className='btn mt-3 btn-dark' type='submit' disabled={isSubmitting} >Submit</button>
-                        <button className='btn mt-3 ml-3 btn-danger' type='reset' onClick={handleReset}
-                disabled={!notValid || isSubmitting}>Reset</button>
+                        {/* <button className='btn mt-3 btn-dark' type='submit' disabled={isSubmitting} >Submit</button> */}
+                        <button className='btn mt-3 btn-dark' type='submit'>Submit</button>
+                        <button className='btn mt-3 ml-3 btn-danger' type='reset' onClick={handleReset}>Reset</button>
                     </Form>
                 </div>
             )}}
