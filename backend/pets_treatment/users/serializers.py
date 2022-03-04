@@ -185,6 +185,10 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
         fields = ('user','description','profile','specialization','clinics','average_rate')
         depth = 1
 
+class DoctorClinicsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorClinics
+        fields = '__all__'
 
 class DoctorRatingSerializer(serializers.ModelSerializer):
     class Meta:

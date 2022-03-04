@@ -246,6 +246,49 @@ class FindDoctor(APIView):
         data = DoctorPublicSerializer(doctors,many=True).data
         return Response({'data':data},status=status.HTTP_200_OK)
 
+##### Doctor clinics ########
+class DoctorClinicsView(APIView):
+    permission_classes = [IsAuthenticated]
+    # all clinic where doctor in
+    def get(self,request):
+        doctorClinics = DoctorClinics.objects.filter(doctor=Doctor.objects.get(user=request.user))
+        data = DoctorClinicsSerializer(doctorClinics,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
+
+class DoctorOwnClinicsView(APIView):
+    permission_classes = [IsAuthenticated]
+    # all clinic where doctor owned
+    def get(self,request):
+        doctorClinics = DoctorClinics.objects.filter(doctor=Doctor.objects.get(user=request.user),clinic_owner=True)
+        data = DoctorClinicsSerializer(doctorClinics,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
+
+class DeleteDoctorClinicView(APIView):
+    permission_classes = [IsAuthenticated]
+    # delete doctor from clinic by clinic owner
+    def post(self,request,pk):
+        try:
+            clinic = Clinic.objects.get(id=pk)
+            clinic_owner = Doctor.objects.get(user=request.user)
+            doctor = Doctor.objects.get(id=request.data["doctor_id"])
+            if DoctorClinics.objects.get(clinic=clinic, clinic_owner=True).doctor==clinic_owner:
+                if DoctorClinics.objects.get(clinic=clinic, doctor=doctor): 
+                    doctor_clinics = DoctorClinics.objects.filter(doctor=doctor,clinic=clinic).delete()
+                    return Response({
+                                    'msg':'Doctor deleted from clinic Successfully',
+                                },status=status.HTTP_200_OK)
+                else:
+                    return Response({
+                            'errors':"Doctor is not in this clinic!"
+                        },status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'msg':"You can't delete doctor from clinic you are not it's owner!"},
+                    status.HTTP_401_UNAUTHORIZED) 
+        except:                  
+            return Response({
+                    'error':'Data is not valid',
+                },status=status.HTTP_404_NOT_FOUND)
+
 
 ################## Profile ######################
 class ViewProfile(APIView):
