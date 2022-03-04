@@ -9,6 +9,33 @@ export const content = {
     login: "Login",
     test: "Doctor Dashboard",
     language: "Language",
+    faq: "FAQ",
+    fqalist: [
+      {
+        q: "I am a doctor how to join?",
+        a: "Register as a doctor and fill the registeration form and upload your syndicate id and we will varify your account as soon as possible, then you can start receiving appointment.",
+      },
+      {
+        q: "My varification is taking so long?",
+        a: "We are so sorry for this to happend, please contact us for support.",
+      },
+      {
+        q: "I am a doctor and have a clinic i want to add another doctor",
+        a: "In your dashboard you can add a doctor by sending them invitation link to their email",
+      },
+      {
+        q: "I received a join invitation, what should i do to join?",
+        a: "If you already have doctor account click the link with already have account label,if you are new then click on the invitation link with new doctor label",
+      },
+      {
+        q: "I have a clinic, i add more clinics to me?",
+        a: "Of course you can add more than one clinic to your account just go to your dashboard and add clinic",
+      },
+      {
+        q: "I am a new user, I registered but didn't receive the account activation link?",
+        a: "We are so sorry for this to happend, please contact us for support.",
+      },
+    ],
     services: "Services",
     informations: "Informations",
     rights: "© 2022 Petsania EGY, Inc. All Rights Reserved.",
@@ -29,7 +56,17 @@ export const content = {
       "Get your pet cared for",
       "Rate your experience",
     ],
+    howsteps_doctor: [
+      "Register for a doctor account",
+      "Fill the registeration form and upload your Syndicate ID",
+      "If you are not already joinded to a clinic, you can add Clinic and uplaod the clinic work licenses",
+      "We will varify your account after reviewing your documents.",
+      "After Varification you can start receive appointments.",
+      "The pet owner come at the appointment time and get his service.",
+    ],
     slogan: "Get the best treatment for your fluffy ball right at the moment",
+    doctor: "Doctor",
+    petowner: "Pet Owner",
     dr: "Dr.",
     about_dr: "About doctor",
     week: "Week",
@@ -61,6 +98,33 @@ export const content = {
     register: "تسجيل حساب",
     login: "تسجيل دخول",
     language: "اللغة",
+    faq: "اسالة شائعة",
+    fqalist: [
+      {
+        q: "انا طبيب بيطري اود الانضمام؟",
+        a: "انشاء حساب طبيب املاء نموذج بيانات التسجيل و ارفق معهم صوره بطاقة عضوية النقابة لم تكن مضاف لعيادة اضف عيادة و ارفق معاها تراخيص عمل العيادة سوف نراجع اوراقك كلها سوق نقم بتوثيق الحساب في اسرع وقت ممكن بعد التوثيق تسطيع الان استقبال حجز مواعيد.",
+      },
+      {
+        q: "توثيقي اخد وقت طويل؟",
+        a: "نحن اسفون جدا لحدوث ذلك من فضلك تواصل معانا للدعم.",
+      },
+      {
+        q: "انا طبيب لدي عيادة ارغب بضم طبيب",
+        a: "من الداشبورد تسطيع اضافة طبيب جديد من خلال ارسال دعوه له عن طريق رابط يصل إلي بريده الالكتروني",
+      },
+      {
+        q: "لقد تلقيت دعوه للانضمام ماذاعلي ان  افعل؟",
+        a: "اذا كنت تملك حساب طبيب بالفعل اختر الرابط الخاص ب بالفعل لدي حساب ، اذا كنت لا تملك حساب اختر الرابط الخاص بطبيب جديد ",
+      },
+      {
+        q: "لدي عيادة بالفعل هل استطيع اضافة المزيد من العيادات؟",
+        a: "بالتاكيد تسطيع اضافة اكثر من عيادة لحسابك من خلال الداشبورد",
+      },
+      {
+        q: "انا مستخدم جديد انشاءت حساب لكن لم يصلني رابط تنشيط الحساب ؟",
+        a: "نحن اسفون جدا لحدوث ذلك من فضلك تواصل معانا للدعم.",
+      },
+    ],
     services: "الخدمات",
     informations: "المعلومات",
     rights: "© 2022 بيتسانيا مصر. جميع الحقوق محفوظة",
@@ -81,7 +145,17 @@ export const content = {
       "حيوانك الآليف يتلقي الرعاية اللازمة",
       "قيم تجربتك",
     ],
+    howsteps_doctor: [
+      "انشاء حساب طبيب",
+      "املاء نموذج بيانات التسجيل و ارفق معهم صوره بطاقة عضوية النقابة",
+      "لم تكن مضاف لعيادة اضف عيادة و ارفق معاها تراخيص عمل العيادة",
+      "سوف نراجع اوراقك كلها ثم نقم بتوثيق الحساب",
+      "بعد التوثيق تسطيع الان استقبال حجز مواعيد.",
+      "سوف يحضر صاحب الموعد في اليمعاد و يحصل علي رعاية اللازمه لحيوانه الاليف",
+    ],
     slogan: "احصل علي افضل رعاية لصانع المرح في حياتك",
+    doctor: "طبيب",
+    petowner: "مالك حيوان اليف",
     dr: "د.",
     about_dr: "معلومات عن الطبيب",
     week: "اسبوع",

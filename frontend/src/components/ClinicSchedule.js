@@ -29,13 +29,14 @@ function ClinicSchedule(props) {
           updateScheduleList(
             res.data.filter(
               (data) =>
-                data.doctor === parseInt(doctor_id) && data.active !== false
+                data.doctor.id === parseInt(doctor_id) && data.active !== false
             )
           );
         }
       })
       .catch((err) => console.log(err));
   }, [clinic_id, doctor_id]);
+
   return (
     <div className=" rounded bg-light">
       <Table responsive borderless size="sm">

@@ -10,7 +10,7 @@ function ProfilePicture(props) {
       style={{
         width: 180,
         height: 180,
-        borderRadius: 50,
+        borderRadius: "50%",
       }}
     />
   );
