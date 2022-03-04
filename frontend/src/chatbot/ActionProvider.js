@@ -1,7 +1,6 @@
 import { createChatBotMessage } from "react-chatbot-kit";
 class ActionProvider {
   constructor(createChatbotMessage, setStateFunc) {
-    this.createChatbotMessage = createChatbotMessage;
     this.setState = setStateFunc;
   }
 
@@ -14,7 +13,7 @@ class ActionProvider {
       }
     );
 
-    this.addMessageToBotState(message);
+    this.updateChatbotState(message);
   };
   handleAboutUs = () => {
     const messages = createChatBotMessage(
@@ -47,9 +46,9 @@ class ActionProvider {
     this.updateChatbotState(messages);
   };
   updateChatbotState(message) {
-    this.setState(prevState => ({
-      ...prevState,
-      messages: [...prevState.messages, message],
+    this.setState(state => ({
+      ...state,
+      messages: [...state.messages, message],
     }));
   }
 }
