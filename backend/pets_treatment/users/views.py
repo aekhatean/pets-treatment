@@ -15,7 +15,7 @@ from .serializers import *
 from users.models import *
 from django.contrib.auth.models import User
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, date
 from cryptography.fernet import Fernet
 from .email_utils import send_mail_user
 from django.template.loader import render_to_string
@@ -324,5 +324,20 @@ class AppointmentsListByDoctor(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
-class AppointmentsListByUser(generics.ListAPIView):
-    pass
+class UpcomingAppointmentsListByUser(generics.ListAPIView):
+    def get_queryset(self):
+        return Appiontments.objects.filter(user=self.request.user, schedule__date__gte=date.today())
+    
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    lookup_url_kwarg = 'pk'
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class PreviousAppointmentsListByUser(generics.ListAPIView):
+    def get_queryset(self):
+        return Appiontments.objects.filter(user=self.request.user, schedule__date__lt=date.today())
+    
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    lookup_url_kwarg = 'pk'
+    permission_classes = [IsAuthenticatedOrReadOnly]
