@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DynamicTable from "../components/DynamicTable";
-// import Paginator from "../components/Paginator";
+import SideBar from "../components/SideBar"
+
 
 // API consumption
 import { axiosInstance } from "../api";
@@ -98,11 +99,11 @@ function UserDashboard(props) {
 
   return (
     <div id="clinic-dashbaord" className="mt-5">
-      <div className="h1 text-md-start">Upcoming appointments</div>
+      {/* <div className="h1 text-md-start">Upcoming appointments</div>
       <DynamicTable tableContent={upcomingAppointments} />
       <hr className="mt-5" />
       <div className="h1 text-md-start">Previous appointments</div>
-      <DynamicTable tableContent={prviousAppointments} />
+      <DynamicTable tableContent={prviousAppointments} /> */}
     </div>
   );
 }
