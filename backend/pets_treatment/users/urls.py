@@ -16,7 +16,7 @@ urlpatterns = [
     path('doctors/specialities/',SpecializationsList.as_view()),
     path('doctors/clinics/',DoctorClinicsView.as_view()),
     path('doctors/own_clinics/',DoctorOwnClinicsView.as_view()),
-    path('doctors/own_clinics/<int:pk>',DeleteDoctorClinicView.as_view()),
+    path('doctors/own_clinics/<int:pk>',DoctorClinic_ClinicView.as_view()),
     path('schedule/<int:pk>', ScheduleVview.as_view()),
     path('schedule/doctor/<int:pk>', ScheduleList_one_doctor.as_view()),
     path('schedule/clinic/<int:pk>', ScheduleList_one_clinic.as_view()),

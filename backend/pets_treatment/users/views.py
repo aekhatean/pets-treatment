@@ -263,8 +263,20 @@ class DoctorOwnClinicsView(APIView):
         data = DoctorClinicsSerializer(doctorClinics,many=True).data
         return Response(data,status=status.HTTP_200_OK)
 
-class DeleteDoctorClinicView(APIView):
+
+
+class DoctorClinic_ClinicView(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get(self,request,pk):
+        clinic = Clinic.objects.get(id=pk)
+        doctorClinics = DoctorClinics.objects.filter(clinic=clinic)
+        doctors=[]
+        for doctor in doctorClinics:
+            doctors.append(doctor.doctor)
+        doctors_inclinic_serializer=DoctorSerializer(doctors,many=True).data
+        return Response(doctors_inclinic_serializer,status=status.HTTP_200_OK)
+
     # delete doctor from clinic by clinic owner
     def post(self,request,pk):
         try:
