@@ -5,6 +5,7 @@ import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { Container, Row, Col, Accordion } from "react-bootstrap";
 import { colors } from "../colors/colors";
+import FAQ from "../components/FAQ";
 
 function HowItWorks() {
   const { lang, setLang } = useContext(LanguageContext);
@@ -51,20 +52,7 @@ function HowItWorks() {
         >
           <span className="display-6 lh-lg">{content[lang].faq}</span>
         </div>
-        <Container className="p-5" dir={lang === "ar" ? "rtl" : "ltr"}>
-          <Accordion style={{ maxWidth: "70%" }}>
-            {content[lang].fqalist.map((faq, index) => (
-              <Accordion.Item eventKey={index} key={faq.q} className="rounded">
-                <Accordion.Header>{faq.q}</Accordion.Header>
-                <Accordion.Body
-                  className={lang === "ar" ? "text-end" : "text-start"}
-                >
-                  {faq.a}
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-          </Accordion>
-        </Container>
+        <FAQ />
       </div>
     </Container>
   );
