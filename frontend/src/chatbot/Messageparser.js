@@ -4,7 +4,7 @@ class MessageParser {
     this.state = state;
   }
 
-  parse = message => {
+  parse(message) {
     const lowerCase = message.toLowerCase();
     if (
       lowerCase.includes("about") ||
@@ -13,27 +13,27 @@ class MessageParser {
       lowerCase.includes("developer")
     ) {
       this.actionProvider.handleAboutUs();
-    }
-    if (
+    } else if (
       lowerCase.includes("work") ||
       lowerCase.includes("info") ||
       lowerCase.includes("information")
     ) {
       this.actionProvider.handleHowItWorks();
-    }
-    if (
+    } else if (
       lowerCase.includes("search") ||
       lowerCase.includes("clinic") ||
       lowerCase.includes("start") ||
       lowerCase.includes("reserv")
     ) {
       this.actionProvider.handleClinicSearch();
-    }
-    if (lowerCase.includes("register") || lowerCase.includes("registration")) {
+    } else if (
+      lowerCase.includes("register") ||
+      lowerCase.includes("registration") ||
+      lowerCase.includes("Sign up")
+    ) {
       this.actionProvider.handleSignUp();
-    }
-    return this.actionProvider.handleDefault();
-  };
+    } else return this.actionProvider.handleDefault();
+  }
 }
 
 export default MessageParser;

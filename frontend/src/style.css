@@ -25,11 +25,11 @@ code {
 }
 
 .secondary-bg {
-  background-color: #188b87;
+  background-color: #67a19c;
 }
 
 .secondary-color {
-  color: #188b87;
+  color: #67a19c;
 }
 ul {
   padding-inline-start: 0;
@@ -123,7 +123,7 @@ li {
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  background-color: #188b87;
+  background-color: #67a19c;
   border: none;
   position: fixed;
   bottom: 15px;
@@ -162,12 +162,12 @@ li {
   margin-top: 5rem;
 }
 .react-chatbot-kit-user-avatar-container {
-  background-color: #188b87;
+  background-color: #67a19c;
 }
 
 .react-chatbot-kit-chat-bot-message-container > svg {
   width: 48px;
-  fill: #188b87;
+  fill: #67a19c;
   height: 40px;
 }
 

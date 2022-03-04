@@ -25,7 +25,7 @@ const GeneralOptions = props => {
     },
   ];
 
-  return <Options options={options} />;
+  return <Options options={options} title="Options" {...props} />;
 };
 
 export default GeneralOptions;

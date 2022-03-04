@@ -23,16 +23,17 @@ const config = {
   },
   customStyles: {
     botMessageBox: {
-      backgroundColor: "#188b87",
+      backgroundColor: "#67a19c",
     },
     chatButton: {
-      backgroundColor: "#188b87",
+      backgroundColor: "#67a19c",
     },
   },
   widgets: [
     {
       widgetName: "overview",
       widgetFunc: props => <Overview {...props} />,
+      mapStateToProps: ["messages"],
     },
     {
       widgetName: "About",
