@@ -8,6 +8,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from users.models import *
+from rest_framework.views import APIView
+
 @api_view(['GET'])
 def clinicList(request):
     clinics = Clinic.objects.all()
@@ -148,3 +150,13 @@ def addDoctorClinic(request, pk):
         return Response({
                 'error':'Data is not valid',
             },status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+########## Clinic Pictures ########
+class Clinic_PicturesList(APIView):
+    def get(self,request,pk):
+        pictures = ClinicPicture.objects.filter(clinic=Clinic.objects.get(id=pk))
+        data = ClinicImageSerializer(pictures,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
