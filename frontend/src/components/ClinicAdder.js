@@ -1,11 +1,14 @@
-import { Formik, Form, Field, FieldArray } from "formik";
+import { Formik, Form, Field } from "formik";
 import { InputField, FileUpload, FileUploadMultiple } from "./Inputs";
+import { useState } from "react";
 import { axiosInstance } from "../api";
 import * as Yup from "yup";
 
 const ClinicAdder = (props) => {
-  const token = "611da83882dcba101216e8002f18467fe91e32ac";
-
+  const [token] = useState(() => {
+    const savedToken = localStorage.getItem("token");
+    return savedToken;
+  });
   async function addClinic(values) {
     const data = values;
     const response = await axiosInstance

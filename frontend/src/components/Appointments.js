@@ -5,7 +5,7 @@ import "../style.css";
 const Appointments = () => {
   const [doctorClinics, setDoctorClinics] = useState([]);
   // const [doctorAppointments, setDoctorAppointments] = useState([]);
-
+  // todo : get doctor id from props
   useEffect(() => {
     async function fetchClinics() {
       const response = await axiosInstance

@@ -1,10 +1,14 @@
 import { Formik, Form } from "formik";
 import { InputField, Select } from "./Inputs";
 import { axiosInstance } from "../api";
+import { useState } from "react";
 import * as Yup from "yup";
 
 const ScheduleCardAdder = (props) => {
-  const token = "611da83882dcba101216e8002f18467fe91e32ac";
+  const [token] = useState(() => {
+    const savedToken = localStorage.getItem("token");
+    return savedToken;
+  });
   const options = [
     { key: "Select a Week Day", value: "" },
     { key: "Saturday", value: "Saturday" },

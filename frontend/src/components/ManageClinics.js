@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import ScheduleCard from "./ScheduleCard";
 import ScheduleCardAdder from "./ScheduleCardAdder";
 import ClinicAdder from "./ClinicAdder";
+import ExistingDoctorAdder from "./ExistingDoctorAdder";
 
 const ManageClinics = () => {
   const [doctorClinics, setDoctorClinics] = useState([]);
@@ -10,10 +11,12 @@ const ManageClinics = () => {
   const [selectedClinicId, setSelectedClinicId] = useState("");
   const [scheduleAdder, setScheduleAdder] = useState(false);
   const [clinicAdder, setClinicAdder] = useState(false);
-
-  const token = "611da83882dcba101216e8002f18467fe91e32ac";
+  const [doctorAdder, setDoctorAdder] = useState(false);
+  const [token] = useState(() => {
+    const savedToken = localStorage.getItem("token");
+    return savedToken;
+  });
   // todo: change doctor id to get it from props
-  // todo: change token to get it from local storage
   async function fetchClinics() {
     const response = await axiosInstance
       .get(`users/doctors/4`)
@@ -122,9 +125,24 @@ const ManageClinics = () => {
             />
           )}
         </div>
+        <h4 className="text-start">Manage Doctors</h4>
+        <div className="row">
+          {selectedClinicId && (
+            <button
+              className="btn btn-primary col-md-2 col-4 mx-3"
+              onClick={() => setDoctorAdder(!doctorAdder)}
+            >
+              Add Existing Doctor
+            </button>
+          )}
+          {selectedClinicId && doctorAdder && (
+            <ExistingDoctorAdder
+              hideForm={setDoctorAdder}
+              clinic_id={selectedClinicId}
+            />
+          )}
+        </div>
       </div>
-      <h4 className="m-4 text-start">Manage Doctors</h4>
-      <div>doctors here</div>
     </div>
   );
 };
