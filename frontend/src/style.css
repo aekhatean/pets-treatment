@@ -239,3 +239,14 @@ li {
   padding: 1.5em;
   cursor: pointer;
 }
+
+.flex-one {
+  flex: 1;
+}
+.flex-two {
+  flex: 2;
+}
+
+.font-small {
+  font-size: small;
+}

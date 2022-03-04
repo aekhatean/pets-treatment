@@ -1,4 +1,3 @@
-import profile
 from this import d
 from rest_framework import serializers
 from .models import *
@@ -9,6 +8,7 @@ from cryptography.fernet import Fernet
 from .email_utils import send_mail_user
 from clinics.serializers import ClinicSerializer
 from django.db.models import Sum
+import datetime
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -193,9 +193,26 @@ class DoctorRatingSerializer(serializers.ModelSerializer):
         depth = 1
 ######### doctor serialziers ##########
 class ScheduleSerializer(serializers.ModelSerializer):
+    date = serializers.SerializerMethodField('calc_date')
+
+    def calc_date(self, schedule):
+        weekdays_dict = {
+            "Monday":0,
+            "Tuesday":1,
+            "Wednsday":2,
+            "Thursday":3,
+            "Friday":4,
+            "Saturday":5,
+            "Sunday":6
+        }
+        days_ahead = weekdays_dict[schedule.day] - datetime.date.today().weekday()
+        if days_ahead < 0: 
+            days_ahead += 7
+        return datetime.date.today() + datetime.timedelta(days_ahead)
     class Meta:
         model = Schedule
-        fields = '__all__'
+        fields = ('id','from_time','to_time','day',
+        'appointment_duration','doctor','clinic','active','date')
 ######### doctor serialziers ##########
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:

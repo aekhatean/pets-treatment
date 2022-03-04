@@ -4,8 +4,8 @@ const SideBar = ({ selections }) => {
   const [activeSelection, setActiveSelection] = useState(selections[0].name);
   return (
     <div className="container-fluid">
-      <div className="row vh-100">
-        <div className="col-lg-2 secondary-bg d-flex flex-column pt-4">
+      <div className="row">
+        <div className="col-lg-2 secondary-bg d-flex flex-column py-4">
           {selections.map((selection) => {
             return (
               <p
@@ -22,7 +22,7 @@ const SideBar = ({ selections }) => {
             );
           })}
         </div>
-        <div className="col-lg-10">
+        <div className="col-lg-10 d-flex flex-column">
           {
             selections.find((selection) => selection.name === activeSelection)
               .view

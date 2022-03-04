@@ -285,6 +285,13 @@ class ScheduleList_one_doctor(APIView):
         scheduals = Schedule.objects.filter(doctor=pk)
         data = ScheduleSerializer(scheduals,many=True).data
         return Response(data,status=status.HTTP_200_OK)
+# ################## Schedule for one clinic and one doctor ######################
+class ScheduleList_one_clinic_one_doctor(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request,pk):
+        scheduals = Schedule.objects.filter(clinic=pk,doctor=request.user.doctor.id)
+        data = ScheduleSerializer(scheduals,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
 # ################## Schedule for one doctor ######################
 class ScheduleList_one_clinic(APIView):
     def get(self, request,pk):

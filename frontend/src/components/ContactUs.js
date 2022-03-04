@@ -10,13 +10,13 @@ const ContactUs = () => {
   const validate = Yup.object({
     name: Yup.string()
       .min(3, "Name must be at least 3 characters")
-      .required("Name is required"),
+      .required("*name is required"),
     email: Yup.string()
       .email("Email format is invalid")
-      .required("Email is required"),
+      .required("*email is required"),
     message: Yup.string()
       .min(50, "Your message must have at least 50 character")
-      .required("Message is required"),
+      .required("*message is required"),
   });
 
   return (
@@ -30,9 +30,9 @@ const ContactUs = () => {
       onSubmit={(values) => console.log(values)}
     >
       {(formik) => (
-        <Form>
-          <div className="d-flex flex-column my-auto mx-auto px-lg-3 px-md-2">
-            <h4 className="fw-bold py-3 align-self-center">
+        <Form className="mx-3">
+          <div className="d-flex flex-column">
+            <h4 className="fw-bold py-3">
               {lang === "ar" ? content.ar.contact_us : content.en.contact_us}
             </h4>
             <InputField
@@ -52,7 +52,7 @@ const ContactUs = () => {
               columns="50"
             />
             <button
-              className="btn text-white mx-5 mt-2 w-25 align-self-end"
+              className="btn text-white mt-2 w-25 align-self-end"
               name="submit"
               type="submit"
               style={{ backgroundColor: "#413c58" }}
