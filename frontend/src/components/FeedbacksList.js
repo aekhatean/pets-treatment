@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
 import SubtitleText from "./SubtitleText";
 import { Container, Row, Col } from "react-bootstrap";
 import FeedbackCard from "./FeedbackCard";
+import { colors } from "../colors/colors";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
+
 function FeedbacksList(props) {
   const { doctor_id } = props;
+  const { lang, setLang } = useContext(LanguageContext);
+
   const [feedbacks, updateFeedbacks] = useState([]);
   useEffect(() => {
     axiosInstance
@@ -18,8 +24,8 @@ function FeedbacksList(props) {
   }, [doctor_id]);
   return (
     <Container className="p-3">
-      <div className="text-start m-1">
-        <SubtitleText subtitle="Feedbacks" />
+      <div className={lang === "ar" ? "text-end m-1" : "text-start m-1"}>
+        <SubtitleText subtitle={content[lang].feedbacks} />
       </div>
       <Row>
         <Col>

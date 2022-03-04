@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { Redirect } from "react-router-dom";
 import { axiosInstance } from "../api";
 import ProfilePicture from "../components/ProfilePicture";
-import Tag from "../components/Tag";
-import StarIcon from "@mui/icons-material/Star";
 import { Tabs, Tab, Container, Row, Col } from "react-bootstrap";
 import ClinicPanel from "../components/ClinicPanel";
 import FeedbacksList from "../components/FeedbacksList";
@@ -11,9 +10,15 @@ import TagList from "../components/TagList";
 import DescriptionText from "../components/DescriptionText";
 import TitleText from "../components/TitleText";
 import SubtitleText from "../components/SubtitleText";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
+import { colors } from "../colors/colors";
 
 function DoctorPublicProfile(props) {
   const { id } = props.match.params;
+  const { lang, setLang } = useContext(LanguageContext);
+  const [noDoctor, setDoctorNotFound] = useState(false);
+
   const [doctor, setDoctor] = useState({
     first_name: "",
     last_name: "",
@@ -40,26 +45,30 @@ function DoctorPublicProfile(props) {
             rating: res.data.average_rate,
             clinics: [...res.data.clinics],
           });
+          setDoctorNotFound(false);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        return setDoctorNotFound(true);
+      });
   }, [id]);
-
+  if (noDoctor) {
+    return <Redirect to="/error404" />;
+  }
   return (
-    <Container>
+    <Container dir={lang === "ar" ? "rtl" : "ltr"}>
       <Row>
         <Col>
           <div className="">
             <Row>
               <Col className="m-4">
                 {/* doctor picture */}
-                <ProfilePicture
-                  src={`http://localhost:8000${doctor.picture}`}
-                />
+                <ProfilePicture src={doctor.picture} />
                 {/* doctor fullname */}
                 <div>
                   <TitleText
-                    title={`Dr.${doctor.first_name} ${doctor.last_name}`}
+                    title={`${content[lang].dr} ${doctor.first_name} ${doctor.last_name} `}
                   />
                   {/* doctor  total ratings ---> stars*/}
                   <div>
@@ -70,19 +79,27 @@ function DoctorPublicProfile(props) {
             </Row>
             {/* doctor description */}
             <div
-              className="shadow-sm m-2 p-3 text-start"
+              className={
+                lang === "ar"
+                  ? "shadow-sm m-2 p-3 text-end"
+                  : "shadow-sm m-2 p-3 text-start"
+              }
               style={{
                 borderRadius: 10,
               }}
             >
-              <SubtitleText subtitle="About Doctor" />
+              <SubtitleText subtitle={content[lang].about_dr} />
               <div className="m-1">
                 <DescriptionText description={doctor.description} />
               </div>
             </div>
 
             {/* doctor  specializations --> tags/badges */}
-            <div className="fs-5 text-start m-2">
+            <div
+              className={
+                lang === "ar" ? "fs-5 text-end m-2" : "fs-5 text-start m-2"
+              }
+            >
               <TagList tags={doctor.specializations} />
             </div>
 

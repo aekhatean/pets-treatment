@@ -218,3 +218,4 @@ class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appiontments
         fields = '__all__'
+        depth = 1

@@ -5,7 +5,7 @@ function ProfilePicture(props) {
   return (
     <img
       className="shadow"
-      src={src}
+      src={`http://localhost:8000${src}`}
       alt="profile_pircture"
       style={{
         width: 180,

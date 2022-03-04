@@ -14,6 +14,7 @@ import { LanguageContext } from "../context/LanguageContext";
 import { Link } from "react-router-dom";
 import { routes } from "../routes/routes";
 import Logo from "../assets/Logo.png";
+import { colors } from "../colors/colors";
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -31,7 +32,6 @@ function Navbar() {
   ];
   //language options
   const languages = ["English", "العربية"];
-  const colors = { bgPrimary: "#B8D8D6", textPrimary: "#010101" };
 
   //hangling app language
   const handleAppLang = (event) => {
@@ -64,9 +64,9 @@ function Navbar() {
       <AppBar
         position="static"
         sx={{
-          bgcolor: colors.bgPrimary,
+          bgcolor: colors.bg.primary,
           boxShadow: "none",
-          color: colors.textPrimary,
+          color: colors.text.dark,
         }}
       >
         <Container maxWidth="xl">
