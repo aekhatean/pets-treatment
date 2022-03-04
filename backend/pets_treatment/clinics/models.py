@@ -13,11 +13,11 @@ from users.models import *
 # files uploading functions
 def tax_upload(instance, filename):
     extension = filename.split(".")[1]
-    return "clinics/%s/taxid.%s" % (instance.id, extension)
+    return "clinics/%s/taxid.%s" % (instance.name, extension)
 
 def tech_upload(instance, filename):
     extension = filename.split(".")[1]
-    return "clinics/%s/techid.%s" % (instance.id, extension)
+    return "clinics/%s/techid.%s" % (instance.name, extension)
 
 def image_upload(instance, filename):
     return f'clinics/{instance.id}/galary/{filename}'
@@ -26,7 +26,7 @@ def image_upload(instance, filename):
 def validate_egyptian_number(value):
     if not any(re.match(pattern, value) for pattern in [r"011+[0-9]{8}", r"012+[0-9]{8}", r"015+[0-9]{8}",r"010+[0-9]{8}"]):
         raise ValidationError(
-            _('%(value)s is not a valid egyptian number'),
+            ('%(value)s is not a valid egyptian number'),
             params={'value': value},
         )
 ######################## Clinic Models ############################
@@ -40,8 +40,8 @@ class Clinic(models.Model):
                     "required":"this is not a valid egyptian number"
                     })
     is_verified = models.BooleanField(default=False)
-    tax_registration = models.FileField(upload_to=tax_upload,null=True)
-    technical_registration = models.FileField(upload_to=tech_upload,null=True)
+    tax_registration = models.ImageField(upload_to=tax_upload,null=True)
+    technical_registration = models.ImageField(upload_to=tech_upload,null=True)
     technical_registration_number = models.CharField(max_length=100) # edit after discuss
     price = models.IntegerField()
 ######################## ClinicPicture Models ############################

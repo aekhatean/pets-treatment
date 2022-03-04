@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik'
 import TextFeild from '../components/TextField';
 import * as Yup from 'yup';
 import {Input} from "reactstrap";
 import axios from 'axios';
 import imageToBase64 from 'image-to-base64/browser';
+import { axiosInstance } from '../api';
 // import SuccessModal from '../components/SuccessModal';
 // import ErrorModal from '../components/ErrorModal';
 // import axios from 'axios';
@@ -81,6 +82,9 @@ function Register() {
             "Must be egyptian number"
           ),
 
+        // specialization:Yup.string()
+        // .required("You must choose a Specialization")
+
         // syndicate_id:Yup.string()
         // .required("Syndicate id is reqired"),
 
@@ -111,6 +115,21 @@ function Register() {
         });
       };
 
+const[specializationsList, setSpecialization] = useState([]);
+    useEffect(() => {
+      axiosInstance
+        .get(`users/doctors/specialities/`)
+        .then((res) => {
+          if (res.status === 200) {
+            setSpecialization(res.data)
+            console.log(res.data)
+             
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, []);
     return (
         <Formik
             initialValues={{
@@ -128,15 +147,13 @@ function Register() {
                 areas:[],
                 syndicate_id: '',
                 photo: '',
+                specialization: '',
 
 
             }}
             validationSchema={validate}
             onSubmit = {(values) => {
-              var x = [{name:"general"},]
-              var b= JSON.stringify(x);
-              console.log(JSON.parse(b))
-              console.log(typeof baseImage)
+              // console.log(typeof baseImage)
               // console.log(syncId)
                 const data = {
                     profile:{
@@ -152,15 +169,14 @@ function Register() {
                     area: values.area,
                     phone: values.phone,
                     picture: baseImage,
-                    // syndicate_id: values.syndicate_id,
                   },
                     description: values.description,
                     syndicate_id: syncId,
                     national_id: values.national_id,
-                    specialization: JSON.parse(b)
+                    specialization: values.special
                           
                 };
-
+                console.log(values.special)
                 console.log(data)
 
                 axios.post(
@@ -273,7 +289,18 @@ function Register() {
                                 </option>
                             ))}
                         </Field><br/>
-            
+                        
+                        <label htmlFor="special">specialization</label>
+
+                        <Field as="select" name="special" id="special" onChange={handleChange}>
+                        <option value="" label="Select a specialization" />
+                          {specializationsList.map(spec =>
+                            (<option key={spec.name} value={spec.name}>
+                                         {spec.name}
+                                       </option>)
+                            )}
+                        </Field><br></br>
+                        
                         
                         
                         

@@ -7,7 +7,7 @@ import About from "./pages/About";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import DoctorPublicProfile from "./pages/DoctorPublicProfile";
-import ClinicDashboard from "./pages/ClinicDashbord";
+import DoctorDashboard from "./pages/DoctorDashboard";
 import UserDashboard from "./pages/UserDashboard";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -31,8 +31,8 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <Route path="/doctor_dashboard" component={DoctorDashboard} />
           <Route path="/user/:id" component={UserDashboard} />
-          <Route path="/dashboard/:id" component={ClinicDashboard} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
           <Route path="/doctors/" component={Doctors} />
           <Route path="/error404" component={NotFoundPage} />

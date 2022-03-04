@@ -17,11 +17,18 @@ code {
 }
 
 .primary-bg {
-  background-color: #b8d8d6;
+  background-color: #413c58;
 }
 
 .primary-color {
-  color: #b8d8d6;
+  color: #413c58;
+}
+.primary-light-bg {
+  background-color: #9eb6d0;
+}
+
+.primary-light-color {
+  color: #9eb6d0;
 }
 
 .secondary-bg {
@@ -29,8 +36,19 @@ code {
 }
 
 .secondary-color {
-  color: #67a19c;
+  color: #ced9dd;
+  background-color: #ced9dd;
 }
+
+.secondary-dark-bg {
+  background-color: #7884a5;
+}
+
+.secondary-dark-color {
+  color: #7884a5;
+
+}
+
 ul {
   padding-inline-start: 0;
 }
@@ -210,4 +228,27 @@ li {
   .get-started {
     flex-direction: column;
   }
+}
+
+.active-sidebar-selection {
+  background-color: #7884a5;
+  color: white;
+  border-radius: 40px;
+  padding: 1.5em;
+  cursor: pointer;
+}
+.inactive-sidebar-selection {
+  padding: 1.5em;
+  cursor: pointer;
+}
+
+.flex-one {
+  flex: 1;
+}
+.flex-two {
+  flex: 2;
+}
+
+.font-small {
+  font-size: small;
 }
