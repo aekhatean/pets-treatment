@@ -18,8 +18,8 @@ function HOWHeader(props) {
         </Col>
         <Col lg="4">
           <div
-            className="shadow-sm rounded p-4"
-            style={{ backgroundColor: bgcolor }}
+            className="shadow-sm  p-4 "
+            style={{ backgroundColor: bgcolor, borderRadius: 20 }}
           >
             <TitleText title={title} />
           </div>
@@ -27,21 +27,33 @@ function HOWHeader(props) {
             <a
               href="#howdoctor"
               className="btn btn-sm btn-outline-dark m-1"
-              style={{ backgroundColor: colors.bg.primary, border: "none" }}
+              style={{
+                backgroundColor: colors.bg.primary,
+                border: "none",
+                borderRadius: 30,
+              }}
             >
               <SubtitleText subtitle={content[lang].doctor} />
             </a>
             <a
               href="#howpetowner"
               className="btn btn-sm btn-outline-dark m-1"
-              style={{ backgroundColor: colors.bg.primary, border: "none" }}
+              style={{
+                backgroundColor: colors.bg.primary,
+                border: "none",
+                borderRadius: 30,
+              }}
             >
               <SubtitleText subtitle={content[lang].petowner} />
             </a>
             <a
               href="#faq"
               className="btn btn-sm btn-outline-dark m-1"
-              style={{ backgroundColor: colors.bg.primary, border: "none" }}
+              style={{
+                backgroundColor: colors.bg.primary,
+                border: "none",
+                borderRadius: 30,
+              }}
             >
               <SubtitleText subtitle={content[lang].faq} />
             </a>
