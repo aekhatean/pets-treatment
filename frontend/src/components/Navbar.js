@@ -28,6 +28,7 @@ function Navbar() {
     content[lang].about,
     content[lang].register,
     content[lang].login,
+    content[lang].test,
   ];
   //language options
   const languages = ["English", "العربية"];

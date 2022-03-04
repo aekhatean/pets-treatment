@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import *
+from drf_extra_fields.fields import Base64ImageField
 
 
 class ClinicSerializer(serializers.ModelSerializer):
+    tax_registration = Base64ImageField(required=False)
+    technical_registration = Base64ImageField(required=False)
     class Meta:
         model = Clinic
         fields = '__all__'
@@ -10,6 +13,7 @@ class ClinicSerializer(serializers.ModelSerializer):
         depth = 1
 
 class ClinicImageSerializer(serializers.ModelSerializer):
+    picture = Base64ImageField()
     class Meta:
         model = ClinicPicture
         fields = '__all__'
