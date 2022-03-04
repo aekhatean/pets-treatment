@@ -5,14 +5,17 @@ class ActionProvider {
     this.createClientMessage = createClientMessage;
   }
 
-  handleHello() {
-    const message = this.createChatBotmessage("Hello. Nice to meet you.");
+  handleDefault = () => {
+    const message = this.createChatBotMessage(
+      "How can I help? Here is the overview.",
+      {
+        withAvatar: true,
+        widget: "overview",
+      }
+    );
 
-    this.setState(prev => ({
-      ...prev,
-      messages: [...prev.messages],
-    }));
-  }
+    this.addMessageToBotState(message);
+  };
 }
 
 export default ActionProvider;

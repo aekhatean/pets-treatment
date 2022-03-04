@@ -1,0 +1,9 @@
+.sidebar{
+    width: 20vw;
+    height: 95vh;
+    background-color: white;
+    margin-top:20px;
+    border-radius: 25px;
+    box-shadow: 3px 3px 10px 1px gray;
+    margin-left: 10px;
+}
