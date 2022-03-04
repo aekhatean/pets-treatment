@@ -10,6 +10,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
+from .paginations import StandardResultsSetPagination
 from .serializers import *
 from users.models import *
 from django.contrib.auth.models import User
@@ -231,7 +232,9 @@ class FindDoctor(APIView):
             query_terms = Q(user__first_name__icontains=term)
             query_terms.add(Q(user__last_name__icontains=term), Q.OR)
             query_terms.add(Q(description__icontains=term), Q.OR)
-            query_terms.add(Q(clinics__name__contains=search_term), Q.OR)
+            query_terms.add(Q(clinics__name__icontains=search_term), Q.OR)
+            query_terms.add(Q(clinics__city__icontains=search_term), Q.OR)
+            query_terms.add(Q(clinics__area__icontains=search_term), Q.OR)
 
             # Combine term and filters
             query = query_filters
@@ -301,11 +304,25 @@ class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
 class AppointmentList(generics.ListCreateAPIView):
     queryset = Appiontments.objects.all()
     serializer_class = AppointmentSerializer
-    permission_classes = [IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class=AppointmentSerializer
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
     lookup_url_kwarg = 'pk'
     queryset = Appiontments.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    
+
+class AppointmentsListByDoctor(generics.ListAPIView):
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    lookup_url_kwarg = 'pk'
+    queryset = Appiontments.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+class AppointmentsListByUser(generics.ListAPIView):
+    pass

@@ -196,8 +196,10 @@ class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
         fields = '__all__'
+        depth = 1
 ######### doctor serialziers ##########
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appiontments
         fields = '__all__'
+        depth = 1
