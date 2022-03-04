@@ -24,32 +24,21 @@ function Login() {
             }}
             validationSchema={validate}
             onSubmit = {async values => {
-                // await new Promise(resolve => setTimeout(resolve, 500));
-                // alert(JSON.stringify(values, null, 2));
                 const data = {
                         password: values.password,
                         email: values.email,
                 };
 
-                console.log(data)
-
-                // cont axiosConfig
                 await axios.post(
                   "http://127.0.0.1:8000/users/login/",
                   data,
-                  // axiosConfig
                 )
                 .then(response => {
-                  // setModal(true)
-                  // console.log("sucess")
-                  // console.log(response.data)
-                  // console.log(response.data.token)
                   localStorage.setItem("token", response.data.token)
                   localStorage.setItem("email", response.data.email)
                   
                 })
                 .catch(e => {
-                  // setErrorModal(true)
                   console.log(e)
                 });
               }}
