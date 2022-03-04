@@ -19,7 +19,7 @@ const GeneralOptions = props => {
       id: 3,
     },
     {
-      name: "About us",
+      name: "About Us",
       handler: props.actionProvider.handleAboutUs,
       id: 5,
     },
