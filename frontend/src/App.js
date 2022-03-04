@@ -32,7 +32,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/doctor_dashboard" component={DoctorDashboard} />
-          <Route path="/user/:id" component={UserDashboard} />
+          <Route path="/user" component={UserDashboard} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
           <Route path="/doctors/" component={Doctors} />
           <Route path="/error404" component={NotFoundPage} />
