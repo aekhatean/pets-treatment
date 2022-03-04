@@ -3,23 +3,21 @@ import CatStepsBar from "../components/CatStepsBar";
 import HOWHeader from "../components/HOWHeader";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
+import { Container, Row, Col } from "react-bootstrap";
+import { colors } from "../colors/colors";
 
 function HowItWorks() {
   const { lang, setLang } = useContext(LanguageContext);
   return (
-    <div className="container">
+    <Container>
       <HOWHeader
         title={content[lang].howitworks}
         subtitle={content[lang].slogan}
+        bgcolor={colors.bg.primary}
       />
-      {/* body */}
-      {/* <div className="d-flex"> */}
-      <div className="my-5">
-        <CatStepsBar steps={content[lang].howsteps} />
-      </div>
-      {/* <div>df</div> */}
-      {/* </div> */}
-    </div>
+
+      <CatStepsBar steps={content[lang].howsteps} />
+    </Container>
   );
 }
 

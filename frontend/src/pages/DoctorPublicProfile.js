@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { Redirect } from "react-router-dom";
 import { axiosInstance } from "../api";
 import ProfilePicture from "../components/ProfilePicture";
-import Tag from "../components/Tag";
-import StarIcon from "@mui/icons-material/Star";
-import { Tabs, Tab } from "react-bootstrap";
+import { Tabs, Tab, Container, Row, Col } from "react-bootstrap";
 import ClinicPanel from "../components/ClinicPanel";
 import FeedbacksList from "../components/FeedbacksList";
 import Ratings from "../components/Ratings";
@@ -11,9 +10,15 @@ import TagList from "../components/TagList";
 import DescriptionText from "../components/DescriptionText";
 import TitleText from "../components/TitleText";
 import SubtitleText from "../components/SubtitleText";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
+import { colors } from "../colors/colors";
 
 function DoctorPublicProfile(props) {
   const { id } = props.match.params;
+  const { lang, setLang } = useContext(LanguageContext);
+  const [noDoctor, setDoctorNotFound] = useState(false);
+
   const [doctor, setDoctor] = useState({
     first_name: "",
     last_name: "",
@@ -40,44 +45,83 @@ function DoctorPublicProfile(props) {
             rating: res.data.average_rate,
             clinics: [...res.data.clinics],
           });
+          setDoctorNotFound(false);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        return setDoctorNotFound(true);
+      });
   }, [id]);
-
+  if (noDoctor) {
+    return <Redirect to="/error404" />;
+  }
   return (
-    <>
-      {/* doctor picture */}
-      <ProfilePicture src={`http://localhost:8000${doctor.picture}`} />
-      {/* doctor fullname */}
-      <TitleText title={`${doctor.first_name} ${doctor.last_name}`} />
-      {/* doctor location muted */}
-      {/* doctor description */}
-      <div>
-        <SubtitleText subtitle="about the doctor" />
-        <DescriptionText description={doctor.description} />
-      </div>
+    <Container dir={lang === "ar" ? "rtl" : "ltr"}>
+      <Row>
+        <Col>
+          <div className="">
+            <Row>
+              <Col className="m-4">
+                {/* doctor picture */}
+                <ProfilePicture src={doctor.picture} />
+                {/* doctor fullname */}
+                <div>
+                  <TitleText
+                    title={`${content[lang].dr} ${doctor.first_name} ${doctor.last_name} `}
+                  />
+                  {/* doctor  total ratings ---> stars*/}
+                  <div>
+                    <Ratings rating={doctor.rating} />
+                  </div>
+                </div>
+              </Col>
+            </Row>
+            {/* doctor description */}
+            <div
+              className={
+                lang === "ar"
+                  ? "shadow-sm m-2 p-3 text-end"
+                  : "shadow-sm m-2 p-3 text-start"
+              }
+              style={{
+                borderRadius: 10,
+              }}
+            >
+              <SubtitleText subtitle={content[lang].about_dr} />
+              <div className="m-1">
+                <DescriptionText description={doctor.description} />
+              </div>
+            </div>
 
-      {/* doctor  specializations --> tags/badges */}
-      <TagList tags={doctor.specializations} />
-      {/* doctor  total ratings ---> stars*/}
-      <Ratings rating={doctor.rating} />
-      {/* doctor  clinics tabs*/}
-      <Tabs
-        id="controlled-tab-example"
-        activeKey={key}
-        onSelect={(k) => setKey(k)}
-        className="mb-3"
-      >
-        {doctor.clinics.map((clinic) => (
-          <Tab key={clinic.id} eventKey={clinic.id} title={clinic.area}>
-            <ClinicPanel clinic_id={clinic.id} doctor_id={id} />
-          </Tab>
-        ))}
-      </Tabs>
-      {/* doctor  all ratings with feedbacks */}
-      <FeedbacksList doctor_id={id} />
-    </>
+            {/* doctor  specializations --> tags/badges */}
+            <div
+              className={
+                lang === "ar" ? "fs-5 text-end m-2" : "fs-5 text-start m-2"
+              }
+            >
+              <TagList tags={doctor.specializations} />
+            </div>
+
+            {/* doctor  clinics tabs*/}
+          </div>
+          <Tabs
+            id="controlled-tab-example"
+            activeKey={key}
+            onSelect={(k) => setKey(k)}
+            className="mb-3"
+          >
+            {doctor.clinics.map((clinic) => (
+              <Tab key={clinic.id} eventKey={clinic.id} title={clinic.area}>
+                <ClinicPanel clinic_id={clinic.id} doctor_id={id} />
+              </Tab>
+            ))}
+          </Tabs>
+          {/* doctor  all ratings with feedbacks */}
+          <FeedbacksList doctor_id={id} />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
