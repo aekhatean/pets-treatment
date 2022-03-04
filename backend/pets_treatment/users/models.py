@@ -50,7 +50,7 @@ class Specialization(models.Model):
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=1000,blank=True,null=True)
-    syndicate_id = models.FileField(upload_to=synd_upload,null=True)
+    syndicate_id = models.ImageField(upload_to=synd_upload,null=True)
     national_id = models.CharField(max_length=14,unique=True)
     is_varified = models.BooleanField(default=False)
     specialization = models.ManyToManyField(Specialization)
@@ -85,7 +85,6 @@ class Schedule(models.Model):
     to_time=models.TimeField(null=False)
     day=models.CharField(max_length=25,choices=week_days)
     appointment_duration=models.FloatField()
-    date=models.DateField()
     doctor=models.ForeignKey(Doctor, on_delete=models.CASCADE)
     clinic=models.ForeignKey(Clinic, on_delete=models.CASCADE)
     active=models.BooleanField(default=True)

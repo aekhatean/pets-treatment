@@ -16,6 +16,7 @@ urlpatterns = [
     path('doctors/specialities/',SpecializationsList.as_view()),
     path('schedule/<int:pk>', ScheduleVview.as_view()),
     path('schedule/doctor/<int:pk>', ScheduleList_one_doctor.as_view()),
+    path('schedule/one_clinic_one_doctor/<int:pk>', ScheduleList_one_clinic_one_doctor.as_view()),
     path('schedule/clinic/<int:pk>', ScheduleList_one_clinic.as_view()),
     path('appointment/<int:pk>', AppointmentVview.as_view()),
     path('doctor-appointment/<int:pk>', AppointmentsListByDoctor.as_view()),
