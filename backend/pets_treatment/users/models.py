@@ -58,7 +58,7 @@ class Doctor(models.Model):
     clinics = models.ManyToManyField(Clinic,through='DoctorClinics')
 
     def __str__(self):
-        return str(self.user.first_name)
+        return str(f'{self.user.first_name} {self.user.last_name}')
 
 ######################## DoctorClinics Models ############################
 class DoctorClinics(models.Model):

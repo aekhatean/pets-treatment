@@ -15,7 +15,7 @@ from .serializers import *
 from users.models import *
 from django.contrib.auth.models import User
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, date
 from cryptography.fernet import Fernet
 from .email_utils import send_mail_user
 from django.template.loader import render_to_string
@@ -206,25 +206,25 @@ class RateDoctor(APIView):
 
 class FindDoctor(APIView):
     def get(self, request):
-        search_term = request.data['find']
+        search_term = request.query_params.get('find')
         # Filters
-        areas = request.data['filters']['areas']  # List
-        cities = request.data['filters']['cities']  # List
-        countries = request.data['filters']['countries']  # List
-        specializations = request.data['filters']['specializations'] # List
+        areas = request.query_params.get('areas')  # List
+        city = request.query_params.get('city')  # List
+        countries = request.query_params.get('countries')  # List
+        specializations = request.query_params.get('specializations') # List
 
         search_terms_list = search_term.split()
         doctors = []
 
         # Create filters
         query_filters = Q()
-        if len(areas) > 0:
+        if areas and len(areas) > 0:
             query_filters.add(Q(clinics__area__in=areas), Q.AND)
-        if len(cities) > 0:
-            query_filters.add(Q(clinics__city__in=cities), Q.AND)
-        if len(countries) > 0:
+        if city and len(city) > 0:
+            query_filters.add(Q(clinics__city=city), Q.AND)
+        if countries and len(countries) > 0:
             query_filters.add(Q(clinics__country__in=countries), Q.AND)
-        if len(specializations) > 0:
+        if specializations and len(specializations) > 0:
             query_filters.add(Q(specialization__name__in=specializations), Q.AND)
 
         # Search for the term
@@ -331,5 +331,20 @@ class AppointmentsListByDoctor(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
-class AppointmentsListByUser(generics.ListAPIView):
-    pass
+class UpcomingAppointmentsListByUser(generics.ListAPIView):
+    def get_queryset(self):
+        return Appiontments.objects.filter(user=self.request.user, schedule__date__gte=date.today())
+    
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    lookup_url_kwarg = 'pk'
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class PreviousAppointmentsListByUser(generics.ListAPIView):
+    def get_queryset(self):
+        return Appiontments.objects.filter(user=self.request.user, schedule__date__lt=date.today())
+    
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    lookup_url_kwarg = 'pk'
+    permission_classes = [IsAuthenticatedOrReadOnly]
