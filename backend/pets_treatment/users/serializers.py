@@ -199,7 +199,14 @@ class ScheduleSerializer(serializers.ModelSerializer):
         depth = 1
 ######### doctor serialziers ##########
 class AppointmentSerializer(serializers.ModelSerializer):
+    doctor = serializers.CharField(source='schedule.doctor')
+    clinic = serializers.CharField(source='schedule.clinic.name')
+    address = serializers.SerializerMethodField('get_full_address')
+
+    def get_full_address(self, obj):
+        return f'{obj.schedule.clinic.address}, {obj.schedule.clinic.area}, {obj.schedule.clinic.city}'
+
     class Meta:
         model = Appiontments
-        fields = '__all__'
+        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address')
         depth = 1

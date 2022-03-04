@@ -42,12 +42,39 @@ const getAppointmentJSTimeDuration = (pyTime, duration) => {
   };
 };
 
+const getAppointmentInfo = (res, setAppointments) => {
+  if (res.status === 200) {
+    const appointmentsList = [];
+    for (const result of res.data.results) {
+      const { date, appointment_duration } = result.schedule;
+      const { visiting_time, doctor, clinic, address } = result;
+
+      const { from, to } = getAppointmentJSTimeDuration(
+        visiting_time,
+        appointment_duration
+      );
+      const newAppointment = {
+        doctor: doctor,
+        clinic: clinic,
+        address: address,
+        date: getAppointmentJSDate(date),
+        from: from,
+        to: to,
+      };
+      appointmentsList.push(newAppointment);
+    }
+    setAppointments(appointmentsList);
+  }
+};
+
 function UserDashboard(props) {
   const { id } = props.match.params;
-  const [appointments, setAppointments] = useState([]);
-  const userUpcomingAppointments = `user-upcoming-appointment/`;
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [prviousAppointments, setPrviousAppointments] = useState([]);
+  const userUpcomingAppointments = `users/user-upcoming-appointment/`;
+  const userPreviousAppointments = `users/user-previous-appointment/`;
 
-  // Get apponitmnets
+  // Get upcoming apponitmnets
   useEffect(() => {
     axiosInstance
       .get(userUpcomingAppointments, {
@@ -55,38 +82,27 @@ function UserDashboard(props) {
           Authorization: "Token " + localStorage.getItem("token"),
         },
       })
-      .then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          const appointmentsList = [];
-
-          for (const result of res.data.results) {
-            const { date, appointment_duration } = result.schedule;
-            const { first_name, last_name } = result.user;
-            const { visiting_time } = result;
-
-            const { from, to } = getAppointmentJSTimeDuration(
-              visiting_time,
-              appointment_duration
-            );
-            const newAppointment = {
-              name: `${first_name} ${last_name}`,
-              date: getAppointmentJSDate(date),
-              from: from,
-              to: to,
-            };
-            appointmentsList.push(newAppointment);
-          }
-          setAppointments(appointmentsList);
-        }
-      });
+      .then((res) => getAppointmentInfo(res, setUpcomingAppointments));
   }, [userUpcomingAppointments, id]);
 
-  console.log(appointments);
+  // Get previous apponitmnets
+  useEffect(() => {
+    axiosInstance
+      .get(userPreviousAppointments, {
+        headers: {
+          Authorization: "Token " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => getAppointmentInfo(res, setPrviousAppointments));
+  }, [userPreviousAppointments, id]);
 
   return (
-    <div id="clinic-dashbaord">
-      <DynamicTable tableContent={appointments} />
+    <div id="clinic-dashbaord" className="mt-5">
+      <div className="h1 text-md-start">Upcoming appointments</div>
+      <DynamicTable tableContent={upcomingAppointments} />
+      <hr className="mt-5" />
+      <div className="h1 text-md-start">Previous appointments</div>
+      <DynamicTable tableContent={prviousAppointments} />
     </div>
   );
 }
