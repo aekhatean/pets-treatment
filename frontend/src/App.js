@@ -17,6 +17,8 @@ import { ConditionallyRender } from "react-util-kit";
 import { ReactComponent as ButtonIcon } from "./assets/robot.svg";
 import Doctors from "./pages/Doctors";
 import NotFoundPage from "./pages/NotFoundPage";
+import DoctorRegister from "./pages/DoctorRegister";
+import PetOwnerRegister from "./pages/PetOwnerRegister";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(true);
@@ -30,7 +32,8 @@ function App() {
           <Route path="/howitworks" component={HowItWorks} />
           <Route path="/about" component={About} />
           <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
+          <Route path="/doctor_register" component={DoctorRegister} />
+          <Route path="/petowner_register" component={PetOwnerRegister} />
           <Route path="/doctor_dashboard" component={DoctorDashboard} />
           <Route path="/user/:id" component={UserDashboard} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />

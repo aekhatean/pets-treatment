@@ -11,7 +11,7 @@ const TextFeild = ({label, ...props}) => {
                 {...field} {...props}
                 autoComplete="off"
             />
-            <ErrorMessage name={field.name} component="div"  className="error"/>
+            <ErrorMessage name={field.name} component="div" style={{color:"red"}} className="error"/>
         </div>
     )
 }

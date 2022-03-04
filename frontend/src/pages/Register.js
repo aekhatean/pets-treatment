@@ -7,6 +7,7 @@ import {Container} from "react-bootstrap";
 import axios from 'axios';
 import imageToBase64 from 'image-to-base64/browser';
 import { axiosInstance } from '../api';
+import {colors} from '../colors/colors'
 // import SuccessModal from '../components/SuccessModal';
 // import ErrorModal from '../components/ErrorModal';
 // import axios from 'axios';
@@ -335,7 +336,7 @@ const[specializationsList, setSpecialization] = useState([]);
                         
                         
                         {/* <button className='btn mt-3 btn-dark' type='submit' disabled={isSubmitting} >Submit</button> */}
-                        <button className='btn mt-3 btn-primary' type='submit' style={{marginRight:'10px'}}>Submit</button>
+                        <button className='btn mt-3 btn-outline-dark' type='submit' style={{marginRight:'10px', backgroundColor:colors.bg.primary, border:"none"}}>Submit</button>
                         <button className='btn mt-3 ml-3 btn-danger' type='reset' onClick={handleReset}>Reset</button>
                     </Form>
                 </Container>

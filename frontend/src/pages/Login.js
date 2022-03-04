@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import {Input} from "reactstrap";
 import axios from 'axios';
 import {Container} from "react-bootstrap";
+import {colors} from '../colors/colors';
 
 function Login() {
     const validate = Yup.object({
@@ -63,7 +64,7 @@ function Login() {
                         <TextFeild label="Email" name="email" type="email"/>
                         <TextFeild label="Password" name="password" type="password"/>
 
-                        <button className='btn mt-3 btn-dark' type='submit' disabled={isSubmitting} >Submit</button>
+                        <button className='btn mt-3 btn-outline-dark' type='submit' style={{marginRight:'10px', backgroundColor:colors.bg.primary, border:"none"}}>Submit</button>
                     </Form>
                 </Container>
             )}}
