@@ -66,14 +66,6 @@ function Register() {
         confirmPassword:Yup.string()
         .oneOf([Yup.ref('password'), null], 'Password must match')
         .required("Confirm password is required"),
-        description:Yup.string()
-        .max(1000, "Can't write a description more than 1000 character")
-        .required("Description is required"),
-        // numbers not chars
-        national_id:Yup.string() 
-        .max(14, "National id must be 14 number")
-        .min(14, "National id must be 14 number")
-        .required("National id is required"),
         username:Yup.string()
         .max(20, "Username can't be more than 20 character")
         .required("Username is required"),
@@ -85,12 +77,6 @@ function Register() {
             /^01[0-2,5]\d{8}$/,
             "Must be egyptian number"
           ),
-
-        // specialization:Yup.string()
-        // .required("You must choose a Specialization")
-
-        // syndicate_id:Yup.string()
-        // .required("Syndicate id is reqired"),
 
         // photo:Yup.string()
         // .required("Photo is required"),
@@ -119,21 +105,6 @@ function Register() {
         });
       };
 
-const[specializationsList, setSpecialization] = useState([]);
-    useEffect(() => {
-      axiosInstance
-        .get(`users/doctors/specialities/`)
-        .then((res) => {
-          if (res.status === 200) {
-            setSpecialization(res.data)
-            console.log(res.data)
-             
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, []);
     return (
         <Formik
             initialValues={{
@@ -142,16 +113,12 @@ const[specializationsList, setSpecialization] = useState([]);
                 email:'',
                 password:'',
                 confirmPassword:'',
-                description: '',
-                national_id: '',
                 phone: '',
                 country: 'egypt',
                 city: '',
                 area: '',
                 areas:[],
-                syndicate_id: '',
                 photo: '',
-                specialization: '',
                 username: '',
 
 
@@ -175,17 +142,13 @@ const[specializationsList, setSpecialization] = useState([]);
                     phone: values.phone,
                     picture: baseImage,
                   },
-                    description: values.description,
-                    syndicate_id: syncId,
-                    national_id: values.national_id,
-                    specialization: values.special
                           
                 };
                 console.log(values.special)
                 console.log(data)
 
                 axios.post(
-                  "http://127.0.0.1:8000/users/doctors/new",
+                  "http://127.0.0.1:8000/users/register/",
                   data,
                 )
 
@@ -223,13 +186,11 @@ const[specializationsList, setSpecialization] = useState([]);
                         <TextFeild label="Email" name="email" type="email"/>
                         <TextFeild label="Password" name="password" type="password"/>
                         <TextFeild label="Confirm Password" name="confirmPassword" type="password"/>
-                        <TextFeild label="Description" name="description" type="text"/>
-                        <TextFeild label="National_id" name="national_id" type="text"/>
                         <TextFeild label="Phone" name="phone" type="text"/>
 
 
                         <div className="mb-3 text-start">
-                          <label className="form-label" htmlFor="doc_photo">Upload your Photo</label>
+                          <label className="form-label" htmlFor="photo">Upload your Photo</label>
                           <Input
                             name='photo'
                             type="file"
@@ -241,18 +202,6 @@ const[specializationsList, setSpecialization] = useState([]);
                           <br></br>
                               {/* <img src={baseImage} height="200px" /> */}
 
-                        <div className="mb-3 text-start">
-                          <label className="form-label" htmlFor="synd_id">Upload your Syndicate id</label>
-                          <Input
-                            id="synd_id" 
-                            name="syndicate_id"
-                            type="file"
-                            onChange={(e) => {
-                              uploadSyncId(e);
-                            }}
-                          />
-                        </div>
-                        <br></br>
                         
                         <div className="mb-3 text-start">
 
@@ -308,34 +257,12 @@ const[specializationsList, setSpecialization] = useState([]);
 
                         </div>
                         
-
-                        <div className="mb-3 text-start">
-                          <label className="form-label" htmlFor="special">Specialization</label>
-
-                          <Field 
-                          as="select" 
-                          className="form-select"
-                          controlId="validationFormik05"
-                          name="special" 
-                          id="special" 
-                          onChange={handleChange
-
-                          }>
-                          <option value="" label="Select a specialization" />
-                            {specializationsList.map(spec =>
-                              (<option key={spec.name} value={spec.name}>
-                                          {spec.name}
-                                        </option>)
-                              )}
-                          </Field>
-                        </div>
-                        <br></br>
                         
                         
                         
                         
                         {/* <button className='btn mt-3 btn-dark' type='submit' disabled={isSubmitting} >Submit</button> */}
-                        <button className='btn mt-3 btn-primary' type='submit' style={{marginRight:'10px'}}>Submit</button>
+                        <button className='btn mt-3 btn-dark' type='submit'>Submit</button>
                         <button className='btn mt-3 ml-3 btn-danger' type='reset' onClick={handleReset}>Reset</button>
                     </Form>
                 </Container>

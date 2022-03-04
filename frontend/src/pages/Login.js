@@ -4,6 +4,7 @@ import TextFeild from '../components/TextField';
 import * as Yup from 'yup';
 import {Input} from "reactstrap";
 import axios from 'axios';
+import {Container} from "react-bootstrap";
 
 function Login() {
     const validate = Yup.object({
@@ -55,7 +56,7 @@ function Login() {
             setFieldValue
           } = formProps;
           return (
-                <div>
+                <Container className='p-5 shadow ' >
                     <h1 className='my-4 font-weight-bold-display-4'>Login</h1>
 
                     <Form onSubmit={handleSubmit}>
@@ -64,7 +65,7 @@ function Login() {
 
                         <button className='btn mt-3 btn-dark' type='submit' disabled={isSubmitting} >Submit</button>
                     </Form>
-                </div>
+                </Container>
             )}}
         </Formik>
     )

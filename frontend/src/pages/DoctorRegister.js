@@ -11,7 +11,7 @@ import { axiosInstance } from '../api';
 // import ErrorModal from '../components/ErrorModal';
 // import axios from 'axios';
 // const imageToBase64 = require('image-to-base64');
-function Register() {
+function DoctorRegister() {
   // image
   const [baseImage, setBaseImage] = useState("");
   const [syncId, setSyncId] = useState("");
@@ -229,7 +229,7 @@ const[specializationsList, setSpecialization] = useState([]);
 
 
                         <div className="mb-3 text-start">
-                          <label className="form-label" htmlFor="doc_photo">Upload your Photo</label>
+                          <label className="form-label" htmlFor="photo">Upload your Photo</label>
                           <Input
                             name='photo'
                             type="file"
@@ -345,4 +345,4 @@ const[specializationsList, setSpecialization] = useState([]);
 
 }
 
-export default Register;
+export default DoctorRegister;
