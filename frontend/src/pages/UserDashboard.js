@@ -45,43 +45,48 @@ const getAppointmentJSTimeDuration = (pyTime, duration) => {
 function UserDashboard(props) {
   const { id } = props.match.params;
   const [appointments, setAppointments] = useState([]);
-  const docAppointmentspath = `users/doctor-appointment/${id}`;
+  const userUpcomingAppointments = `user-upcoming-appointment/`;
 
   // Get apponitmnets
   useEffect(() => {
-    axiosInstance.get(docAppointmentspath).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        const appointmentsList = [];
+    axiosInstance
+      .get(userUpcomingAppointments, {
+        headers: {
+          Authorization: "Token " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          const appointmentsList = [];
 
-        for (const result of res.data.results) {
-          const { date, appointment_duration } = result.schedule;
-          const { first_name, last_name } = result.user;
-          const { visiting_time } = result;
+          for (const result of res.data.results) {
+            const { date, appointment_duration } = result.schedule;
+            const { first_name, last_name } = result.user;
+            const { visiting_time } = result;
 
-          const { from, to } = getAppointmentJSTimeDuration(
-            visiting_time,
-            appointment_duration
-          );
-          const newAppointment = {
-            name: `${first_name} ${last_name}`,
-            date: getAppointmentJSDate(date),
-            from: from,
-            to: to,
-          };
-          appointmentsList.push(newAppointment);
+            const { from, to } = getAppointmentJSTimeDuration(
+              visiting_time,
+              appointment_duration
+            );
+            const newAppointment = {
+              name: `${first_name} ${last_name}`,
+              date: getAppointmentJSDate(date),
+              from: from,
+              to: to,
+            };
+            appointmentsList.push(newAppointment);
+          }
+          setAppointments(appointmentsList);
         }
-        setAppointments(appointmentsList);
-      }
-    });
-  }, [docAppointmentspath, id]);
+      });
+  }, [userUpcomingAppointments, id]);
 
   console.log(appointments);
 
   return (
     <div id="clinic-dashbaord">
       <DynamicTable tableContent={appointments} />
-      {/* <Paginator api={axiosInstance} path={docAppointmentspath}/> */}
     </div>
   );
 }
