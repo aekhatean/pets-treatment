@@ -30,6 +30,7 @@ function App() {
           <Route path="/howitworks" component={HowItWorks} />
           <Route path="/about" component={About} />
           <Route path="/login" component={Login} />
+          <Route path="/doctor_register" component={Register} />
           <Route path="/register" component={Register} />
           <Route path="/user/:id" component={UserDashboard} />
           <Route path="/dashboard/:id" component={ClinicDashboard} />
