@@ -10,3 +10,21 @@ justify-content: space-around;
     margin-left: 10px;
 
 }
+
+/* On screens that are 992px or less, set the background color to */
+@media screen and (max-width: 992px) {
+
+  }
+  
+  /* On screens that are 600px or less, set the background color to  */
+  @media screen and (max-width: 770px) {
+    .mybody{
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        
+        }
+  }
+
+
+

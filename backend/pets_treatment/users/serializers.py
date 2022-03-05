@@ -182,7 +182,7 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
             return 0 
     class Meta:
         model = Doctor
-        fields = ('user','description','profile','specialization','clinics','average_rate')
+        fields = ('id','user','description','profile','specialization','clinics','average_rate')
         depth = 1
 
 
@@ -213,7 +213,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = ('id','from_time','to_time','day',
         'appointment_duration','doctor','clinic','active','date')
-######### doctor serialziers ##########
+######### Appointment serialziers ##########
 class AppointmentSerializer(serializers.ModelSerializer):
     doctor = serializers.CharField(source='schedule.doctor')
     clinic = serializers.CharField(source='schedule.clinic.name')

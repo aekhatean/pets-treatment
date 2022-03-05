@@ -10,7 +10,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
-from .paginations import StandardResultsSetPagination
+from users.paginations import StandardResultsSetPagination
 from .serializers import *
 from users.models import *
 from django.contrib.auth.models import User
@@ -207,6 +207,7 @@ class RateDoctor(APIView):
 class FindDoctor(APIView):
     def get(self, request):
         search_term = request.query_params.get('find')
+
         # Filters
         areas = request.query_params.get('areas')  # List
         city = request.query_params.get('city')  # List
@@ -232,9 +233,7 @@ class FindDoctor(APIView):
             query_terms = Q(user__first_name__icontains=term)
             query_terms.add(Q(user__last_name__icontains=term), Q.OR)
             query_terms.add(Q(description__icontains=term), Q.OR)
-            query_terms.add(Q(clinics__name__icontains=search_term), Q.OR)
-            query_terms.add(Q(clinics__city__icontains=search_term), Q.OR)
-            query_terms.add(Q(clinics__area__icontains=search_term), Q.OR)
+            query_terms.add(Q(clinics__name__contains=search_term), Q.OR)
 
             # Combine term and filters
             query = query_filters
@@ -311,23 +310,14 @@ class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
 class AppointmentList(generics.ListCreateAPIView):
     queryset = Appiontments.objects.all()
     serializer_class = AppointmentSerializer
-    pagination_class = StandardResultsSetPagination
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
 
 class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = AppointmentSerializer
-    pagination_class = StandardResultsSetPagination
+    serializer_class=AppointmentSerializer
     lookup_url_kwarg = 'pk'
     queryset = Appiontments.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    
 
-class AppointmentsListByDoctor(generics.ListAPIView):
-    serializer_class = AppointmentSerializer
-    pagination_class = StandardResultsSetPagination
-    lookup_url_kwarg = 'pk'
-    queryset = Appiontments.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
@@ -348,3 +338,4 @@ class PreviousAppointmentsListByUser(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
     lookup_url_kwarg = 'pk'
     permission_classes = [IsAuthenticatedOrReadOnly]
+
