@@ -4,7 +4,7 @@ import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 
 function FAQ(props) {
-  const { lang, setlang } = useContext(LanguageContext);
+  const { lang, setLang } = useContext(LanguageContext);
   return (
     <Container className="p-5" dir={lang === "ar" ? "rtl" : "ltr"}>
       <Accordion style={{ maxWidth: "70%" }}>

@@ -9,7 +9,7 @@ import Register from "./pages/Register";
 import DoctorPublicProfile from "./pages/DoctorPublicProfile";
 import ClinicDashboard from "./pages/ClinicDashbord";
 import UserDashboard from "./pages/UserDashboard";
-import Navbar from "./components/Navbar";
+
 import Footer from "./components/Footer";
 import "react-chatbot-kit/build/main.css";
 import Bot from "./chatbot/bot";
@@ -17,13 +17,14 @@ import { ConditionallyRender } from "react-util-kit";
 import { ReactComponent as ButtonIcon } from "./assets/robot.svg";
 import Doctors from "./pages/Doctors";
 import NotFoundPage from "./pages/NotFoundPage";
+import NavBarComponent from "./components/NavBarComponent";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(true);
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
+        <NavBarComponent />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/search" component={SearchPage} />
@@ -31,8 +32,10 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/login" component={Login} />
           <Route path="/doctor_register" component={Register} />
-          <Route path="/register" component={Register} />
-          <Route path="/user/:id" component={UserDashboard} />
+          {/* <Route path="/register" component={Register} /> */}
+          <Route path="/doctor_register" component={Register} />
+          <Route path="/petowner_register" component={Register} />
+          <Route path="/user" component={UserDashboard} />
           <Route path="/dashboard/:id" component={ClinicDashboard} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
           <Route path="/doctors/" component={Doctors} />
