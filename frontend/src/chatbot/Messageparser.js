@@ -16,14 +16,18 @@ class MessageParser {
     } else if (
       lowerCase.includes("work") ||
       lowerCase.includes("info") ||
-      lowerCase.includes("information")
+      lowerCase.includes("information") ||
+      lowerCase.includes("appointment")
     ) {
       this.actionProvider.handleHowItWorks();
     } else if (
       lowerCase.includes("search") ||
       lowerCase.includes("clinic") ||
       lowerCase.includes("start") ||
-      lowerCase.includes("reserv")
+      lowerCase.includes("reserve") ||
+      lowerCase.includes("doctor") ||
+      lowerCase.includes("vet") ||
+      lowerCase.includes("sick")
     ) {
       this.actionProvider.handleClinicSearch();
     } else if (
