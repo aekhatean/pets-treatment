@@ -49,7 +49,7 @@ export const Select = ({ label, name, options, ...props }) => {
           {options.map((option) => {
             return (
               <option key={option.key} value={option.value}>
-                {option.key}
+                {option.value}
               </option>
             );
           })}
@@ -132,19 +132,19 @@ export const FileUploadMultiple = (props) => {
       };
     }
     form.setFieldValue(field.name, base64_images);
-    console.log(base64_images);
-    console.log(field.name);
   };
   return (
-    <>
-      <label htmlFor={field.name}>{label}</label>
+    <div className="d-flex justify-content-between align-items-center my-2">
+      <label className="flex-one" htmlFor={field.name}>
+        {label}
+      </label>
       <input
         type={"file"}
         onChange={(o) => handleChange(o)}
-        className={"form-control"}
+        className={"form-control flex-two"}
         multiple
       />
-    </>
+    </div>
   );
 };
 // export const CheckBox = ({ label, ...props }) => {

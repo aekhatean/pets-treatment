@@ -12,6 +12,18 @@ class ClinicSerializer(serializers.ModelSerializer):
         read_only_fields = ['is_verified']
         depth = 1
 
+    def create(self, validated_data):
+        images = self.context.get('request').data.get('images')
+        clinic = Clinic.objects.create(**validated_data)
+        for image in images:
+            clinic_image_serializer = ClinicImageSerializer(data={'picture':image})
+            if clinic_image_serializer.is_valid():
+                clinic_image_serializer.save(clinic=clinic)
+            else:
+                clinic.delete()
+                raise serializers.ValidationError("there was a problem with an image")
+        return clinic
+
 class ClinicImageSerializer(serializers.ModelSerializer):
     picture = Base64ImageField()
     class Meta:

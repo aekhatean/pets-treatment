@@ -56,7 +56,7 @@ class Register(APIView):
         key = Fernet.generate_key()
         fernet = Fernet(key)
         enc_token = fernet.encrypt(token.key.encode())
-        activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
+        activation_link = f"http://127.0.0.1:8000/users/activate/{key.decode()}/{enc_token.decode()}"
         send_mail_user(profile.user.first_name,activation_link,profile.user.email)
         return Response({
             'data':'we sent you a verification email, please check it and click the link',
@@ -283,8 +283,8 @@ class DoctorClinic_ClinicView(APIView):
             clinic = Clinic.objects.get(id=pk)
             clinic_owner = Doctor.objects.get(user=request.user)
             doctor = Doctor.objects.get(id=request.data["doctor_id"])
-            if DoctorClinics.objects.get(clinic=clinic, clinic_owner=True).doctor==clinic_owner:
-                if DoctorClinics.objects.get(clinic=clinic, doctor=doctor): 
+            if DoctorClinics.objects.filter(clinic=clinic, clinic_owner=True)[0].doctor == clinic_owner or doctor == Doctor.objects.filter(user=request.user)[0]:
+                if DoctorClinics.objects.filter(clinic=clinic, doctor=doctor)[0]: 
                     doctor_clinics = DoctorClinics.objects.filter(doctor=doctor,clinic=clinic).delete()
                     return Response({
                                     'msg':'Doctor deleted from clinic Successfully',
@@ -294,7 +294,8 @@ class DoctorClinic_ClinicView(APIView):
                             'errors':"Doctor is not in this clinic!"
                         },status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({'msg':"You can't delete doctor from clinic you are not it's owner!"},
+                return Response({'msg':"You can't delete doctor from clinic if you aren't the doctor him/her self \
+                or the clinic owner!"},
                     status.HTTP_401_UNAUTHORIZED) 
         except:                  
             return Response({

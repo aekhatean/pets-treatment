@@ -60,7 +60,7 @@ const ClinicAdder = (props) => {
         technical_registration: "",
         technical_registration_number: "",
         price: "",
-        // images: [],
+        images: [],
       }}
       validationSchema={validateClinic}
       onSubmit={(values) => {
@@ -114,9 +114,13 @@ const ClinicAdder = (props) => {
                   label="Technical Registration"
                 />
               </li>
-              {/* <li className="list-group-item">
-                <Field name="images" component={FileUploadMultiple} />
-              </li> */}
+              <li className="list-group-item">
+                <Field
+                  name="images"
+                  component={FileUploadMultiple}
+                  label="Clinic Images"
+                />
+              </li>
               <li className="list-group-item">
                 <button className="btn btn-primary" type="submit">
                   Add

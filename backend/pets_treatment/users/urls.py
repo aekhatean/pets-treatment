@@ -24,7 +24,7 @@ urlpatterns = [
     path('appointment/<int:pk>', AppointmentVview.as_view()),
     path('doctor-appointment/<int:pk>', AppointmentsListByDoctor.as_view()),
     path('register/', Register.as_view()),
-    path('<str:key>/<str:enc_token>', ActivateUser.as_view()),
+    path('activate/<str:key>/<str:enc_token>', ActivateUser.as_view()),
     path('doctors/rating/<int:pk>', RateDoctor.as_view()),
     path('doctors/search/', FindDoctor.as_view()),
     path('schedule/', ScheduleList.as_view()),

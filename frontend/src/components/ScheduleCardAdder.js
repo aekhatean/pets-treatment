@@ -54,7 +54,7 @@ const ScheduleCardAdder = (props) => {
       onSubmit={(values) => addSchedule(values)}
     >
       {(formik) => (
-        <Form className="d-flex">
+        <Form className="d-flex my-3">
           <div className="card">
             <ul className="list-group list-group-flush">
               <div className="list-group-item">

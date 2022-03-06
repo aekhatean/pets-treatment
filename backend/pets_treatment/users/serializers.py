@@ -128,7 +128,7 @@ class DoctorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        fields = ('is_varified','description','syndicate_id','national_id','specialization','profile','clinics','average_rate')
+        fields = ('id','is_varified','description','syndicate_id','national_id','specialization','profile','clinics','average_rate')
         read_only_fields = ['is_varified']
         depth = 1
 
@@ -148,7 +148,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         key = Fernet.generate_key()
         fernet = Fernet(key)
         enc_token = fernet.encrypt(token.key.encode())
-        activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
+        activation_link = f"http://127.0.0.1:8000/users/activate/{key.decode()}/{enc_token.decode()}"
         send_mail_user(doctor.user.first_name,activation_link,doctor.user.email)
         newdoctor = Doctor.objects.get(user=profile.user)
         return newdoctor
@@ -182,13 +182,14 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
             return 0 
     class Meta:
         model = Doctor
-        fields = ('user','description','profile','specialization','clinics','average_rate')
+        fields = ('id','user','description','profile','specialization','clinics','average_rate')
         depth = 1
 
 class DoctorClinicsSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorClinics
         fields = '__all__'
+        depth = 1
 
 class DoctorRatingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -203,7 +204,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
         weekdays_dict = {
             "Monday":0,
             "Tuesday":1,
-            "Wednsday":2,
+            "Wednesday":2,
             "Thursday":3,
             "Friday":4,
             "Saturday":5,
