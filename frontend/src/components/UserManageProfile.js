@@ -1,17 +1,16 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { LanguageContext } from "../context/LanguageContext";
 
 // Bootsratp
 import { Container, Row, Col, Spinner } from "react-bootstrap";
-
-// Components
-import ProfilePicture from "./ProfilePicture";
 
 // API consumption
 import { axiosInstance } from "../api";
 
 // Language
 import { content } from "../translation/translation";
+import UserProfileView from "./UserProfileView";
+import UserProfileEdit from "./UserProfileEdit";
 
 const getUserData = (res, setData) => {
   if (res.status === 200) {
@@ -21,7 +20,8 @@ const getUserData = (res, setData) => {
 
 export default function UserManageProfile(props) {
   const { lang, setLang } = useContext(LanguageContext);
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({});
+  const [viewPanelState, setViewPanelState] = useState(true);
   const userInfo = `users/profilelist`;
   useEffect(() => {
     axiosInstance
@@ -33,44 +33,19 @@ export default function UserManageProfile(props) {
       .then((res) => getUserData(res, setUserData));
   }, [userInfo]);
 
-  if (userData && Object.keys(userData).length) {
+  if (viewPanelState === true) {
     return (
       <Container
         dir={lang === "ar" ? "rtl" : "ltr"}
         className="text-md-start mb-5"
       >
-        <Row className="my-5">
-          <Col md={3}>
-            <ProfilePicture src={userData.picture} />
-          </Col>
-          <Col md={9} className="mt-4">
-            <div>
-              {userData.user.first_name} {userData.user.last_name}
-            </div>
-            <div>@{userData.user.username}</div>
-            <div>
-              {userData.city}, {userData.country}
-            </div>
-          </Col>
-        </Row>
-        <hr />
-        <Row className="my-5">
-          <Col>
-            <div className="h3">{content[lang].contactInfo}</div>
-            <p>
-              <b>{content[lang].email}: &nbsp;</b>
-              {userData.phone}
-            </p>
-            <p>
-              <b>{content[lang].phone}: &nbsp;</b>
-              {userData.user.email}
-            </p>
-          </Col>
-        </Row>
-        <hr />
+        <UserProfileView userData={userData} />
         <Row>
           <Col>
-            <button className="secondary-dark-bg rounded border-0 p-3 text-light">
+            <button
+              className="secondary-dark-bg rounded border-0 p-3 text-light"
+              onClick={setViewPanelState(!viewPanelState)}
+            >
               {content[lang].editAccountInfo}
             </button>
           </Col>
@@ -78,6 +53,13 @@ export default function UserManageProfile(props) {
       </Container>
     );
   } else {
-    return <Spinner animation="border" variant="info" />;
+    return (
+      <Container
+        dir={lang === "ar" ? "rtl" : "ltr"}
+        className="text-md-start mb-5 mt-5"
+      >
+        <UserProfileEdit userData={userData} />
+      </Container>
+    );
   }
 }

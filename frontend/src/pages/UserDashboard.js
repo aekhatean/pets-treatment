@@ -7,6 +7,7 @@ function UserDashboard(props) {
     // { name: "My appointments", view: <UserAppointments /> },
     { name: "Manage profile", view: <UserManageProfile /> },
   ];
+  console.log(selections)
   return (
     <div id="clinic-dashbaord">
       <SideBar selections={selections} />
