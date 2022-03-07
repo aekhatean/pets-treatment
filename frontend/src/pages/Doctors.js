@@ -28,8 +28,10 @@ function Doctors() {
  let data = JSON.stringify( mydata);
 let config = {
     method: 'get',
-    url: `http://127.0.0.1:8000/users/doctors/`,
-    params:{data:data}
+    url: `http://127.0.0.1:8000/users/finddoctor/`,
+    params:{
+      'user__first_name':'ahmed'
+    }
 }
 
 
@@ -37,19 +39,7 @@ let config = {
 
   const [doctors, updatealldoctors] = useState([]);
   useEffect(() => {
-    // axiosInstance
-    //   .get(`users/doctors/search/`,{
-    //     params:{
-    //       "find": "cairo",
-    //       "filters": {
-    //           "areas": [],
-    //           "cities": [],
-    //           "countries": [],
-    //           "specializations": []
-    //       }
-    //   }
-    //   })
-    // axios.get(`http://127.0.0.1:8000/`+`users/doctors/`)
+
       axios(config).then((res) => {
         if (res.status === 200) {
           updatealldoctors(res.data);
