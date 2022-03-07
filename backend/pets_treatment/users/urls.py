@@ -25,8 +25,9 @@ urlpatterns = [
     path('register/', Register.as_view()),
     path('<str:key>/<str:enc_token>', ActivateUser.as_view()),
     path('doctors/rating/<int:pk>', RateDoctor.as_view()),
-    path('doctors/search/', FindDoctor.as_view()),
+    # path('doctors/search/', FindDoctor.as_view()),
     path('schedule/', ScheduleList.as_view()),
     path('appointment/', AppointmentList.as_view()),
     path('profilelist',ViewProfile.as_view()),
+    path('finddoctor/',Findmydoctor.as_view()),
 ]

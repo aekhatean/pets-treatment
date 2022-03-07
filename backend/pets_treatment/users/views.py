@@ -1,5 +1,6 @@
 from codecs import lookup_error
 from re import search
+from unicodedata import name
 # from msilib.schema import Class
 from django.http import Http404
 from rest_framework import status, viewsets
@@ -204,46 +205,46 @@ class RateDoctor(APIView):
             return Response({'msg': "make sure this doctor was rated by the same user before"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class FindDoctor(APIView):
-    def get(self, request):
-        search_term = request.query_params.get('find')
+# class FindDoctor(APIView):
+#     def get(self, request):
+#         search_term = request.query_params.get('find')
 
-        # Filters
-        areas = request.query_params.get('areas')  # List
-        city = request.query_params.get('city')  # List
-        countries = request.query_params.get('countries')  # List
-        specializations = request.query_params.get('specializations') # List
+#         # Filters
+#         areas = request.query_params.get('areas')  # List
+#         city = request.query_params.get('city')  # List
+#         countries = request.query_params.get('countries')  # List
+#         specializations = request.query_params.get('specializations') # List
 
-        search_terms_list = search_term.split()
-        doctors = []
+#         search_terms_list = search_term.split()
+#         doctors = []
 
-        # Create filters
-        query_filters = Q()
-        if areas and len(areas) > 0:
-            query_filters.add(Q(clinics__area__in=areas), Q.AND)
-        if city and len(city) > 0:
-            query_filters.add(Q(clinics__city=city), Q.AND)
-        if countries and len(countries) > 0:
-            query_filters.add(Q(clinics__country__in=countries), Q.AND)
-        if specializations and len(specializations) > 0:
-            query_filters.add(Q(specialization__name__in=specializations), Q.AND)
+#         # Create filters
+#         query_filters = Q()
+#         if areas and len(areas) > 0:
+#             query_filters.add(Q(clinics__area__in=areas), Q.AND)
+#         if city and len(city) > 0:
+#             query_filters.add(Q(clinics__city=city), Q.AND)
+#         if countries and len(countries) > 0:
+#             query_filters.add(Q(clinics__country__in=countries), Q.AND)
+#         if specializations and len(specializations) > 0:
+#             query_filters.add(Q(specialization__name__in=specializations), Q.AND)
 
-        # Search for the term
-        for term in search_terms_list:
-            query_terms = Q(user__first_name__icontains=term)
-            query_terms.add(Q(user__last_name__icontains=term), Q.OR)
-            query_terms.add(Q(description__icontains=term), Q.OR)
-            query_terms.add(Q(clinics__name__contains=search_term), Q.OR)
+#         # Search for the term
+#         for term in search_terms_list:
+#             query_terms = Q(user__first_name__icontains=term)
+#             query_terms.add(Q(user__last_name__icontains=term), Q.OR)
+#             query_terms.add(Q(description__icontains=term), Q.OR)
+#             query_terms.add(Q(clinics__name__contains=search_term), Q.OR)
 
-            # Combine term and filters
-            query = query_filters
-            query.add(query_terms, Q.AND)
+#             # Combine term and filters
+#             query = query_filters
+#             query.add(query_terms, Q.AND)
 
-            # Apply query
-            doctors += Doctor.objects.filter(query)
+#             # Apply query
+#             doctors += Doctor.objects.filter(query)
 
-        data = DoctorPublicSerializer(doctors,many=True).data
-        return Response({'data':data},status=status.HTTP_200_OK)
+#         data = DoctorPublicSerializer(doctors,many=True).data
+#         return Response({'data':data},status=status.HTTP_200_OK)
 
 
 ################## Profile ######################
@@ -338,4 +339,9 @@ class PreviousAppointmentsListByUser(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
     lookup_url_kwarg = 'pk'
     permission_classes = [IsAuthenticatedOrReadOnly]
-
+    
+#/////////doctor filter/////////#
+class Findmydoctor(generics.ListCreateAPIView):
+    queryset = Doctor.objects.filter(is_varified=True)
+    serializer_class = DoctorPublicSerializer
+    filter_fields = ("user__first_name","user__last_name","clinics__name","specialization__name","clinics__city","clinics__area","clinics__country","profile__city","profile__country","profile__area")

@@ -9,7 +9,7 @@ from .email_utils import send_mail_user
 from clinics.serializers import ClinicSerializer
 from django.db.models import Sum
 import datetime
-
+import django_filters
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
@@ -174,6 +174,7 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
     user = UserPublicInfoSerializer()
     profile=ProfilePublicSerializer()
     average_rate = serializers.SerializerMethodField('calc_average_rate')
+    # first_name=user.fields.get("first_name")
     def calc_average_rate(self, doctor):
         try:
             average_rate = DoctorRating.objects.filter(doctor=doctor).aggregate(Sum('rating')).get('rating__sum') / DoctorRating.objects.filter(doctor=doctor).count()
@@ -199,7 +200,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
         weekdays_dict = {
             "Monday":0,
             "Tuesday":1,
-            "Wednsday":2,
+            "Wednesday":2,
             "Thursday":3,
             "Friday":4,
             "Saturday":5,
@@ -226,3 +227,12 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = Appiontments
         fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address')
         depth = 1
+        
+        
+#////////////
+
+# class DoctorEventFilter(django_filters.FilterSet):
+#     class Meta:
+#         model = Doctor
+#         #use __ (double underscore) to target foreign key values
+#         fields = ['user__eventName', 'event__startDate','event__endDate','event__address']
