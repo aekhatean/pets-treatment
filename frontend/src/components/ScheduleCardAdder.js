@@ -26,6 +26,7 @@ const ScheduleCardAdder = (props) => {
         headers: { Authorization: `Token ${token}` },
       })
       .catch((err) => console.error(err));
+    console.log(response);
     props.hideForm(false);
     props.fetchFunc();
   }
@@ -51,7 +52,10 @@ const ScheduleCardAdder = (props) => {
         active: true,
       }}
       validationSchema={validateSchedule}
-      onSubmit={(values) => addSchedule(values)}
+      onSubmit={(values) => {
+        console.log(values);
+        addSchedule(values);
+      }}
     >
       {(formik) => (
         <Form className="d-flex my-3">

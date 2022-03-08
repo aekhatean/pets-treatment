@@ -96,24 +96,28 @@ export const FileUpload = (props) => {
   const handleChange = (e) => {
     const file = e.currentTarget.files[0];
     const reader = new FileReader();
+    reader.readAsDataURL(file);
     reader.onload = function (event) {
-      // console.log(file.name, "file name");
-      // console.log(event.target.result, "event target result");
       form.setFieldValue(field.name, event.target.result);
     };
-
-    reader.readAsDataURL(file);
   };
   return (
     <div className="d-flex justify-content-between align-items-center my-2">
-      <label className="flex-one" htmlFor={field.name}>
+      <label className="flex-one mx-3" htmlFor={field.name}>
         {label}
       </label>
-      <input
-        type={"file"}
-        onChange={(o) => handleChange(o)}
-        className={"form-control flex-two"}
-      />
+      <div className="d-flex flex-column">
+        <input
+          type={"file"}
+          onChange={(o) => handleChange(o)}
+          className={"form-control flex-two"}
+        />
+        <ErrorMessage
+          component="div"
+          className="font-small text-danger text-start"
+          name={field.name}
+        />
+      </div>
     </div>
   );
 };
@@ -135,15 +139,22 @@ export const FileUploadMultiple = (props) => {
   };
   return (
     <div className="d-flex justify-content-between align-items-center my-2">
-      <label className="flex-one" htmlFor={field.name}>
+      <label className="flex-one mx-3" htmlFor={field.name}>
         {label}
       </label>
-      <input
-        type={"file"}
-        onChange={(o) => handleChange(o)}
-        className={"form-control flex-two"}
-        multiple
-      />
+      <div className="d-flex flex-column">
+        <input
+          type={"file"}
+          onChange={(o) => handleChange(o)}
+          className={"form-control flex-two"}
+          multiple
+        />
+        <ErrorMessage
+          component="div"
+          className="font-small text-danger text-start"
+          name={field.name}
+        />
+      </div>
     </div>
   );
 };

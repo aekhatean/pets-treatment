@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../api";
-import ProfilePicture from "./ProfilePicture";
+import ModalDelete from "./ModalDelete";
 
 const DoctorDashboardCard = (props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [token] = useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken;
@@ -17,9 +18,13 @@ const DoctorDashboardCard = (props) => {
       .post(`users/doctors/own_clinics/${props.clinic_id}`, data, {
         headers: { Authorization: `Token ${token}` },
       })
-      .catch((err) => console.error(err.response));
-    props.func_clinic_id("");
-    props.func_fetch_clinics();
+      .catch((err) => console.error(err.response.data));
+    if (!props.is_owner) {
+      props.func_clinic_id("");
+      props.func_fetch_clinics();
+    } else {
+      props.func_fetch_doctors();
+    }
   }
 
   async function getDoctorProfile() {
@@ -40,7 +45,7 @@ const DoctorDashboardCard = (props) => {
           <div className="card-header">
             <img
               src={`http://localhost:8000${doctorProfile.profile.picture}`}
-              className="img-thumbnail"
+              className="card-img-top"
             />
           </div>
           <ul className="list-group list-group-flush">
@@ -51,13 +56,21 @@ const DoctorDashboardCard = (props) => {
               (doctorProfile.id !== props.current_doctor_id &&
                 props.is_owner)) && (
               <li className="list-group-item">
-                <button className="btn btn-danger" onClick={deleteDoctor}>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => setIsModalOpen(true)}
+                >
                   Delete From Clinic
                 </button>
               </li>
             )}
           </ul>
         </div>
+        <ModalDelete
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          deleteFunc={deleteDoctor}
+        />
       </div>
     );
   } else {

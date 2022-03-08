@@ -1,14 +1,60 @@
 import { Formik, Form, Field } from "formik";
 import { InputField, FileUpload, FileUploadMultiple } from "./Inputs";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { axiosInstance } from "../api";
 import * as Yup from "yup";
+
+export const SUPPORTED_FORMATS = [
+  "image/jpg",
+  "image/jpeg",
+  "image/gif",
+  "image/png",
+];
+// 8 mega bytes max size
+export const IMAGE_SIZE = 8388608;
+
+export function trueInArrChecker(arr) {
+  if (arr.includes(false)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+export function checkForImageSize(image) {
+  if (image) {
+    const imageObjFromURI = dataURItoBlob(image);
+    return imageObjFromURI && imageObjFromURI.size <= IMAGE_SIZE;
+  }
+}
+export function checkForImageFormat(image) {
+  if (image) {
+    const imageObjFromURI = dataURItoBlob(image);
+    return imageObjFromURI && SUPPORTED_FORMATS.includes(imageObjFromURI.type);
+  }
+}
+function dataURItoBlob(dataURI) {
+  // convert base64/URLEncoded data component to raw binary data held in a string
+  const encodedData = dataURI.toString();
+  var byteString;
+  if (encodedData.split(",")[0].indexOf("base64") >= 0)
+    byteString = atob(encodedData.split(",")[1]);
+  else byteString = decodeURI(encodedData.split(",")[1]);
+  // separate out the mime component
+  var mimeString = encodedData.split(",")[0].split(":")[1].split(";")[0];
+  // write the bytes of the string to a typed array
+  var ia = new Uint8Array(byteString.length);
+  for (var i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([ia], { type: mimeString });
+}
 
 const ClinicAdder = (props) => {
   const [token] = useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken;
   });
+
   async function addClinic(values) {
     const data = values;
     const response = await axiosInstance
@@ -21,30 +67,57 @@ const ClinicAdder = (props) => {
     props.fetchFunc();
   }
 
-  const validateClinic = Yup.object({
-    name: Yup.string().required("*name is required"),
-    address: Yup.string().required("*address is required"),
-    area: Yup.string().required("*area is required"),
-    city: Yup.string().required("*city is required"),
-    country: Yup.string().required("*country is required"),
+  const validateClinic = Yup.object().shape({
+    name: Yup.string().required("*name is required."),
+    address: Yup.string().required("*address is required."),
+    area: Yup.string().required("*area is required."),
+    city: Yup.string().required("*city is required."),
+    country: Yup.string().required("*country is required."),
     phone: Yup.number()
-      .typeError("*phone must be a number")
-      .required("*phone is required"),
-    tax_registration: Yup.string().required("*tax registration is required"),
-    technical_registration: Yup.string().required(
-      "*technical registration is required"
-    ),
+      .typeError("*phone must be a number.")
+      .required("*phone is required."),
+    tax_registration: Yup.mixed()
+      .nullable()
+      .required("*tax registeration is required.")
+      .test("imageSize", "*image too large", (image) =>
+        checkForImageSize(image)
+      )
+      .test("imageFormat", "*unsupported image type", (image) =>
+        checkForImageFormat(image)
+      ),
+    technical_registration: Yup.mixed()
+      .nullable()
+      .required("*technical registeration is required.")
+      .test("imageSize", "*image is too large", (image) =>
+        checkForImageSize(image)
+      )
+      .test("imageFormat", "*unsupported image type", (image) =>
+        checkForImageFormat(image)
+      ),
     technical_registration_number: Yup.number()
       .typeError("*technical registration number must be a number")
       .required("*technical registration number is required"),
     price: Yup.number()
       .typeError("*price must be a number")
       .required("*price is required"),
-    // images: Yup.mixed().when("isArray", {
-    //   is: Array.isArray,
-    //   then: Yup.array().of(Yup.string()),
-    //   otherwise: Yup.string(),
-    // }),
+    images: Yup.array()
+      .nullable()
+      .test("imagesSize", "*an image is too large", (imgArr) => {
+        let imgArrValidation = [];
+        imgArr.length &&
+          imgArr.forEach((img) =>
+            imgArrValidation.push(checkForImageSize(img))
+          );
+        return trueInArrChecker(imgArrValidation);
+      })
+      .test("imagesType", "*an image has an unsupported type.", (imgArr) => {
+        let imgArrValidation = [];
+        imgArr.length &&
+          imgArr.forEach((img) =>
+            imgArrValidation.push(checkForImageFormat(img))
+          );
+        return trueInArrChecker(imgArrValidation);
+      }),
   });
 
   return (
@@ -56,15 +129,15 @@ const ClinicAdder = (props) => {
         city: "",
         country: "",
         phone: "",
-        tax_registration: "",
-        technical_registration: "",
+        tax_registration: null,
+        technical_registration: null,
         technical_registration_number: "",
         price: "",
         images: [],
       }}
       validationSchema={validateClinic}
       onSubmit={(values) => {
-        console.log(values);
+        // console.log(values);
         addClinic(values);
       }}
     >
@@ -123,7 +196,7 @@ const ClinicAdder = (props) => {
               </li>
               <li className="list-group-item">
                 <button className="btn btn-primary" type="submit">
-                  Add
+                  Add Clinic
                 </button>
               </li>
             </ul>

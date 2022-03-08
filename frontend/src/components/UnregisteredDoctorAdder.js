@@ -1,40 +1,40 @@
 import { Formik, Form } from "formik";
-import { InputField, Select } from "./Inputs";
+import { InputField } from "./Inputs";
 import { axiosInstance } from "../api";
 import { useState } from "react";
 import * as Yup from "yup";
 
-const ExistingDoctorAdder = (props) => {
+const UnRegisteredDoctorAdderCard = (props) => {
   const [token] = useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken;
   });
 
-  async function addExistingDoctor(values) {
-    const data = values;
+  async function addUnRegisteredDoctor(values) {
     const response = await axiosInstance
-      .post(`clinics/add_doctor_clinic/${props.clinic_id}/`, data, {
+      .post(`clinics/invite_doctor/`, values, {
         headers: { Authorization: `Token ${token}` },
       })
-      .catch((err) => console.error(err.response));
-    console.log(response);
+      .catch((err) => console.error(err.response.data));
+    console.log(response.data);
     props.hideForm(false);
-    props.fetchDoctors();
   }
 
-  const validateDoctorNID = Yup.object({
-    doctor_nid: Yup.string()
-      .test("len", "Must be exactly 14 number", (val) => val.length === 14)
-      .required("*doctor national id is required"),
+  const validateDoctorEmail = Yup.object({
+    doctor_email: Yup.string()
+      .email("*invalid email format")
+      .required("*email is required"),
   });
 
   return (
     <Formik
       initialValues={{
-        doctor_nid: "",
+        doctor_email: "",
+        clinic_id: props.clinic_id,
+        clinic_name: props.clinic_name,
       }}
-      validationSchema={validateDoctorNID}
-      onSubmit={(values) => addExistingDoctor(values)}
+      validationSchema={validateDoctorEmail}
+      onSubmit={(values) => addUnRegisteredDoctor(values)}
     >
       {(formik) => (
         <Form className="d-flex my-3">
@@ -42,14 +42,14 @@ const ExistingDoctorAdder = (props) => {
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <InputField
-                  label="Doctor National ID"
-                  name="doctor_nid"
-                  type="number"
+                  label="Doctor's Email"
+                  name="doctor_email"
+                  type="email"
                 />
               </li>
               <li className="list-group-item">
                 <button className="btn btn-primary" type="submit">
-                  Add to clinic
+                  Send Invitation
                 </button>
               </li>
             </ul>
@@ -60,4 +60,4 @@ const ExistingDoctorAdder = (props) => {
   );
 };
 
-export default ExistingDoctorAdder;
+export default UnRegisteredDoctorAdderCard;

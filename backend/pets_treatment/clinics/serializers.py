@@ -15,13 +15,14 @@ class ClinicSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         images = self.context.get('request').data.get('images')
         clinic = Clinic.objects.create(**validated_data)
-        for image in images:
-            clinic_image_serializer = ClinicImageSerializer(data={'picture':image})
-            if clinic_image_serializer.is_valid():
-                clinic_image_serializer.save(clinic=clinic)
-            else:
-                clinic.delete()
-                raise serializers.ValidationError("there was a problem with an image")
+        if images and len(images) > 0:
+            for image in images:
+                clinic_image_serializer = ClinicImageSerializer(data={'picture':image})
+                if clinic_image_serializer.is_valid():
+                    clinic_image_serializer.save(clinic=clinic)
+                else:
+                    clinic.delete()
+                    raise serializers.ValidationError("there was a problem with an image")
         return clinic
 
 class ClinicImageSerializer(serializers.ModelSerializer):

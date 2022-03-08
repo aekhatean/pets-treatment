@@ -5,6 +5,9 @@ import ScheduleCardAdder from "./ScheduleCardAdder";
 import ClinicAdder from "./ClinicAdder";
 import ExistingDoctorAdder from "./ExistingDoctorAdder";
 import DoctorDashboardCard from "./DoctorDashboardCard";
+import UnRegisteredDoctorAdderCard from "./UnregisteredDoctorAdder";
+import ClinicUpdater from "./ClinicUpdater";
+import ModalDelete from "./ModalDelete";
 
 const ManageClinics = () => {
   const [doctorClinics, setDoctorClinics] = useState([]);
@@ -13,9 +16,11 @@ const ManageClinics = () => {
   const [selectedClinicId, setSelectedClinicId] = useState("");
   const [scheduleAdder, setScheduleAdder] = useState(false);
   const [clinicAdder, setClinicAdder] = useState(false);
-  const [doctorAdder, setDoctorAdder] = useState(false);
+  const [clinicUpdater, setClinicUpdater] = useState(false);
+  const [existingDoctorAdder, setExistingDoctorAdder] = useState(false);
+  const [unRegisteredDoctorAdder, setUnRegisteredDoctorAdder] = useState(false);
   const [isClinicOwner, setIsClinicOwner] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   let currentDoctorId = 0;
 
   const [token] = useState(() => {
@@ -47,6 +52,7 @@ const ManageClinics = () => {
         headers: { Authorization: `Token ${token}` },
       })
       .catch((err) => console.error(err.response));
+    console.log(response);
     setDoctorSchedules(response.data);
   }
   async function fetchDoctors() {
@@ -78,20 +84,27 @@ const ManageClinics = () => {
         setIsClinicOwner(false);
       }
     }
-  }, [selectedClinicId]);
+  }, [selectedClinicId, doctorClinics]);
 
   if (doctorClinics[0]) {
     currentDoctorId = doctorClinics[0].doctor.id;
   }
   return (
     <div>
-      <div className="container">
+      <div className="container-fluid">
         <h4 className="text-start my-4">Select a clinic</h4>
         <select
-          className="form-select w-25 primary-color mb-3"
+          className="form-select w-50 primary-color mb-3"
           aria-label="Select menu"
           value={selectedClinicId}
-          onChange={(e) => setSelectedClinicId(e.target.value)}
+          onChange={(e) => {
+            setSelectedClinicId(e.target.value);
+            setClinicUpdater(false);
+            setClinicAdder(false);
+            setExistingDoctorAdder(false);
+            setUnRegisteredDoctorAdder(false);
+            setScheduleAdder(false);
+          }}
         >
           <option defaultValue value="">
             Select a clinic..
@@ -109,18 +122,39 @@ const ManageClinics = () => {
         </select>
         <div className="row">
           <button
-            className="btn btn-primary col-md-2 col-4 mx-3"
-            onClick={() => setClinicAdder(!clinicAdder)}
+            className="btn btn-primary col-lg-2 col-4 mx-3 my-2"
+            onClick={() => {
+              setClinicUpdater(false);
+              setClinicAdder(!clinicAdder);
+            }}
           >
             Add New Clinic
           </button>
           {selectedClinicId && isClinicOwner && (
             <button
-              className="btn btn-danger col-md-2 col-4 mx-3"
-              onClick={deleteClinic}
+              className="btn btn-warning col-lg-2 col-4 mx-3 my-2"
+              onClick={() => {
+                setClinicAdder(false);
+                setClinicUpdater(!clinicUpdater);
+              }}
+            >
+              View & Update Clinic Data
+            </button>
+          )}
+          {selectedClinicId && isClinicOwner && (
+            <button
+              className="btn btn-danger col-lg-2 col-4 mx-3 my-2"
+              onClick={() => setIsModalOpen(true)}
             >
               Delete Clinic
             </button>
+          )}
+          {clinicUpdater && (
+            <ClinicUpdater
+              clinic_id={selectedClinicId}
+              hideForm={setClinicUpdater}
+              fetchFunc={fetchClinics}
+            />
           )}
           {clinicAdder && (
             <ClinicAdder fetchFunc={fetchClinics} hideForm={setClinicAdder} />
@@ -164,7 +198,7 @@ const ManageClinics = () => {
 
           {selectedClinicId && scheduleAdder && (
             <ScheduleCardAdder
-              doctor_id={4}
+              doctor_id={currentDoctorId}
               clinic_id={selectedClinicId}
               fetchFunc={fetchSchedules}
               hideForm={setScheduleAdder}
@@ -185,6 +219,7 @@ const ManageClinics = () => {
                     func_fetch_clinics={fetchClinics}
                     current_doctor_id={currentDoctorId}
                     is_owner={isClinicOwner}
+                    func_fetch_doctors={fetchDoctors}
                   />
                 );
               })
@@ -200,22 +235,56 @@ const ManageClinics = () => {
           )}
         </div>
         <div className="row mb-3">
-          {selectedClinicId && (
+          {selectedClinicId && isClinicOwner && (
             <button
-              className="btn btn-primary col-md-2 col-4 mx-3"
-              onClick={() => setDoctorAdder(!doctorAdder)}
+              className="btn btn-primary col-lg-3 col-md-4 col-5 mx-3"
+              onClick={() => {
+                setUnRegisteredDoctorAdder(false);
+                setExistingDoctorAdder(!existingDoctorAdder);
+              }}
             >
               Add Existing Doctor
             </button>
           )}
-          {selectedClinicId && doctorAdder && (
+          {selectedClinicId && isClinicOwner && (
+            <button
+              className="btn btn-primary col-lg-3 col-md-4 col-5 mx-3"
+              onClick={() => {
+                setExistingDoctorAdder(false);
+                setUnRegisteredDoctorAdder(!unRegisteredDoctorAdder);
+              }}
+            >
+              Add Unregistered Doctor
+            </button>
+          )}
+        </div>
+        <div className="row">
+          {selectedClinicId && existingDoctorAdder && isClinicOwner && (
             <ExistingDoctorAdder
-              hideForm={setDoctorAdder}
+              hideForm={setExistingDoctorAdder}
               clinic_id={selectedClinicId}
+              fetchDoctors={fetchDoctors}
+            />
+          )}
+          {selectedClinicId && unRegisteredDoctorAdder && isClinicOwner && (
+            <UnRegisteredDoctorAdderCard
+              hideForm={setUnRegisteredDoctorAdder}
+              clinic_id={selectedClinicId}
+              clinic_name={
+                doctorClinics.length &&
+                doctorClinics.find(
+                  (clinic) => clinic.clinic.id === Number(selectedClinicId)
+                ).clinic.name
+              }
             />
           )}
         </div>
       </div>
+      <ModalDelete
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        deleteFunc={deleteClinic}
+      />
     </div>
   );
 };

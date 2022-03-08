@@ -2,6 +2,7 @@ from codecs import lookup_error
 from re import search
 # from msilib.schema import Class
 from django.http import Http404
+from django.shortcuts import redirect
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -389,3 +390,4 @@ class AppointmentsListByDoctor(generics.ListAPIView):
 
 class AppointmentsListByUser(generics.ListAPIView):
     pass
+
