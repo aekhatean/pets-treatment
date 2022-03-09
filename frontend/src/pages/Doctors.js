@@ -23,14 +23,14 @@ var c_area=''
 
 function Doctors() {
 
-  function filterChinging(event) {
- firstname=document.getElementById("first_name").value,
- lastname=document.getElementById("last_name").value,
- u_city=document.getElementById("doctor_city").value,
- u_area=document.getElementById("doctor_area").value,
- c_name=document.getElementById("clinic_name").value,
- c_city=document.getElementById("clinic_city").value,
- c_area=document.getElementById("clinic_area").value,
+const filterChinging = (event) =>{
+ firstname=document.getElementById("first_name").value
+ lastname=document.getElementById("last_name").value
+ u_city=document.getElementById("doctor_city").value
+ u_area=document.getElementById("doctor_area").value
+ c_name=document.getElementById("clinic_name").value
+ c_city=document.getElementById("clinic_city").value
+ c_area=document.getElementById("clinic_area").value
  axios(config).then((res) => {
   if (res.status === 200) {
     updatealldoctors(res.data);
