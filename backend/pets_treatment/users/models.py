@@ -96,3 +96,5 @@ class Appiontments(models.Model):
     schedule=models.ForeignKey(Schedule, on_delete=models.CASCADE)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
 
+######################## Appiontments Models ############################
+  

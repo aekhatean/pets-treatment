@@ -1,6 +1,7 @@
 import React from "react";
 import homeImg from "../assets/homeImage.png";
 import getStarted from "../assets/GetStartedImg.png";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -50,8 +51,13 @@ function Home() {
         <img src={getStarted} alt="cat-img" />
         <div>
           <h1>Everything your pet needs All in one place. Get Started now!</h1>
-          <button className="btn-1">Pet Owner</button>
-          <button className="btn-2">Veterinarian</button>
+          <br></br>
+          <Link to="/petowner_register" className="btn-1">
+            Pet Owner
+          </Link>
+          <Link to="/doctor_register" className="btn-2">
+            Veterinarian
+          </Link>
         </div>
       </div>
     </div>

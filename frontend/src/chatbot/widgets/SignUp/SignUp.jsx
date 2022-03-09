@@ -5,12 +5,12 @@ const SignUp = props => {
   return (
     <>
       <Link
-        to="/search"
+        to="/petowner_register"
         className="btn btn-primary"
         style={{ marginRight: "4px" }}>
         Pet Owner
       </Link>
-      <Link to="/search" className="btn btn-secondary">
+      <Link to="/doctor_register" className="btn btn-secondary">
         Vet
       </Link>
     </>

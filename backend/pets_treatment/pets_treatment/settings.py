@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+        # Django Filters
+    'django_filters',
     'extra_views',
     'users.apps.UsersConfig',
     'clinics.apps.ClinicsConfig',
@@ -164,5 +166,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES':(
                 'rest_framework.permissions.AllowAny',
+    ),
+        'DEFAULT_FILTER_BACKENDS':(
+        'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }

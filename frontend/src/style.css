@@ -32,7 +32,7 @@ code {
 }
 
 .secondary-bg {
-  background-color: #67a19c;
+  background-color: #ced9dd;
 }
 
 .secondary-color {
@@ -46,7 +46,6 @@ code {
 
 .secondary-dark-color {
   color: #7884a5;
-
 }
 
 ul {
@@ -111,6 +110,7 @@ li {
   cursor: pointer;
   font-size: 1.2em;
   margin: 1em;
+  text-decoration: none;
 }
 .btn-2 {
   background: #b8d8d6;
@@ -121,6 +121,7 @@ li {
   cursor: pointer;
   font-size: 1.2em;
   margin: 1em;
+  text-decoration: none;
 }
 
 /* ChatBot */
