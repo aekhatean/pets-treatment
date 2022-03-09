@@ -19,7 +19,7 @@ const config = {
   ],
   botName: "Petsania's Bot",
   customComponents: {
-    botAvatar: props => <ButtonIcon {...props} />,
+    botAvatar: (props) => <ButtonIcon {...props} />,
   },
   customStyles: {
     botMessageBox: {
@@ -29,26 +29,27 @@ const config = {
       backgroundColor: "#188b87",
     },
   },
+
   widgets: [
     {
       widgetName: "overview",
-      widgetFunc: props => <Overview {...props} />,
+      widgetFunc: (props) => <Overview {...props} />,
     },
     {
       widgetName: "About",
-      widgetFunc: props => <About {...props} />,
+      widgetFunc: (props) => <About {...props} />,
     },
     {
       widgetName: "How it works",
-      widgetFunc: props => <HowItWorks {...props} />,
+      widgetFunc: (props) => <HowItWorks {...props} />,
     },
     {
       widgetName: "Search",
-      widgetFunc: props => <Search {...props} />,
+      widgetFunc: (props) => <Search {...props} />,
     },
     {
       widgetName: "Sign up",
-      widgetFunc: props => <SingUp {...props} />,
+      widgetFunc: (props) => <SingUp {...props} />,
     },
   ],
 };

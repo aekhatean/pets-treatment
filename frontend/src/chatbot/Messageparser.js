@@ -1,11 +1,17 @@
+import { content } from "../translation/translation";
+
 class MessageParser {
   constructor(actionProvider, state) {
     this.actionProvider = actionProvider;
     this.state = state;
   }
 
-  parse = message => {
+  parse = (message) => {
     const lowerCase = message.toLowerCase();
+    console.log(message);
+    const lang = localStorage.getItem("lang");
+    console.log(lang);
+    console.log(content[lang].about);
     if (
       lowerCase.includes("about") ||
       lowerCase.includes("petsania") ||
@@ -32,6 +38,7 @@ class MessageParser {
     if (lowerCase.includes("register") || lowerCase.includes("registration")) {
       this.actionProvider.handleSignUp();
     }
+    console.log(this.state);
     return this.actionProvider.handleDefault();
   };
 }

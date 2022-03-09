@@ -9,7 +9,7 @@ import { routes } from "../routes/routes";
 import { content } from "../translation/translation";
 
 function LogedUser(props) {
-  const { lang, setLang } = useContext(LanguageContext);
+  const { lang } = useContext(LanguageContext);
   const { is_loged, setLogging } = useContext(LogingContext);
   const [user, setUser] = useState({ picture: "", full_name: "" });
   // const [is_loged, setLog] = useState(false);
@@ -35,7 +35,7 @@ function LogedUser(props) {
         setUser({});
         setLogging(false);
       });
-  }, []);
+  }, [is_loged]);
 
   const getKeyByValue = (object, value) => {
     return Object.keys(object).find((key) => object[key] === value);
