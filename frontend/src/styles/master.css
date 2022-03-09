@@ -6,8 +6,10 @@ justify-content: space-around;
 }
 .parent_cards_div{
     display: flex;
-    flex-direction: column;
-    margin-left: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
 
 }
 

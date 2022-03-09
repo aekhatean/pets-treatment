@@ -1,14 +1,12 @@
 .doctor_card{
-    width: 60vw;
-    
+    width: 35vw;
     background-color: white;
     margin:auto ;
-    margin-top:20px;
+    margin:20px;
     border-radius: 25px;
     box-shadow: 3px 3px 10px 1px gray;
     display: flex;
     justify-content: space-evenly;
-
 }
 .caard{
     width:"10rem",
@@ -30,16 +28,16 @@ align-items: flex-start;
 justify-content: space-between;
 margin-left: 10px;
 }
-/* .card_right{
+.card_right{
 
-background-color: yellow;
+
 flex-grow: 1;
-max-width: 40%;
+width: 10%;
 display: flex;
 flex-direction: column;
 justify-content: flex-start;
 
-} */
+}
 .doctor_image{
     margin-top: 10px;
     width: 70px;
@@ -51,20 +49,25 @@ justify-content: flex-start;
 }
 .doctor_address{
 margin-top: 10px;
-margin-right: 10px;
-color: blue;
+
+color: gray;
 font-weight: bold;
+margin-left: 30px;
 }
 .doctor_name{
 font-size: 1.5rem;
 font-weight: bold;
 text-transform: capitalize;
+margin-left: 30px;
+
 }
 .doctor_header{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding:20px 0px;
+    color: black;
+   
 }
 .doctor_description{
    
@@ -78,6 +81,7 @@ text-transform: capitalize;
     padding-top: 20px;
     padding-bottom: 20px;
     font-weight: 500;
+    color: black;
    
 }
 
@@ -85,9 +89,17 @@ text-transform: capitalize;
 
     max-width: 30vw;
     margin: auto;
+    color: black;
     
 }
-
+.otherdata{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.nonlink{
+    text-decoration: none;
+}
 @media screen and (max-width: 770px) {
 
     .doctor_card{
