@@ -226,35 +226,21 @@ const ManageClinics = () => {
               </div>
               <h4 className="text-start my-4">Manage Doctors</h4>
               <div className="row">
-                {selectedClinicId ? (
-                  doctors.length > 0 ? (
-                    doctors.map((doctor) => {
-                      return (
-                        <DoctorDashboardCard
-                          key={doctor.id}
-                          doctor={doctor}
-                          clinic_id={selectedClinicId}
-                          func_clinic_id={setSelectedClinicId}
-                          func_fetch_clinics={fetchClinics}
-                          current_doctor_id={currentDoctorId}
-                          is_owner={isClinicOwner}
-                          func_fetch_doctors={fetchDoctors}
-                        />
-                      );
-                    })
-                  ) : (
-                    <div
-                      className="alert alert-secondary mx-3 w-50"
-                      role="alert"
-                    >
-                      This clinic doesn't have any doctors, add a doctor below.
-                    </div>
-                  )
-                ) : (
-                  <div className="alert alert-secondary mx-3 w-50" role="alert">
-                    Select a clinic to view, add, or delete doctors.
-                  </div>
-                )}
+                {selectedClinicId &&
+                  doctors.map((doctor) => {
+                    return (
+                      <DoctorDashboardCard
+                        key={doctor.id}
+                        doctor={doctor}
+                        clinic_id={selectedClinicId}
+                        func_clinic_id={setSelectedClinicId}
+                        func_fetch_clinics={fetchClinics}
+                        current_doctor_id={currentDoctorId}
+                        is_owner={isClinicOwner}
+                        func_fetch_doctors={fetchDoctors}
+                      />
+                    );
+                  })}
               </div>
               <div className="row mb-3">
                 {selectedClinicId && isClinicOwner && (

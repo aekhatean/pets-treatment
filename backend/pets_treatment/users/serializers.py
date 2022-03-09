@@ -114,7 +114,7 @@ class SpecializationSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 class DoctorSerializer(serializers.ModelSerializer):
-    syndicate_id=Base64ImageField()
+    syndicate_id=Base64ImageField(required=False)
     specialization=SpecializationSerializer(many=True)
     clinics = ClinicSerializer(many=True,required=False)
     profile = ProfileSerializer()
@@ -230,7 +230,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appiontments
-        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address')
+        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address', 'date')
         depth = 1
         
         

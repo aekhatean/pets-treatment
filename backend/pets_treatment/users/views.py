@@ -381,20 +381,18 @@ class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
 
 class UpcomingAppointmentsListByUser(generics.ListAPIView):
     def get_queryset(self):
-        return Appiontments.objects.filter(user=self.request.user, schedule__date__gte=date.today())
+        return Appiontments.objects.filter(user=self.request.user, date__gte=date.today())
     
     serializer_class = AppointmentSerializer
     pagination_class = StandardResultsSetPagination
-    lookup_url_kwarg = 'pk'
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 class PreviousAppointmentsListByUser(generics.ListAPIView):
     def get_queryset(self):
-        return Appiontments.objects.filter(user=self.request.user, schedule__date__lt=date.today())
+        return Appiontments.objects.filter(user=self.request.user, date__lt=date.today())
     
     serializer_class = AppointmentSerializer
     pagination_class = StandardResultsSetPagination
-    lookup_url_kwarg = 'pk'
     permission_classes = [IsAuthenticatedOrReadOnly]
     
 #/////////doctor filter/////////#
