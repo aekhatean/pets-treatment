@@ -1,8 +1,8 @@
 import { axiosInstance } from "../api";
 import { useState, useEffect } from "react";
-import ScheduleCard from "./ScheduleCard";
 import ScheduleCardAdder from "./ScheduleCardAdder";
 import ClinicAdder from "./ClinicAdder";
+import ScheduleCardDashboard from "./ScheduleCardDashboard";
 
 const ManageClinics = () => {
   const [doctorClinics, setDoctorClinics] = useState([]);
@@ -84,7 +84,7 @@ const ManageClinics = () => {
               doctorSchedules.map((schedule) => {
                 if (schedule.clinic === Number(selectedClinicId)) {
                   return (
-                    <ScheduleCard
+                    <ScheduleCardDashboard
                       key={schedule.id}
                       schedule={schedule}
                       func={fetchSchedules}
