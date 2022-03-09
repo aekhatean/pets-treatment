@@ -1,6 +1,6 @@
 import { axiosInstance } from "../api";
 import { useState, useEffect } from "react";
-import ScheduleCard from "./ScheduleCard";
+import ScheduleCard from "./ScheduleCardDashboard";
 import ScheduleCardAdder from "./ScheduleCardAdder";
 import ClinicAdder from "./ClinicAdder";
 import ExistingDoctorAdder from "./ExistingDoctorAdder";
