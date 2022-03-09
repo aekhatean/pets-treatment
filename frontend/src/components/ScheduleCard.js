@@ -40,19 +40,25 @@ const ScheduleCard = (props) => {
           <li className="list-group-item">
             From:{" "}
             <span className="fw-bold">
-              {from24hTo12h(props.schedule.from_time)
-                .split(" ")[0]
-                .substr(0, props.schedule.from_time.length - 4)}{" "}
-              {from24hTo12h(props.schedule.from_time).split(" ")[1]}
+              {`${from24hTo12h(props.schedule.from_time).split(":")[0]}:${
+                from24hTo12h(props.schedule.from_time).split(":")[1]
+              } ${
+                from24hTo12h(props.schedule.from_time)
+                  .split(":")[2]
+                  .split(" ")[1]
+              }
+                `}
             </span>
           </li>
           <li className="list-group-item">
             to:{" "}
             <span className="fw-bold">
-              {from24hTo12h(props.schedule.to_time)
-                .split(" ")[0]
-                .substr(0, props.schedule.to_time.length - 4)}{" "}
-              {from24hTo12h(props.schedule.to_time).split(" ")[1]}
+              {`${from24hTo12h(props.schedule.to_time).split(":")[0]}:${
+                from24hTo12h(props.schedule.to_time).split(":")[1]
+              } ${
+                from24hTo12h(props.schedule.to_time).split(":")[2].split(" ")[1]
+              }
+                `}
             </span>
           </li>
           <li className="list-group-item">

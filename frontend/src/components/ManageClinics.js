@@ -20,6 +20,7 @@ const ManageClinics = () => {
   const [existingDoctorAdder, setExistingDoctorAdder] = useState(false);
   const [unRegisteredDoctorAdder, setUnRegisteredDoctorAdder] = useState(false);
   const [isClinicOwner, setIsClinicOwner] = useState(false);
+  const [isClinicVerified, setIsClinicVerified] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   let currentDoctorId = 0;
 
@@ -52,7 +53,6 @@ const ManageClinics = () => {
         headers: { Authorization: `Token ${token}` },
       })
       .catch((err) => console.error(err.response));
-    console.log(response);
     setDoctorSchedules(response.data);
   }
   async function fetchDoctors() {
@@ -82,6 +82,18 @@ const ManageClinics = () => {
         setIsClinicOwner(true);
       } else {
         setIsClinicOwner(false);
+      }
+      if (
+        doctorClinics.find((clinic) => {
+          return (
+            clinic.clinic.id == selectedClinicId &&
+            clinic.clinic.is_verified === true
+          );
+        })
+      ) {
+        setIsClinicVerified(true);
+      } else {
+        setIsClinicVerified(false);
       }
     }
   }, [selectedClinicId, doctorClinics]);
@@ -149,136 +161,173 @@ const ManageClinics = () => {
               Delete Clinic
             </button>
           )}
-          {clinicUpdater && (
-            <ClinicUpdater
-              clinic_id={selectedClinicId}
-              hideForm={setClinicUpdater}
-              fetchFunc={fetchClinics}
-            />
-          )}
-          {clinicAdder && (
-            <ClinicAdder fetchFunc={fetchClinics} hideForm={setClinicAdder} />
-          )}
         </div>
-        <h4 className="my-4 text-start">Edit Schedule</h4>
-        <div className="row">
-          {selectedClinicId ? (
-            doctorSchedules.length > 0 ? (
-              doctorSchedules.map((schedule) => {
-                if (schedule.clinic === Number(selectedClinicId)) {
-                  return (
-                    <ScheduleCard
-                      key={schedule.id}
-                      schedule={schedule}
-                      func={fetchSchedules}
-                    />
-                  );
-                }
-              })
-            ) : (
-              <div className="alert alert-secondary mx-3 w-50" role="alert">
-                There is no schedules in this clinic, click to add below.
+        {clinicUpdater && (
+          <ClinicUpdater
+            clinic_id={selectedClinicId}
+            hideForm={setClinicUpdater}
+            fetchFunc={fetchClinics}
+          />
+        )}
+        {clinicAdder && (
+          <ClinicAdder fetchFunc={fetchClinics} hideForm={setClinicAdder} />
+        )}
+        {selectedClinicId ? (
+          isClinicVerified ? (
+            <>
+              {" "}
+              <h4 className="my-4 text-start">Edit Schedule</h4>
+              <div className="row">
+                {selectedClinicId ? (
+                  doctorSchedules.length > 0 ? (
+                    doctorSchedules.map((schedule) => {
+                      if (schedule.clinic === Number(selectedClinicId)) {
+                        return (
+                          <ScheduleCard
+                            key={schedule.id}
+                            schedule={schedule}
+                            func={fetchSchedules}
+                          />
+                        );
+                      }
+                    })
+                  ) : (
+                    <div
+                      className="alert alert-secondary mx-3 w-50"
+                      role="alert"
+                    >
+                      There is no schedules in this clinic, click to add below.
+                    </div>
+                  )
+                ) : (
+                  <div className="alert alert-secondary mx-3 w-50" role="alert">
+                    Select a clinic to view, edit, or delete your schedules.
+                  </div>
+                )}
               </div>
-            )
-          ) : (
-            <div className="alert alert-secondary mx-3 w-50" role="alert">
-              Select a clinic to view, edit, or delete your schedules.
-            </div>
-          )}
-        </div>
-        <div className="row">
-          {selectedClinicId && (
-            <button
-              className="btn btn-primary col-md-2 col-4 mx-3"
-              onClick={() => setScheduleAdder(!scheduleAdder)}
-            >
-              Add Schedule
-            </button>
-          )}
+              <div className="row">
+                {selectedClinicId && (
+                  <button
+                    className="btn btn-primary col-md-2 col-4 mx-3"
+                    onClick={() => setScheduleAdder(!scheduleAdder)}
+                  >
+                    Add Schedule
+                  </button>
+                )}
 
-          {selectedClinicId && scheduleAdder && (
-            <ScheduleCardAdder
-              doctor_id={currentDoctorId}
-              clinic_id={selectedClinicId}
-              fetchFunc={fetchSchedules}
-              hideForm={setScheduleAdder}
-            />
-          )}
-        </div>
-        <h4 className="text-start my-4">Manage Doctors</h4>
-        <div className="row">
-          {selectedClinicId ? (
-            doctors.length > 0 ? (
-              doctors.map((doctor) => {
-                return (
-                  <DoctorDashboardCard
-                    key={doctor.id}
-                    doctor={doctor}
+                {selectedClinicId && scheduleAdder && (
+                  <ScheduleCardAdder
+                    doctor_id={currentDoctorId}
                     clinic_id={selectedClinicId}
-                    func_clinic_id={setSelectedClinicId}
-                    func_fetch_clinics={fetchClinics}
-                    current_doctor_id={currentDoctorId}
-                    is_owner={isClinicOwner}
-                    func_fetch_doctors={fetchDoctors}
+                    fetchFunc={fetchSchedules}
+                    hideForm={setScheduleAdder}
                   />
-                );
-              })
-            ) : (
-              <div className="alert alert-secondary mx-3 w-50" role="alert">
-                This clinic doesn't have any doctors, add a doctor below.
+                )}
               </div>
-            )
+              <h4 className="text-start my-4">Manage Doctors</h4>
+              <div className="row">
+                {selectedClinicId ? (
+                  doctors.length > 0 ? (
+                    doctors.map((doctor) => {
+                      return (
+                        <DoctorDashboardCard
+                          key={doctor.id}
+                          doctor={doctor}
+                          clinic_id={selectedClinicId}
+                          func_clinic_id={setSelectedClinicId}
+                          func_fetch_clinics={fetchClinics}
+                          current_doctor_id={currentDoctorId}
+                          is_owner={isClinicOwner}
+                          func_fetch_doctors={fetchDoctors}
+                        />
+                      );
+                    })
+                  ) : (
+                    <div
+                      className="alert alert-secondary mx-3 w-50"
+                      role="alert"
+                    >
+                      This clinic doesn't have any doctors, add a doctor below.
+                    </div>
+                  )
+                ) : (
+                  <div className="alert alert-secondary mx-3 w-50" role="alert">
+                    Select a clinic to view, add, or delete doctors.
+                  </div>
+                )}
+              </div>
+              <div className="row mb-3">
+                {selectedClinicId && isClinicOwner && (
+                  <button
+                    className="btn btn-primary col-lg-3 col-md-4 col-5 mx-3"
+                    onClick={() => {
+                      setUnRegisteredDoctorAdder(false);
+                      setExistingDoctorAdder(!existingDoctorAdder);
+                    }}
+                  >
+                    Add Existing Doctor
+                  </button>
+                )}
+                {selectedClinicId && isClinicOwner && (
+                  <button
+                    className="btn btn-primary col-lg-3 col-md-4 col-5 mx-3"
+                    onClick={() => {
+                      setExistingDoctorAdder(false);
+                      setUnRegisteredDoctorAdder(!unRegisteredDoctorAdder);
+                    }}
+                  >
+                    Add Unregistered Doctor
+                  </button>
+                )}
+              </div>
+              <div className="row">
+                {selectedClinicId && existingDoctorAdder && isClinicOwner && (
+                  <ExistingDoctorAdder
+                    hideForm={setExistingDoctorAdder}
+                    clinic_id={selectedClinicId}
+                    fetchDoctors={fetchDoctors}
+                  />
+                )}
+                {selectedClinicId &&
+                  unRegisteredDoctorAdder &&
+                  isClinicOwner && (
+                    <UnRegisteredDoctorAdderCard
+                      hideForm={setUnRegisteredDoctorAdder}
+                      clinic_id={selectedClinicId}
+                      clinic_name={
+                        doctorClinics.length &&
+                        doctorClinics.find(
+                          (clinic) =>
+                            clinic.clinic.id === Number(selectedClinicId)
+                        ).clinic.name
+                      }
+                    />
+                  )}
+              </div>
+            </>
           ) : (
-            <div className="alert alert-secondary mx-3 w-50" role="alert">
-              Select a clinic to view, add, or delete doctors.
+            <div className="row">
+              <div className="col-8">
+                <div className="my-4 text-start alert alert-info" role="alert">
+                  Your clinic is not verified yet, please consider checking your
+                  email. Once it is verified we'll inform you and you will be
+                  able to Add doctors & schedules to your clinic.
+                </div>
+              </div>
             </div>
-          )}
-        </div>
-        <div className="row mb-3">
-          {selectedClinicId && isClinicOwner && (
-            <button
-              className="btn btn-primary col-lg-3 col-md-4 col-5 mx-3"
-              onClick={() => {
-                setUnRegisteredDoctorAdder(false);
-                setExistingDoctorAdder(!existingDoctorAdder);
-              }}
-            >
-              Add Existing Doctor
-            </button>
-          )}
-          {selectedClinicId && isClinicOwner && (
-            <button
-              className="btn btn-primary col-lg-3 col-md-4 col-5 mx-3"
-              onClick={() => {
-                setExistingDoctorAdder(false);
-                setUnRegisteredDoctorAdder(!unRegisteredDoctorAdder);
-              }}
-            >
-              Add Unregistered Doctor
-            </button>
-          )}
-        </div>
-        <div className="row">
-          {selectedClinicId && existingDoctorAdder && isClinicOwner && (
-            <ExistingDoctorAdder
-              hideForm={setExistingDoctorAdder}
-              clinic_id={selectedClinicId}
-              fetchDoctors={fetchDoctors}
-            />
-          )}
-          {selectedClinicId && unRegisteredDoctorAdder && isClinicOwner && (
-            <UnRegisteredDoctorAdderCard
-              hideForm={setUnRegisteredDoctorAdder}
-              clinic_id={selectedClinicId}
-              clinic_name={
-                doctorClinics.length &&
-                doctorClinics.find(
-                  (clinic) => clinic.clinic.id === Number(selectedClinicId)
-                ).clinic.name
-              }
-            />
-          )}
-        </div>
+          )
+        ) : (
+          <div className="row">
+            <div className="col-8">
+              <div
+                className="my-4 text-start alert alert-secondary"
+                role="alert"
+              >
+                Select or add new clinic to open your dashboard.
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <ModalDelete
         isModalOpen={isModalOpen}

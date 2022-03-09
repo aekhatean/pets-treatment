@@ -46,13 +46,14 @@ export const Select = ({ label, name, options, ...props }) => {
           name={name}
           {...props}
         >
-          {options.map((option) => {
-            return (
-              <option key={option.key} value={option.value}>
-                {option.value}
-              </option>
-            );
-          })}
+          {options.length &&
+            options.map((option) => {
+              return (
+                <option key={option.key} value={option.value}>
+                  {option.key}
+                </option>
+              );
+            })}
         </Field>
 
         <ErrorMessage
@@ -102,28 +103,41 @@ export const FileUpload = (props) => {
     };
   };
   return (
-    <div className="d-flex justify-content-between align-items-center my-2">
-      <label className="flex-one mx-3" htmlFor={field.name}>
-        {label}
-      </label>
-      <div className="d-flex flex-column">
-        <input
-          type={"file"}
-          onChange={(o) => handleChange(o)}
-          className={"form-control flex-two"}
-        />
-        <ErrorMessage
-          component="div"
-          className="font-small text-danger text-start"
-          name={field.name}
-        />
+    <>
+      <div className="d-flex justify-content-between align-items-center my-2">
+        <label className="flex-one mx-3" htmlFor={field.name}>
+          {label}
+        </label>
+        <div className="d-flex flex-column">
+          <input
+            type={"file"}
+            onChange={(o) => handleChange(o)}
+            className={"form-control flex-two"}
+            accept=".jpg,.jpeg,.png,.gif"
+            aria-describedby="imageHelp"
+          />
+          <div
+            id="imageHelp"
+            className="text-secondary text-start mt-1"
+            style={{ fontSize: "11px" }}
+          >
+            Supported Formats [ ".jpeg", ".jpg", ".png", ".gif" ]
+            <br />
+            Max Image Size : 8 Megabytes.
+          </div>
+          <ErrorMessage
+            component="div"
+            className="font-small text-danger text-start"
+            name={field.name}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
 export const FileUploadMultiple = (props) => {
-  const { label, field, form } = props;
+  const { label, field, form, setImagesLen } = props;
 
   const handleChange = (e) => {
     const files = e.currentTarget.files;
@@ -138,24 +152,42 @@ export const FileUploadMultiple = (props) => {
     form.setFieldValue(field.name, base64_images);
   };
   return (
-    <div className="d-flex justify-content-between align-items-center my-2">
-      <label className="flex-one mx-3" htmlFor={field.name}>
-        {label}
-      </label>
-      <div className="d-flex flex-column">
-        <input
-          type={"file"}
-          onChange={(o) => handleChange(o)}
-          className={"form-control flex-two"}
-          multiple
-        />
-        <ErrorMessage
-          component="div"
-          className="font-small text-danger text-start"
-          name={field.name}
-        />
+    <>
+      <div className="d-flex justify-content-between align-items-center my-2">
+        <label className="flex-one mx-3" htmlFor={field.name}>
+          {label}
+        </label>
+        <div className="d-flex flex-column">
+          <input
+            type={"file"}
+            onChange={(o) => {
+              if (setImagesLen) {
+                setImagesLen(o.currentTarget.files.length);
+              }
+              return handleChange(o);
+            }}
+            className={"form-control flex-two"}
+            multiple
+            aria-describedby="imagesHelp"
+            accept=".jpg,.jpeg,.png,.gif"
+          />
+          <div
+            id="imagesHelp"
+            className="text-secondary text-start mt-1"
+            style={{ fontSize: "11px" }}
+          >
+            Supported Formats [ ".jpeg", ".jpg", ".png", ".gif" ]
+            <br />
+            Max per Image Size : 8 Megabytes.
+          </div>
+          <ErrorMessage
+            component="div"
+            className="font-small text-danger text-start"
+            name={field.name}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 // export const CheckBox = ({ label, ...props }) => {

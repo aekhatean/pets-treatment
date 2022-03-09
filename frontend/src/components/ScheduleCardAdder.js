@@ -26,7 +26,6 @@ const ScheduleCardAdder = (props) => {
         headers: { Authorization: `Token ${token}` },
       })
       .catch((err) => console.error(err));
-    console.log(response);
     props.hideForm(false);
     props.fetchFunc();
   }
@@ -53,7 +52,6 @@ const ScheduleCardAdder = (props) => {
       }}
       validationSchema={validateSchedule}
       onSubmit={(values) => {
-        console.log(values);
         addSchedule(values);
       }}
     >

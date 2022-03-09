@@ -1,8 +1,33 @@
 import { Formik, Form, Field } from "formik";
-import { InputField, FileUpload, FileUploadMultiple } from "./Inputs";
+import { InputField, FileUpload, FileUploadMultiple, Select } from "./Inputs";
 import { useRef, useState } from "react";
 import { axiosInstance } from "../api";
 import * as Yup from "yup";
+
+export const cities = [
+  { key: "Select a city", value: "" },
+  { key: "Cairo", value: "Cairo" },
+  { key: "Giza", value: "Giza" },
+];
+
+export function getArea(city) {
+  switch (city) {
+    case "Cairo":
+      return [
+        { key: "Select an area", value: "" },
+        { key: "Shoubra", value: "Shoubra" },
+        { key: "Nasr City", value: "Nasr City" },
+      ];
+    case "Giza":
+      return [
+        { key: "Select an area", value: "" },
+        { key: "6th of October", value: "6th of October" },
+        { key: "Dokki", value: "Dokki" },
+      ];
+    default:
+      return [{ key: "Select a city first", value: "" }];
+  }
+}
 
 export const SUPPORTED_FORMATS = [
   "image/jpg",
@@ -50,6 +75,7 @@ function dataURItoBlob(dataURI) {
 }
 
 const ClinicAdder = (props) => {
+  const [areas, setAreas] = useState(getArea(""));
   const [token] = useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken;
@@ -62,7 +88,6 @@ const ClinicAdder = (props) => {
         headers: { Authorization: `Token ${token}` },
       })
       .catch((err) => console.error(err.response));
-    console.log(response);
     props.hideForm(false);
     props.fetchFunc();
   }
@@ -74,25 +99,33 @@ const ClinicAdder = (props) => {
     city: Yup.string().required("*city is required."),
     country: Yup.string().required("*country is required."),
     phone: Yup.number()
+      .required("*phone is required.")
       .typeError("*phone must be a number.")
-      .required("*phone is required."),
+      .test(
+        "phoneLength",
+        "*your phone number must be exactly 11 number",
+        (number) => {
+          const num = "0" + number;
+          return num.length === 11;
+        }
+      ),
     tax_registration: Yup.mixed()
       .nullable()
       .required("*tax registeration is required.")
-      .test("imageSize", "*image too large", (image) =>
-        checkForImageSize(image)
-      )
       .test("imageFormat", "*unsupported image type", (image) =>
         checkForImageFormat(image)
+      )
+      .test("imageSize", "*image too large", (image) =>
+        checkForImageSize(image)
       ),
     technical_registration: Yup.mixed()
       .nullable()
       .required("*technical registeration is required.")
-      .test("imageSize", "*image is too large", (image) =>
-        checkForImageSize(image)
-      )
       .test("imageFormat", "*unsupported image type", (image) =>
         checkForImageFormat(image)
+      )
+      .test("imageSize", "*image is too large", (image) =>
+        checkForImageSize(image)
       ),
     technical_registration_number: Yup.number()
       .typeError("*technical registration number must be a number")
@@ -102,19 +135,19 @@ const ClinicAdder = (props) => {
       .required("*price is required"),
     images: Yup.array()
       .nullable()
-      .test("imagesSize", "*an image is too large", (imgArr) => {
-        let imgArrValidation = [];
-        imgArr.length &&
-          imgArr.forEach((img) =>
-            imgArrValidation.push(checkForImageSize(img))
-          );
-        return trueInArrChecker(imgArrValidation);
-      })
       .test("imagesType", "*an image has an unsupported type.", (imgArr) => {
         let imgArrValidation = [];
         imgArr.length &&
           imgArr.forEach((img) =>
             imgArrValidation.push(checkForImageFormat(img))
+          );
+        return trueInArrChecker(imgArrValidation);
+      })
+      .test("imagesSize", "*an image is too large", (imgArr) => {
+        let imgArrValidation = [];
+        imgArr.length &&
+          imgArr.forEach((img) =>
+            imgArrValidation.push(checkForImageSize(img))
           );
         return trueInArrChecker(imgArrValidation);
       }),
@@ -127,7 +160,7 @@ const ClinicAdder = (props) => {
         address: "",
         area: "",
         city: "",
-        country: "",
+        country: "Egypt",
         phone: "",
         tax_registration: null,
         technical_registration: null,
@@ -137,11 +170,10 @@ const ClinicAdder = (props) => {
       }}
       validationSchema={validateClinic}
       onSubmit={(values) => {
-        // console.log(values);
         addClinic(values);
       }}
     >
-      {(formik) => (
+      {({ values, setFieldValue }) => (
         <Form className="d-flex my-3">
           <div className="card">
             <ul className="list-group list-group-flush">
@@ -152,13 +184,26 @@ const ClinicAdder = (props) => {
                 <InputField label="Address" name="address" />
               </li>
               <li className="list-group-item">
-                <InputField label="Country" name="country" />
+                <InputField label="Country" name="country" disabled />
               </li>
               <li className="list-group-item">
-                <InputField label="City" name="city" />
+                <Select
+                  label="City"
+                  name="city"
+                  options={cities}
+                  onChange={function (e) {
+                    setFieldValue("city", e.target.value);
+                    setAreas(getArea(e.target.value));
+                  }}
+                />
               </li>
               <li className="list-group-item">
-                <InputField label="Area" name="area" />
+                <Select
+                  label="Area"
+                  name="area"
+                  options={areas}
+                  disabled={values.city ? false : true}
+                />
               </li>
               <li className="list-group-item">
                 <InputField label="Phone" name="phone" />
