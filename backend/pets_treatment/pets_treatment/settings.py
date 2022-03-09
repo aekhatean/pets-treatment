@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+        # Django Filters
+    'django_filters',
     'extra_views',
     'users.apps.UsersConfig',
     'clinics.apps.ClinicsConfig',
@@ -147,7 +149,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_USE_TLS = True  
+EMAIL_USE_TLS = True 
 EMAIL_HOST = 'smtp.gmail.com'  
 EMAIL_HOST_USER = 'noreply.pets.treatment@gmail.com'  
 EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
@@ -164,5 +166,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES':(
                 'rest_framework.permissions.AllowAny',
+    ),
+        'DEFAULT_FILTER_BACKENDS':(
+        'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }

@@ -1,11 +1,17 @@
+import { content } from "../translation/translation";
+
 class MessageParser {
   constructor(actionProvider, state) {
     this.actionProvider = actionProvider;
     this.state = state;
   }
 
-  parse = message => {
+  parse(message) {
     const lowerCase = message.toLowerCase();
+    console.log(message);
+    const lang = localStorage.getItem("lang");
+    console.log(lang);
+    console.log(content[lang].about);
     if (
       lowerCase.includes("about") ||
       lowerCase.includes("petsania") ||
@@ -13,27 +19,31 @@ class MessageParser {
       lowerCase.includes("developer")
     ) {
       this.actionProvider.handleAboutUs();
-    }
-    if (
+    } else if (
       lowerCase.includes("work") ||
       lowerCase.includes("info") ||
-      lowerCase.includes("information")
+      lowerCase.includes("information") ||
+      lowerCase.includes("appointment")
     ) {
       this.actionProvider.handleHowItWorks();
-    }
-    if (
+    } else if (
       lowerCase.includes("search") ||
       lowerCase.includes("clinic") ||
       lowerCase.includes("start") ||
-      lowerCase.includes("reserv")
+      lowerCase.includes("reserve") ||
+      lowerCase.includes("doctor") ||
+      lowerCase.includes("vet") ||
+      lowerCase.includes("sick")
     ) {
       this.actionProvider.handleClinicSearch();
-    }
-    if (lowerCase.includes("register") || lowerCase.includes("registration")) {
+    } else if (
+      lowerCase.includes("register") ||
+      lowerCase.includes("registration") ||
+      lowerCase.includes("Sign up")
+    ) {
       this.actionProvider.handleSignUp();
-    }
-    return this.actionProvider.handleDefault();
-  };
+    } else return this.actionProvider.handleDefault();
+  }
 }
 
 export default MessageParser;

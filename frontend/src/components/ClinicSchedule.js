@@ -29,7 +29,7 @@ function ClinicSchedule(props) {
           updateScheduleList(
             res.data.filter(
               (data) =>
-                data.doctor.id === parseInt(doctor_id) && data.active !== false
+                data.doctor === parseInt(doctor_id) && data.active !== false
             )
           );
         }

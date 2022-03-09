@@ -1,9 +1,138 @@
 .doctor_card{
-    width: 60vw;
-    height: 60vh;
+    width: 35vw;
     background-color: white;
     margin:auto ;
-    margin-top:20px;
+    margin:20px;
     border-radius: 25px;
     box-shadow: 3px 3px 10px 1px gray;
+    display: flex;
+    justify-content: space-evenly;
+}
+.caard{
+    width:"10rem",
+}
+.card_left{
+
+/* background-color: brown; */
+flex-grow: 1;
+max-width: 10%;
+
+}
+.card_center{
+
+/* background-color: green; */
+width: 90%;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+justify-content: space-between;
+margin-left: 10px;
+}
+.card_right{
+
+
+flex-grow: 1;
+width: 10%;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+
+}
+.doctor_image{
+    margin-top: 10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-left: 10px;
+
+}
+.doctor_address{
+margin-top: 10px;
+
+color: gray;
+font-weight: bold;
+margin-left: 30px;
+}
+.doctor_name{
+font-size: 1.5rem;
+font-weight: bold;
+text-transform: capitalize;
+margin-left: 30px;
+
+}
+.doctor_header{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding:20px 0px;
+    color: black;
+   
+}
+.doctor_description{
+   
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    overflow-wrap:break-word;
+    overflow: hidden;
+    max-width: 40vw;
+    display: flex;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-weight: 500;
+    color: black;
+   
+}
+
+.doctor_schedule{
+
+    max-width: 30vw;
+    margin: auto;
+    color: black;
+    
+}
+.otherdata{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.nonlink{
+    text-decoration: none;
+}
+@media screen and (max-width: 770px) {
+
+    .doctor_card{
+        flex-direction: column;
+        width: 90vw;
+        
+    }
+    .doctor_image{
+        margin-top: 10px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-top: 10px;
+        margin-left: 10px;
+    
+    }
+.doctor_description{
+    max-width: 95vw;
+}
+
+.doctor_schedule{
+    max-width: 80vw;
+}
+.caard{
+    width:"16rem",
+}
+.myfontsize{
+    font-size: 11px;
+}
+.marginbutton{margin: auto;}
+.myflex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 }
