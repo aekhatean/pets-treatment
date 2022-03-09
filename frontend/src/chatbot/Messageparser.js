@@ -42,15 +42,8 @@ class MessageParser {
       lowerCase.includes("Sign up")
     ) {
       this.actionProvider.handleSignUp();
-<<<<<<< HEAD
-    }
-    console.log(this.state);
-    return this.actionProvider.handleDefault();
-  };
-=======
     } else return this.actionProvider.handleDefault();
   }
->>>>>>> 80a362624e069061e68eab3abb5acc5895c9d52b
 }
 
 export default MessageParser;
