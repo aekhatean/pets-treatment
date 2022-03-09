@@ -1,4 +1,3 @@
-import profile
 from this import d
 from rest_framework import serializers
 from .models import *
@@ -9,7 +8,8 @@ from cryptography.fernet import Fernet
 from .email_utils import send_mail_user
 from clinics.serializers import ClinicSerializer
 from django.db.models import Sum
-
+import datetime
+import django_filters
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
@@ -174,6 +174,7 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
     user = UserPublicInfoSerializer()
     profile=ProfilePublicSerializer()
     average_rate = serializers.SerializerMethodField('calc_average_rate')
+    # first_name=user.fields.get("first_name")
     def calc_average_rate(self, doctor):
         try:
             average_rate = DoctorRating.objects.filter(doctor=doctor).aggregate(Sum('rating')).get('rating__sum') / DoctorRating.objects.filter(doctor=doctor).count()
@@ -182,7 +183,7 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
             return 0 
     class Meta:
         model = Doctor
-        fields = ('user','description','profile','specialization','clinics','average_rate')
+        fields = ('id','user','description','profile','specialization','clinics','average_rate')
         depth = 1
 
 class DoctorClinicsSerializer(serializers.ModelSerializer):
@@ -197,13 +198,45 @@ class DoctorRatingSerializer(serializers.ModelSerializer):
         depth = 1
 ######### doctor serialziers ##########
 class ScheduleSerializer(serializers.ModelSerializer):
+    date = serializers.SerializerMethodField('calc_date')
+
+    def calc_date(self, schedule):
+        weekdays_dict = {
+            "Monday":0,
+            "Tuesday":1,
+            "Wednesday":2,
+            "Thursday":3,
+            "Friday":4,
+            "Saturday":5,
+            "Sunday":6
+        }
+        days_ahead = weekdays_dict[schedule.day] - datetime.date.today().weekday()
+        if days_ahead < 0: 
+            days_ahead += 7
+        return datetime.date.today() + datetime.timedelta(days_ahead)
     class Meta:
         model = Schedule
-        fields = '__all__'
-        depth = 1
-######### doctor serialziers ##########
+        fields = ('id','from_time','to_time','day',
+        'appointment_duration','doctor','clinic','active','date')
+######### Appointment serialziers ##########
 class AppointmentSerializer(serializers.ModelSerializer):
+    doctor = serializers.CharField(source='schedule.doctor')
+    clinic = serializers.CharField(source='schedule.clinic.name')
+    address = serializers.SerializerMethodField('get_full_address')
+
+    def get_full_address(self, obj):
+        return f'{obj.schedule.clinic.address}, {obj.schedule.clinic.area}, {obj.schedule.clinic.city}'
+
     class Meta:
         model = Appiontments
-        fields = '__all__'
+        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address')
         depth = 1
+        
+        
+#////////////
+
+# class DoctorEventFilter(django_filters.FilterSet):
+#     class Meta:
+#         model = Doctor
+#         #use __ (double underscore) to target foreign key values
+#         fields = ['user__eventName', 'event__startDate','event__endDate','event__address']

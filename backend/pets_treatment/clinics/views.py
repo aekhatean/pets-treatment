@@ -29,12 +29,14 @@ def clinicCreate(request):
 
     if clinic_serializer.is_valid():
         # print(request.user.id)
+        print(request.FILES.getlist('images'))
         doctor = Doctor.objects.get(user=request.user)
         clinic = clinic_serializer.save()
         DoctorClinics.objects.create(doctor=doctor,clinic=clinic,clinic_owner=True)
         for image in request.FILES.getlist('images'):
                 clinic_image_serializer = ClinicImageSerializer(data={'clinic':clinic,'picture':image})
                 if clinic_image_serializer.is_valid():
+                    print(clinic_image_serializer.data)
                     clinic_image_serializer.save()
                 else:
                     clinic.delete()

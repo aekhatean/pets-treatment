@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Formik, Form, Field } from 'formik'
 import TextFeild from '../components/TextField';
 import * as Yup from 'yup';
@@ -7,12 +7,14 @@ import {Container} from "react-bootstrap";
 import axios from 'axios';
 import imageToBase64 from 'image-to-base64/browser';
 import { axiosInstance } from '../api';
-import {colors} from '../colors/colors'
+import {colors} from '../colors/colors';
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
+
 // import SuccessModal from '../components/SuccessModal';
 // import ErrorModal from '../components/ErrorModal';
-// import axios from 'axios';
-// const imageToBase64 = require('image-to-base64');
-function Register() {
+function DoctorRegister() {
+  const { lang, setLang } = useContext(LanguageContext);
   // image
   const [baseImage, setBaseImage] = useState("");
   const [syncId, setSyncId] = useState("");
@@ -50,41 +52,40 @@ function Register() {
     const [errorModal, setErrorModal] = useState(undefined);
     const validate = Yup.object({
         firstName:Yup.string()
-        .max(15, "First Name can't be more than 20 character")
-        .required("First Name is required"),
+        .max(15, content[lang].invalid_firstname)
+        .required(content[lang].required),
         lastName:Yup.string()
-        .max(15, "Last Name can't be more than 15 character")
-        .required("Last Name required"),
+        .max(15, content[lang].invalid_lastname)
+        .required(content[lang].required),
         username:Yup.string()
-        .max(15, "Username can't be more than 15 character")
-        .required("Username is required"),
+        .max(15, content[lang].invalid_username)
+        .required(content[lang].required),
         email:Yup.string()
-        .email("Invaild email")
-        .required("Email is required"),
+        .email(content[lang].invalid_email)
+        .required(content[lang].required),
         password:Yup.string()
-        .min(8, "Password must be at least 8 characters")
-        .required("Password is required"),
+        .min(8, content[lang].invalid_password)
+        .required(content[lang].required),
         confirmPassword:Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Password must match')
-        .required("Confirm password is required"),
+        .oneOf([Yup.ref('password'), null], content[lang].invalid_matching)
+        .required(content[lang].required),
         description:Yup.string()
-        .max(1000, "Can't write a description more than 1000 character")
-        .required("Description is required"),
+        .max(1000, content[lang].invalid_description)
+        .required(content[lang].required),
         // numbers not chars
         national_id:Yup.string() 
-        .max(14, "National id must be 14 number")
-        .min(14, "National id must be 14 number")
-        .required("National id is required"),
+        .max(14, content[lang].invalid_national_id_min)
+        .min(14, content[lang].invalid_national_id_max)
+        .required(content[lang].required),
         username:Yup.string()
-        .max(20, "Username can't be more than 20 character")
-        .required("Username is required"),
+        .max(20, content[lang].invalid_username)
+        .required(content[lang].required),
 
         phone:Yup.string()
-        .max(11, "Eqyptian num")
-        .required("Phone is required")
+        .required(content[lang].required)
         .matches(
             /^01[0-2,5]\d{8}$/,
-            "Must be egyptian number"
+            content[lang].invalid_phone
           ),
 
         // specialization:Yup.string()
@@ -104,14 +105,14 @@ function Register() {
           switch (city) {
             case "Giza":
               resolve([
-                {value: "dokki", label: "Dokki"},
-                {value: "6th_october", label:"6th October"},
+                {value: "dokki", label: content[lang].dokki},
+                {value: "6th_october", label: content[lang].th_october},
               ]);
               break;
             case "Cairo":
               resolve([
-                {value: "nasr_city", label: "Nasr City"},
-                {value: "shoubra", label:"Shoubra"},
+                {value: "nasr_city", label: content[lang].nasr_city},
+                {value: "shoubra", label: content[lang].shoubra},
               ]);
               break;
             default:
@@ -146,7 +147,7 @@ const[specializationsList, setSpecialization] = useState([]);
                 description: '',
                 national_id: '',
                 phone: '',
-                country: 'egypt',
+                country: content[lang].egypt,
                 city: '',
                 area: '',
                 areas:[],
@@ -215,22 +216,22 @@ const[specializationsList, setSpecialization] = useState([]);
           } = formProps;
           return (
                 <Container className='p-5 shadow ' >
-                    <h1 className='my-4 font-weight-bold-display-4'>Register as a Doctor</h1>
+                    <h1 className='my-4 font-weight-bold-display-4'>{content[lang].register_doctor}</h1>
 
                     <Form onSubmit={handleSubmit}>
-                        <TextFeild label="First Name" name="firstName" type="text"/>
-                        <TextFeild label="Last Name" name="lastName" type="text"/>
-                        <TextFeild label="Username" name="username" type="text"/>
-                        <TextFeild label="Email" name="email" type="email"/>
-                        <TextFeild label="Password" name="password" type="password"/>
-                        <TextFeild label="Confirm Password" name="confirmPassword" type="password"/>
-                        <TextFeild label="Description" name="description" type="text"/>
-                        <TextFeild label="National_id" name="national_id" type="text"/>
-                        <TextFeild label="Phone" name="phone" type="text"/>
+                        <TextFeild label={content[lang].fist_name} name="firstName" type="text"/>
+                        <TextFeild label={content[lang].last_name} name="lastName" type="text"/>
+                        <TextFeild label={content[lang].username} name="username" type="text"/>
+                        <TextFeild label={content[lang].email} name="email" type="email"/>
+                        <TextFeild label={content[lang].password} name="password" type="password"/>
+                        <TextFeild label={content[lang].confirm_password} name="confirmPassword" type="password"/>
+                        <TextFeild label={content[lang].description} name="description" type="text"/>
+                        <TextFeild label={content[lang].national_id} name="national_id" type="text"/>
+                        <TextFeild label={content[lang].phone} name="phone" type="text"/>
 
 
                         <div className="mb-3 text-start">
-                          <label className="form-label" htmlFor="doc_photo">Upload your Photo</label>
+                          <label className="form-label" htmlFor="photo">{content[lang].upload_photo}</label>
                           <Input
                             name='photo'
                             type="file"
@@ -243,7 +244,7 @@ const[specializationsList, setSpecialization] = useState([]);
                               {/* <img src={baseImage} height="200px" /> */}
 
                         <div className="mb-3 text-start">
-                          <label className="form-label" htmlFor="synd_id">Upload your Syndicate id</label>
+                          <label className="form-label" htmlFor="synd_id">{content[lang].upload_syndicate}</label>
                           <Input
                             id="synd_id" 
                             name="syndicate_id"
@@ -257,14 +258,14 @@ const[specializationsList, setSpecialization] = useState([]);
                         
                         <div className="mb-3 text-start">
 
-                        <label className="form-label" htmlFor="country">Country</label>
+                        <label className="form-label" htmlFor="country">{content[lang].country}</label>
                         <Field as="select" name="country" id="country" className="form-select">
-                            <option value="egypt">Egypt</option>
+                            <option value="egypt">{content[lang].egypt}</option>
                         </Field>
                         </div>
 
                         <div className="mb-3 text-start">
-                        <label className="form-label" htmlFor="city">City</label>
+                        <label className="form-label" htmlFor="city">{content[lang].city}</label>
                         <Field
                             id="city"
                             name="city"
@@ -281,14 +282,14 @@ const[specializationsList, setSpecialization] = useState([]);
                             setFieldValue("areas", _areas);
                             }}
                         >
-                            <option value="None">Select city</option>
-                            <option value="Giza">Giza</option>
-                            <option value="Cairo">Cairo</option>
+                            <option value="None">{content[lang].select_city}</option>
+                            <option value="Giza">{content[lang].giza}</option>
+                            <option value="Cairo">{content[lang].cairo}</option>
                         </Field>
                         </div>
                           
                         <div className="mb-3 text-start">
-                        <label className="form-label" htmlFor="area">Area</label>
+                        <label className="form-label" htmlFor="area">{content[lang].area}</label>
                         <Field
                             value={values.area}
                             id="area"
@@ -298,7 +299,7 @@ const[specializationsList, setSpecialization] = useState([]);
                             controlId="validationFormik05"
                             onChange={handleChange}
                         >
-                            <option value="None">Select area</option>
+                            <option value="None">{content[lang].select_area}</option>
                             {values.areas &&
                             values.areas.map(a => (
                                 <option key={a.value} value={a.value}>
@@ -311,7 +312,7 @@ const[specializationsList, setSpecialization] = useState([]);
                         
 
                         <div className="mb-3 text-start">
-                          <label className="form-label" htmlFor="special">Specialization</label>
+                          <label className="form-label" htmlFor="special">{content[lang].specialization}</label>
 
                           <Field 
                           as="select" 
@@ -336,8 +337,8 @@ const[specializationsList, setSpecialization] = useState([]);
                         
                         
                         {/* <button className='btn mt-3 btn-dark' type='submit' disabled={isSubmitting} >Submit</button> */}
-                        <button className='btn mt-3 btn-outline-dark' type='submit' style={{marginRight:'10px', backgroundColor:colors.bg.primary, border:"none"}}>Submit</button>
-                        <button className='btn mt-3 ml-3 btn-danger' type='reset' onClick={handleReset}>Reset</button>
+                        <button className='btn mt-3 btn-outline-dark' type='submit' style={{marginRight:'10px', backgroundColor:colors.bg.primary, border:"none"}}>{content[lang].submit}</button>
+                        <button className='btn mt-3 ml-3 btn-danger' type='reset' onClick={handleReset}>{content[lang].reset}</button>
                     </Form>
                 </Container>
             )}}
@@ -346,4 +347,4 @@ const[specializationsList, setSpecialization] = useState([]);
 
 }
 
-export default Register;
+export default DoctorRegister;

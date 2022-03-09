@@ -1,16 +1,22 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Formik, Form, Field } from "formik";
 import TextFeild from "../components/TextField";
 import * as Yup from "yup";
 import { Input } from "reactstrap";
 import axios from "axios";
+import { Container } from "react-bootstrap";
+import { colors } from "../colors/colors";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
 import { LogingContext } from "../context/LogingContext";
-
 function Login() {
   const { is_loged, setLogging } = useContext(LogingContext);
+  const { lang, setLang } = useContext(LanguageContext);
   const validate = Yup.object({
-    email: Yup.string().email("Invaild email").required("Email is required"),
-    password: Yup.string().required("Password is required"),
+    email: Yup.string()
+      .email(content[lang].invalid_email)
+      .required(content[lang].required),
+    password: Yup.string().required(content[lang].required),
   });
 
   return (
@@ -50,22 +56,36 @@ function Login() {
           setFieldValue,
         } = formProps;
         return (
-          <div>
-            <h1 className="my-4 font-weight-bold-display-4">Login</h1>
+          <Container className="p-5 shadow ">
+            <h1 className="my-4 font-weight-bold-display-4">
+              {content[lang].login}
+            </h1>
 
             <Form onSubmit={handleSubmit}>
-              <TextFeild label="Email" name="email" type="email" />
-              <TextFeild label="Password" name="password" type="password" />
+              <TextFeild
+                label={content[lang].email}
+                name="email"
+                type="email"
+              />
+              <TextFeild
+                label={content[lang].password}
+                name="password"
+                type="password"
+              />
 
               <button
-                className="btn mt-3 btn-dark"
+                className="btn mt-3 btn-outline-dark"
                 type="submit"
-                disabled={isSubmitting}
+                style={{
+                  marginRight: "10px",
+                  backgroundColor: colors.bg.primary,
+                  border: "none",
+                }}
               >
-                Submit
+                {content[lang].submit}
               </button>
             </Form>
-          </div>
+          </Container>
         );
       }}
     </Formik>
