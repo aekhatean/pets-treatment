@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import homeImg from "../assets/homeImage.png";
 import getStarted from "../assets/GetStartedImg.png";
 import { Link } from "react-router-dom";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
 
 function Home() {
+  const { lang, setLang } = useContext(LanguageContext);
   return (
     <div>
       <h1>Get the best treatment for your pet right at the moment.</h1>
@@ -53,7 +56,7 @@ function Home() {
           <h1>Everything your pet needs All in one place. Get Started now!</h1>
           <br></br>
           <Link to="/petowner_register" className="btn-1">
-            Pet Owner
+            {content[lang].pet_owner}
           </Link>
           <Link to="/doctor_register" className="btn-2">
             Veterinarian

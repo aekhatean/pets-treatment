@@ -1,3 +1,5 @@
+import { content } from "../translation/translation";
+
 class MessageParser {
   constructor(actionProvider, state) {
     this.actionProvider = actionProvider;
