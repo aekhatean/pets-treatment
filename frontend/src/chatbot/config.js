@@ -5,17 +5,16 @@ import About from "./widgets/About/About";
 import HowItWorks from "./widgets/HowItWorks/HowItWorks";
 import Search from "./widgets/Search/Search";
 import SingUp from "./widgets/SignUp/SignUp";
-
 const config = {
   initialMessages: [
     createChatBotMessage(
-      `Hi​! I'm a Bot. Let me know if you have any questions regarding our website!`
+      "Select a topic or write your questions below. مرحبا بك كيف يمكننى مساعدتك؟",
+      {
+        withAvatar: false,
+        delay: 1000,
+        widget: "overview",
+      }
     ),
-    createChatBotMessage("Select the topic or write your question below.", {
-      withAvatar: false,
-      delay: 1000,
-      widget: "overview",
-    }),
   ],
   botName: "Petsania's Bot",
   customComponents: {

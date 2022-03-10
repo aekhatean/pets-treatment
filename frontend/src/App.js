@@ -22,7 +22,7 @@ import DoctorRegister from "./pages/DoctorRegister";
 import PetOwnerRegister from "./pages/PetOwnerRegister";
 
 function App() {
-  const [showChatbot, toggleChatbot] = useState(true);
+  const [showChatbot, toggleChatbot] = useState(false);
   return (
     <div className="App">
       <BrowserRouter>
@@ -47,8 +47,7 @@ function App() {
         </div>
         <button
           className="app-chatbot-button"
-          onClick={() => toggleChatbot((prev) => !prev)}
-        >
+          onClick={() => toggleChatbot(prev => !prev)}>
           <ButtonIcon className="app-chatbot-button-icon" />
         </button>
         <Footer />

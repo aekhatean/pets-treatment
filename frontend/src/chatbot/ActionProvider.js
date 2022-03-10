@@ -1,55 +1,54 @@
 import { createChatBotMessage } from "react-chatbot-kit";
 import { content } from "../translation/translation";
-
-const lang = localStorage.getItem("lang");
-
 class ActionProvider {
   constructor(createChatbotMessage, setStateFunc) {
     this.setState = setStateFunc;
   }
   handleDefault = () => {
-    const message = createChatBotMessage(
-      "How can I help? Here is the overview.",
-      {
-        withAvatar: true,
-        widget: "overview",
-      }
-    );
+    let lang = localStorage.getItem("lang");
+    const message = createChatBotMessage(content[lang].overview_widget, {
+      withAvatar: true,
+      widget: "overview",
+    });
 
     this.updateChatbotState(message);
   };
   handleAboutUs = () => {
-    const messages = createChatBotMessage(
-      "The About Us page contains all the information you need about the team behind petsania",
-      { widget: "About", withAvatar: true }
-    );
+    let lang = localStorage.getItem("lang");
+    const messages = createChatBotMessage(content[lang].about_widget, {
+      widget: "About",
+      withAvatar: true,
+    });
     this.updateChatbotState(messages);
   };
 
   handleHowItWorks = () => {
-    const messages = createChatBotMessage(
-      "The How it works page will provide you with all the information you need to start using our website",
-      { widget: "How it works", withAvatar: true }
-    );
+    let lang = localStorage.getItem("lang");
+    const messages = createChatBotMessage(content[lang].howItWorks_widget, {
+      widget: "How it works",
+      withAvatar: true,
+    });
     this.updateChatbotState(messages);
   };
 
   handleClinicSearch = () => {
-    const messages = createChatBotMessage(
-      "Let's get started, search for a clinic and get the best care for your pet",
-      { widget: "Search", withAvatar: true }
-    );
+    let lang = localStorage.getItem("lang");
+    const messages = createChatBotMessage(content[lang].search_widget, {
+      widget: "Search",
+      withAvatar: true,
+    });
     this.updateChatbotState(messages);
   };
   handleSignUp = () => {
-    const messages = createChatBotMessage(
-      "Sign up now for free to access petsania's clinic reservation services, first things first choose if you are a pet owner or a vet",
-      { widget: "Sign up", withAvatar: true }
-    );
+    let lang = localStorage.getItem("lang");
+    const messages = createChatBotMessage(content[lang].signUp_widget, {
+      widget: "Sign up",
+      withAvatar: true,
+    });
     this.updateChatbotState(messages);
   };
   updateChatbotState(message) {
-    this.setState((state) => ({
+    this.setState(state => ({
       ...state,
       messages: [...state.messages, message],
     }));
