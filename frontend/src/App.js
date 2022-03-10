@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Home from "./pages/Home";
 import SearchPage from "./pages/SearchPage";
@@ -20,9 +20,11 @@ import NotFoundPage from "./pages/NotFoundPage";
 import NavBarComponent from "./components/NavBarComponent";
 import DoctorRegister from "./pages/DoctorRegister";
 import PetOwnerRegister from "./pages/PetOwnerRegister";
+import { LogingContext } from "./context/LogingContext";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(false);
+  const { is_loged } = useContext(LogingContext);
   return (
     <div className="App">
       <BrowserRouter>
@@ -35,11 +37,12 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/doctor_register" component={DoctorRegister} />
           <Route path="/petowner_register" component={PetOwnerRegister} />
-          <Route path="/doctor_dashboard" component={DoctorDashboard} />
+
           <Route path="/user/:id" component={UserDashboard} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
           <Route path="/doctors/" component={Doctors} />
           <Route path="/error404" component={NotFoundPage} />
+          {is_loged && <Route path="/dashboard" component={DoctorDashboard} />}
           <Redirect to="error404" />
         </Switch>
         <div className="app-chatbot-container">
@@ -47,7 +50,8 @@ function App() {
         </div>
         <button
           className="app-chatbot-button"
-          onClick={() => toggleChatbot(prev => !prev)}>
+          onClick={() => toggleChatbot((prev) => !prev)}
+        >
           <ButtonIcon className="app-chatbot-button-icon" />
         </button>
         <Footer />

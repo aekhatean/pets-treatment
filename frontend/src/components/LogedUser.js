@@ -13,7 +13,7 @@ function LogedUser(props) {
   const { is_loged, setLogging } = useContext(LogingContext);
   const [user, setUser] = useState({ picture: "", full_name: "" });
   // const [is_loged, setLog] = useState(false);
-  const loged_routes = [content[lang].profile];
+  const loged_routes = [content[lang].dashboard];
   const unloged_routes = [
     content[lang].login,
     content[lang].doctor_register,
