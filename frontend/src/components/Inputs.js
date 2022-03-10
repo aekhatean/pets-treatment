@@ -1,9 +1,13 @@
 import { ErrorMessage, useField, Field } from "formik";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
+import { useContext } from "react";
 
 /*use this inputs when you use formik for any form , you can pass custom styling in
 className when you call the component*/
 
 export const InputField = ({ label, ...props }) => {
+  const { lang } = useContext(LanguageContext);
   const [field, meta] = useField(props);
   return (
     <div className="d-flex justify-content-between my-2">
@@ -24,7 +28,9 @@ export const InputField = ({ label, ...props }) => {
         />
         <ErrorMessage
           component="div"
-          className="font-small text-danger text-start"
+          className={`font-small text-danger ${
+            lang === "en" ? "text-start" : "text-end"
+          }`}
           name={field.name}
         />
       </div>
@@ -33,6 +39,7 @@ export const InputField = ({ label, ...props }) => {
 };
 
 export const Select = ({ label, name, options, ...props }) => {
+  const { lang } = useContext(LanguageContext);
   return (
     <div className="d-flex justify-content-between my-2">
       <label className="px-3 align-self-center flex-one" htmlFor={name}>
@@ -41,6 +48,7 @@ export const Select = ({ label, name, options, ...props }) => {
       <div className="d-flex flex-column flex-two">
         <Field
           className="form-select"
+          dir="ltr"
           as="select"
           id={name}
           name={name}
@@ -58,7 +66,9 @@ export const Select = ({ label, name, options, ...props }) => {
 
         <ErrorMessage
           component="div"
-          className="font-small text-danger text-start"
+          className={`font-small text-danger ${
+            lang === "en" ? "text-start" : "text-end"
+          }`}
           name={name}
         />
       </div>
@@ -67,6 +77,7 @@ export const Select = ({ label, name, options, ...props }) => {
 };
 
 export const TextAreaField = ({ label, ...props }) => {
+  const { lang } = useContext(LanguageContext);
   const [field, meta] = useField(props);
   return (
     <div className="d-flex justify-content-between my-2">
@@ -83,7 +94,9 @@ export const TextAreaField = ({ label, ...props }) => {
         ></textarea>
         <ErrorMessage
           component="div"
-          className="font-small text-danger text-start"
+          className={`font-small text-danger ${
+            lang === "en" ? "text-start" : "text-end"
+          }`}
           name={field.name}
         />
       </div>
@@ -92,6 +105,7 @@ export const TextAreaField = ({ label, ...props }) => {
 };
 
 export const FileUpload = (props) => {
+  const { lang } = useContext(LanguageContext);
   const { label, field, form } = props;
 
   const handleChange = (e) => {
@@ -118,16 +132,22 @@ export const FileUpload = (props) => {
           />
           <div
             id="imageHelp"
-            className="text-secondary text-start mt-1"
+            className={`text-secondary mt-1 ${
+              lang === "en" ? "text-start" : "text-end"
+            }`}
             style={{ fontSize: "11px" }}
           >
-            Supported Formats [ ".jpeg", ".jpg", ".png", ".gif" ]
+            {lang === "en"
+              ? content.en.supported_formats
+              : content.ar.supported_formats}
             <br />
-            Max Image Size : 8 Megabytes.
+            {lang === "en" ? content.en.max_image : content.ar.max_image}
           </div>
           <ErrorMessage
             component="div"
-            className="font-small text-danger text-start"
+            className={`font-small text-danger ${
+              lang === "en" ? "text-start" : "text-end"
+            }`}
             name={field.name}
           />
         </div>
@@ -137,6 +157,7 @@ export const FileUpload = (props) => {
 };
 
 export const FileUploadMultiple = (props) => {
+  const { lang } = useContext(LanguageContext);
   const { label, field, form, setImagesLen } = props;
 
   const handleChange = (e) => {
@@ -173,16 +194,24 @@ export const FileUploadMultiple = (props) => {
           />
           <div
             id="imagesHelp"
-            className="text-secondary text-start mt-1"
+            className={`text-secondary mt-1 ${
+              lang === "en" ? "text-start" : "text-end"
+            }`}
             style={{ fontSize: "11px" }}
           >
-            Supported Formats [ ".jpeg", ".jpg", ".png", ".gif" ]
+            {lang === "en"
+              ? content.en.supported_formats
+              : content.ar.supported_formats}
             <br />
-            Max per Image Size : 8 Megabytes.
+            {lang === "en"
+              ? content.en.max_per_image
+              : content.ar.max_per_image}
           </div>
           <ErrorMessage
             component="div"
-            className="font-small text-danger text-start"
+            className={`font-small text-danger ${
+              lang === "en" ? "text-start" : "text-end"
+            }`}
             name={field.name}
           />
         </div>

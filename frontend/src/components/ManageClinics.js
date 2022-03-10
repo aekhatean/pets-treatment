@@ -1,5 +1,5 @@
 import { axiosInstance } from "../api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ScheduleCard from "./ScheduleCardDashboard";
 import ScheduleCardAdder from "./ScheduleCardAdder";
 import ClinicAdder from "./ClinicAdder";
@@ -8,8 +8,11 @@ import DoctorDashboardCard from "./DoctorDashboardCard";
 import UnRegisteredDoctorAdderCard from "./UnregisteredDoctorAdder";
 import ClinicUpdater from "./ClinicUpdater";
 import ModalDelete from "./ModalDelete";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
 
 const ManageClinics = () => {
+  const { lang } = useContext(LanguageContext);
   const [doctorClinics, setDoctorClinics] = useState([]);
   const [doctorSchedules, setDoctorSchedules] = useState([]);
   const [doctors, setDoctors] = useState([]);
@@ -102,9 +105,13 @@ const ManageClinics = () => {
     currentDoctorId = doctorClinics[0].doctor.id;
   }
   return (
-    <div>
+    <div dir={lang === "en" ? "ltr" : "rtl"}>
       <div className="container-fluid">
-        <h4 className="text-start my-4">Select a clinic</h4>
+        <h4 className={`${lang === "en" ? "text-start" : "text-end"} my-4`}>
+          {lang === "en"
+            ? content.en.select_a_clinic
+            : content.ar.select_a_clinic}
+        </h4>
         <select
           className="form-select w-50 primary-color mb-3"
           aria-label="Select menu"
@@ -119,7 +126,9 @@ const ManageClinics = () => {
           }}
         >
           <option defaultValue value="">
-            Select a clinic..
+            {lang === "en"
+              ? content.en.select_a_clinic
+              : content.ar.select_a_clinic}
           </option>
           {doctorClinics.map((doctorClinic) => {
             return (
@@ -140,26 +149,32 @@ const ManageClinics = () => {
               setClinicAdder(!clinicAdder);
             }}
           >
-            Add New Clinic
+            {lang === "en"
+              ? content.en.add_new_clinic
+              : content.ar.add_new_clinic}
           </button>
           {selectedClinicId && isClinicOwner && (
-            <button
-              className="btn btn-warning col-lg-2 col-4 mx-3 my-2"
-              onClick={() => {
-                setClinicAdder(false);
-                setClinicUpdater(!clinicUpdater);
-              }}
-            >
-              View & Update Clinic Data
-            </button>
-          )}
-          {selectedClinicId && isClinicOwner && (
-            <button
-              className="btn btn-danger col-lg-2 col-4 mx-3 my-2"
-              onClick={() => setIsModalOpen(true)}
-            >
-              Delete Clinic
-            </button>
+            <>
+              <button
+                className="btn btn-warning col-lg-2 col-4 mx-3 my-2"
+                onClick={() => {
+                  setClinicAdder(false);
+                  setClinicUpdater(!clinicUpdater);
+                }}
+              >
+                {lang === "en"
+                  ? content.en.update_view_clinic
+                  : content.ar.update_view_clinic}
+              </button>
+              <button
+                className="btn btn-danger col-lg-2 col-4 mx-3 my-2"
+                onClick={() => setIsModalOpen(true)}
+              >
+                {lang === "en"
+                  ? content.en.delete_clinic
+                  : content.ar.delete_clinic}
+              </button>
+            </>
           )}
         </div>
         {clinicUpdater && (
@@ -175,47 +190,49 @@ const ManageClinics = () => {
         {selectedClinicId ? (
           isClinicVerified ? (
             <>
-              {" "}
-              <h4 className="my-4 text-start">Edit Schedule</h4>
+              <h4
+                className={`${lang === "en" ? "text-start" : "text-end"} my-4`}
+              >
+                {lang === "en"
+                  ? content.en.clinic_schedules
+                  : content.ar.clinic_schedules}
+              </h4>
               <div className="row">
-                {selectedClinicId ? (
-                  doctorSchedules.length > 0 ? (
-                    doctorSchedules.map((schedule) => {
-                      if (schedule.clinic === Number(selectedClinicId)) {
-                        return (
-                          <ScheduleCard
-                            key={schedule.id}
-                            schedule={schedule}
-                            func={fetchSchedules}
-                          />
-                        );
-                      }
-                    })
-                  ) : (
-                    <div
-                      className="alert alert-secondary mx-3 w-50"
-                      role="alert"
-                    >
-                      There is no schedules in this clinic, click to add below.
-                    </div>
-                  )
+                {doctorSchedules.length > 0 ? (
+                  doctorSchedules.map((schedule) => {
+                    if (schedule.clinic === Number(selectedClinicId)) {
+                      return (
+                        <ScheduleCard
+                          key={schedule.id}
+                          schedule={schedule}
+                          func={fetchSchedules}
+                        />
+                      );
+                    }
+                  })
                 ) : (
-                  <div className="alert alert-secondary mx-3 w-50" role="alert">
-                    Select a clinic to view, edit, or delete your schedules.
+                  <div
+                    className={`mx-3 w-50 ${
+                      lang === "en" ? "text-start" : "text-end"
+                    } alert alert-secondary`}
+                    role="alert"
+                  >
+                    {lang === "en"
+                      ? content.en.no_schedules
+                      : content.ar.no_schedules}
                   </div>
                 )}
               </div>
               <div className="row">
-                {selectedClinicId && (
-                  <button
-                    className="btn btn-primary col-md-2 col-4 mx-3"
-                    onClick={() => setScheduleAdder(!scheduleAdder)}
-                  >
-                    Add Schedule
-                  </button>
-                )}
-
-                {selectedClinicId && scheduleAdder && (
+                <button
+                  className="btn btn-primary col-md-2 col-4 mx-3"
+                  onClick={() => setScheduleAdder(!scheduleAdder)}
+                >
+                  {lang === "en"
+                    ? content.en.add_schedule
+                    : content.ar.add_schedule}
+                </button>
+                {scheduleAdder && (
                   <ScheduleCardAdder
                     doctor_id={currentDoctorId}
                     clinic_id={selectedClinicId}
@@ -224,26 +241,29 @@ const ManageClinics = () => {
                   />
                 )}
               </div>
-              <h4 className="text-start my-4">Manage Doctors</h4>
+              <h4
+                className={`${lang === "en" ? "text-start" : "text-end"} my-4`}
+              >
+                {lang === "en" ? content.en.doctors : content.ar.doctors}
+              </h4>
               <div className="row">
-                {selectedClinicId &&
-                  doctors.map((doctor) => {
-                    return (
-                      <DoctorDashboardCard
-                        key={doctor.id}
-                        doctor={doctor}
-                        clinic_id={selectedClinicId}
-                        func_clinic_id={setSelectedClinicId}
-                        func_fetch_clinics={fetchClinics}
-                        current_doctor_id={currentDoctorId}
-                        is_owner={isClinicOwner}
-                        func_fetch_doctors={fetchDoctors}
-                      />
-                    );
-                  })}
+                {doctors.map((doctor) => {
+                  return (
+                    <DoctorDashboardCard
+                      key={doctor.id}
+                      doctor={doctor}
+                      clinic_id={selectedClinicId}
+                      func_clinic_id={setSelectedClinicId}
+                      func_fetch_clinics={fetchClinics}
+                      current_doctor_id={currentDoctorId}
+                      is_owner={isClinicOwner}
+                      func_fetch_doctors={fetchDoctors}
+                    />
+                  );
+                })}
               </div>
               <div className="row mb-3">
-                {selectedClinicId && isClinicOwner && (
+                {isClinicOwner && (
                   <button
                     className="btn btn-primary col-lg-3 col-md-4 col-5 mx-3"
                     onClick={() => {
@@ -251,7 +271,9 @@ const ManageClinics = () => {
                       setExistingDoctorAdder(!existingDoctorAdder);
                     }}
                   >
-                    Add Existing Doctor
+                    {lang === "en"
+                      ? content.en.add_registered_doctor
+                      : content.ar.add_registered_doctor}
                   </button>
                 )}
                 {selectedClinicId && isClinicOwner && (
@@ -262,42 +284,47 @@ const ManageClinics = () => {
                       setUnRegisteredDoctorAdder(!unRegisteredDoctorAdder);
                     }}
                   >
-                    Add Unregistered Doctor
+                    {lang === "en"
+                      ? content.en.add_unregistered_doctor
+                      : content.ar.add_unregistered_doctor}
                   </button>
                 )}
               </div>
               <div className="row">
-                {selectedClinicId && existingDoctorAdder && isClinicOwner && (
+                {existingDoctorAdder && isClinicOwner && (
                   <ExistingDoctorAdder
                     hideForm={setExistingDoctorAdder}
                     clinic_id={selectedClinicId}
                     fetchDoctors={fetchDoctors}
                   />
                 )}
-                {selectedClinicId &&
-                  unRegisteredDoctorAdder &&
-                  isClinicOwner && (
-                    <UnRegisteredDoctorAdderCard
-                      hideForm={setUnRegisteredDoctorAdder}
-                      clinic_id={selectedClinicId}
-                      clinic_name={
-                        doctorClinics.length &&
-                        doctorClinics.find(
-                          (clinic) =>
-                            clinic.clinic.id === Number(selectedClinicId)
-                        ).clinic.name
-                      }
-                    />
-                  )}
+                {unRegisteredDoctorAdder && isClinicOwner && (
+                  <UnRegisteredDoctorAdderCard
+                    hideForm={setUnRegisteredDoctorAdder}
+                    clinic_id={selectedClinicId}
+                    clinic_name={
+                      doctorClinics.length &&
+                      doctorClinics.find(
+                        (clinic) =>
+                          clinic.clinic.id === Number(selectedClinicId)
+                      ).clinic.name
+                    }
+                  />
+                )}
               </div>
             </>
           ) : (
             <div className="row">
               <div className="col-8">
-                <div className="my-4 text-start alert alert-info" role="alert">
-                  Your clinic is not verified yet, please consider checking your
-                  email. Once it is verified we'll inform you and you will be
-                  able to Add doctors & schedules to your clinic.
+                <div
+                  className={`my-4 ${
+                    lang === "en" ? "text-start" : "text-end"
+                  } alert alert-info`}
+                  role="alert"
+                >
+                  {lang === "en"
+                    ? content.en.not_verified_clinic
+                    : content.ar.not_verified_clinic}
                 </div>
               </div>
             </div>
@@ -306,10 +333,14 @@ const ManageClinics = () => {
           <div className="row">
             <div className="col-8">
               <div
-                className="my-4 text-start alert alert-secondary"
+                className={`my-4 ${
+                  lang === "en" ? "text-start" : "text-end"
+                } alert alert-secondary`}
                 role="alert"
               >
-                Select or add new clinic to open your dashboard.
+                {lang === "en"
+                  ? content.en.no_selected_clinic
+                  : content.ar.no_selected_clinic}
               </div>
             </div>
           </div>
