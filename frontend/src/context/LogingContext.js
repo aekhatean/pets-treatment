@@ -9,9 +9,12 @@ export const LogingContextProvider = ({ children }) => {
   const [is_loged, setLogging] = useState(
     localStorage.getItem("token") ? true : false
   );
+  const [userRole, setUserRole] = useState("");
 
   return (
-    <LogingContext.Provider value={{ is_loged, setLogging }}>
+    <LogingContext.Provider
+      value={{ is_loged, setLogging, userRole, setUserRole }}
+    >
       {children}
     </LogingContext.Provider>
   );

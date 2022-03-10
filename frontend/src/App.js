@@ -24,7 +24,7 @@ import { LogingContext } from "./context/LogingContext";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(false);
-  const { is_loged } = useContext(LogingContext);
+  const { is_loged, userRole } = useContext(LogingContext);
   return (
     <div className="App">
       <BrowserRouter>
@@ -37,12 +37,20 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/doctor_register" component={DoctorRegister} />
           <Route path="/petowner_register" component={PetOwnerRegister} />
-
-          <Route path="/user/:id" component={UserDashboard} />
+          {is_loged ? (
+            userRole === "DR" ? (
+              <Route path="/dashboard" component={DoctorDashboard} />
+            ) : (
+              <Route path="/dashboard" component={UserDashboard} />
+            )
+          ) : (
+            <Redirect to="login" />
+          )}
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
           <Route path="/doctors/" component={Doctors} />
+
           <Route path="/error404" component={NotFoundPage} />
-          {is_loged && <Route path="/dashboard" component={DoctorDashboard} />}
+
           <Redirect to="error404" />
         </Switch>
         <div className="app-chatbot-container">
