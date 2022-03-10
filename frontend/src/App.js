@@ -31,23 +31,23 @@ function App() {
         <NavBarComponent />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/search" component={SearchPage} />
-          <Route path="/howitworks" component={HowItWorks} />
-          <Route path="/about" component={About} />
-          <Route path="/login" component={Login} />
-          <Route path="/doctor_register" component={DoctorRegister} />
-          <Route path="/petowner_register" component={PetOwnerRegister} />
+          <Route exact path="/search" component={SearchPage} />
+          <Route exact path="/howitworks" component={HowItWorks} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/doctor_register" component={DoctorRegister} />
+          <Route exact path="/petowner_register" component={PetOwnerRegister} />
+          <Route path="/doctors/:id" component={DoctorPublicProfile} />
+          <Route exact path="/doctors/" component={Doctors} />
           {is_loged ? (
             userRole === "DR" ? (
-              <Route path="/dashboard" component={DoctorDashboard} />
+              <Route exact path="/dashboard" component={DoctorDashboard} />
             ) : (
-              <Route path="/dashboard" component={UserDashboard} />
+              <Route exact path="/dashboard" component={UserDashboard} />
             )
           ) : (
             <Redirect to="login" />
           )}
-          <Route path="/doctors/:id" component={DoctorPublicProfile} />
-          <Route path="/doctors/" component={Doctors} />
 
           <Route path="/error404" component={NotFoundPage} />
 
