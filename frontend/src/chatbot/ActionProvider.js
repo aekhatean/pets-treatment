@@ -1,7 +1,7 @@
 import { createChatBotMessage } from "react-chatbot-kit";
 import { content } from "../translation/translation";
 class ActionProvider {
-  constructor(setStateFunc) {
+  constructor(createChatbotMessage, setStateFunc) {
     this.setState = setStateFunc;
   }
   handleDefault = () => {
