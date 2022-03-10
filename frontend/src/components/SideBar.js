@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { LanguageContext } from "../context/LanguageContext";
 
 const SideBar = ({ selections }) => {
-  const [activeSelection, setActiveSelection] = useState(selections[0].name);
+  const { lang } = useContext(LanguageContext);
+  const [activeSelectionValue, setActiveSelectionValue] = useState(
+    selections[0].value
+  );
   return (
-    <div className="container-fluid">
+    <div className="container-fluid" dir={lang === "en" ? "ltr" : "rtl"}>
       <div className="row">
         <div className="col-lg-2 secondary-bg d-flex flex-column py-4">
           {selections.map((selection) => {
@@ -11,11 +15,11 @@ const SideBar = ({ selections }) => {
               <p
                 key={selection.name}
                 className={`h6 ${
-                  activeSelection !== selection.name
+                  activeSelectionValue !== selection.value
                     ? "inactive-sidebar-selection"
                     : "active-sidebar-selection"
                 }`}
-                onClick={() => setActiveSelection(selection.name)}
+                onClick={() => setActiveSelectionValue(selection.value)}
               >
                 {selection.name}
               </p>
@@ -24,8 +28,9 @@ const SideBar = ({ selections }) => {
         </div>
         <div className="col-lg-10 d-flex flex-column">
           {
-            selections.find((selection) => selection.name === activeSelection)
-              .view
+            selections.find(
+              (selection) => selection.value === activeSelectionValue
+            ).view
           }
         </div>
       </div>

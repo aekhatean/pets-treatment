@@ -1,10 +1,9 @@
 import { createChatBotMessage } from "react-chatbot-kit";
 import { content } from "../translation/translation";
 class ActionProvider {
-  constructor(createChatbotMessage, setStateFunc) {
+  constructor(setStateFunc) {
     this.setState = setStateFunc;
   }
-
   handleDefault = () => {
     let lang = localStorage.getItem("lang");
     const message = createChatBotMessage(content[lang].overview_widget, {

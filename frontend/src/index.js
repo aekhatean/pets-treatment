@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./style.css";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 //import reducer from './reducers';
 //import createStore from redux
 //import { createStore } from 'redux';
@@ -11,6 +12,7 @@ import "bootstrap/dist/css/bootstrap.css";
 //import redux devtools
 //import { composeWithDevTools } from 'redux-devtools-extension';
 import { LanguageContextProvider } from "./context/LanguageContext";
+import { LogingContextProvider } from "./context/LogingContext";
 
 //import middleware from './middlewares';
 //createStore
@@ -20,7 +22,9 @@ ReactDOM.render(
   <React.StrictMode>
     {/* <Provider store={store}> */}
     <LanguageContextProvider>
-      <App />
+      <LogingContextProvider>
+        <App />
+      </LogingContextProvider>
     </LanguageContextProvider>
     {/* </Provider> */}
   </React.StrictMode>,

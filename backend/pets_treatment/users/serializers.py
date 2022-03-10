@@ -114,7 +114,7 @@ class SpecializationSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 class DoctorSerializer(serializers.ModelSerializer):
-    syndicate_id=Base64ImageField()
+    syndicate_id=Base64ImageField(required=False)
     specialization=SpecializationSerializer(many=True)
     clinics = ClinicSerializer(many=True,required=False)
     profile = ProfileSerializer()
@@ -128,7 +128,7 @@ class DoctorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Doctor
-        fields = ('is_varified','description','syndicate_id','national_id','specialization','profile','clinics','average_rate')
+        fields = ('id','is_varified','description','syndicate_id','national_id','specialization','profile','clinics','average_rate')
         read_only_fields = ['is_varified']
         depth = 1
 
@@ -148,7 +148,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         key = Fernet.generate_key()
         fernet = Fernet(key)
         enc_token = fernet.encrypt(token.key.encode())
-        activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
+        activation_link = f"http://127.0.0.1:8000/users/activate/{key.decode()}/{enc_token.decode()}"
         send_mail_user(doctor.user.first_name,activation_link,doctor.user.email)
         newdoctor = Doctor.objects.get(user=profile.user)
         return newdoctor
@@ -186,6 +186,11 @@ class DoctorPublicSerializer(serializers.ModelSerializer):
         fields = ('id','user','description','profile','specialization','clinics','average_rate')
         depth = 1
 
+class DoctorClinicsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorClinics
+        fields = '__all__'
+        depth = 1
 
 class DoctorRatingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -225,7 +230,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appiontments
-        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address')
+        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address', 'date')
         depth = 1
         
         

@@ -93,6 +93,7 @@ class Schedule(models.Model):
 class Appiontments(models.Model):
     visiting_time=models.TimeField(null=False)
     active=models.BooleanField(default=True)
+    date=models.DateField(null=True)
     schedule=models.ForeignKey(Schedule, on_delete=models.CASCADE)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
 

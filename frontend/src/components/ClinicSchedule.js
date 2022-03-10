@@ -36,6 +36,7 @@ function ClinicSchedule(props) {
       })
       .catch((err) => console.log(err));
   }, [clinic_id, doctor_id]);
+
   return (
     <div className=" rounded bg-light">
       <Table responsive borderless size="sm">

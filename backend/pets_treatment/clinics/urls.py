@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.urls import path
 from .import views
 
@@ -8,4 +9,8 @@ urlpatterns = [
     path('update_clinic/<int:pk>/', views.clinicUpdate, name="update_clinic"),
     path('delete_clinic/<int:pk>/', views.clinicDelete, name="delete_clinic"),
     path('add_doctor_clinic/<int:pk>/', views.addDoctorClinic, name="add_doctor_clinic"),
+    path('clinic_pictures/<int:pk>',views.Clinic_PicturesList.as_view(),name="clinic_pictures"),
+    path('add_external_doctor/',views.AddExternalDoctorClinic.as_view(),name="add_external_doctor"),
+    path('invite_doctor/',views.InviteDoctor.as_view())
+
 ]

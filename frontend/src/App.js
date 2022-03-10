@@ -9,7 +9,7 @@ import Register from "./pages/Register";
 import DoctorPublicProfile from "./pages/DoctorPublicProfile";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import UserDashboard from "./pages/UserDashboard";
-import Navbar from "./components/Navbar";
+
 import Footer from "./components/Footer";
 import "react-chatbot-kit/build/main.css";
 import Bot from "./chatbot/bot";
@@ -17,6 +17,7 @@ import { ConditionallyRender } from "react-util-kit";
 import { ReactComponent as ButtonIcon } from "./assets/robot.svg";
 import Doctors from "./pages/Doctors";
 import NotFoundPage from "./pages/NotFoundPage";
+import NavBarComponent from "./components/NavBarComponent";
 import DoctorRegister from "./pages/DoctorRegister";
 import PetOwnerRegister from "./pages/PetOwnerRegister";
 
@@ -25,7 +26,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
+        <NavBarComponent />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/search" component={SearchPage} />
