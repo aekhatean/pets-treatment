@@ -5,7 +5,6 @@ import SearchPage from "./pages/SearchPage";
 import HowItWorks from "./pages/HowItWorks";
 import About from "./pages/About";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import DoctorPublicProfile from "./pages/DoctorPublicProfile";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import UserDashboard from "./pages/UserDashboard";
@@ -19,6 +18,8 @@ import Doctors from "./pages/Doctors";
 import NotFoundPage from "./pages/NotFoundPage";
 import DoctorRegister from "./pages/DoctorRegister";
 import PetOwnerRegister from "./pages/PetOwnerRegister";
+import AppointmentBooking from "./components/AppointmentBooking";
+import TimePickerFeild from "./components/TimePickerFeild";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(true);
@@ -38,6 +39,8 @@ function App() {
           <Route path="/user/:id" component={UserDashboard} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
           <Route path="/doctors/" component={Doctors} />
+          <Route path="/appointment_booking" component={AppointmentBooking}/>
+          <Route path="/time" component={TimePickerFeild}/>
           <Route path="/error404" component={NotFoundPage} />
           <Redirect to="error404" />
         </Switch>

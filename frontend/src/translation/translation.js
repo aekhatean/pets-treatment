@@ -90,6 +90,7 @@ export const content = {
     invalid_national_id_min : "National id must be 14 number",
     invalid_national_id_max : "National id must be 14 number",
     invalid_phone : "Must be egyptian number",
+    pick_date : "Pick a date",
 
 
   },
@@ -170,7 +171,7 @@ export const content = {
     cairo: "القاهرة",
     shoubra: "شبرا",
     th_october: "السادس من أكتور",
-    register_petowner: "إنشاء حساب صاحب حيوان",
+    register_petowner: "إنشاء حساب مالك الحيوان",
     required:"هذا الحقل مطلوب",
     invalid_email : "Invaild email",
     invalid_firstname : "لا يمكن أن يكون الاسم الأول أكثر من 20 حرف",
@@ -182,5 +183,6 @@ export const content = {
     invalid_national_id_min : "يجب أن يكون الرقم القومي 14 رقم",
     invalid_national_id_max : "يجب أن يكون الرقم القومي 14 رقم",
     invalid_phone : "يجب أن يكون رقم الهاتف مصريا",
+    pick_date : "اختر تاريخا",
   },
 };
