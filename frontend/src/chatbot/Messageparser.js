@@ -1,3 +1,5 @@
+import { content } from "../translation/translation";
+
 class MessageParser {
   constructor(actionProvider, state) {
     this.actionProvider = actionProvider;
@@ -6,6 +8,10 @@ class MessageParser {
 
   parse(message) {
     const lowerCase = message.toLowerCase();
+    console.log(message);
+    const lang = localStorage.getItem("lang");
+    console.log(lang);
+    console.log(content[lang].about);
     if (
       lowerCase.includes("about") ||
       lowerCase.includes("petsania") ||

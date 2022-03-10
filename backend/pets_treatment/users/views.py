@@ -3,6 +3,7 @@ from re import search
 from unicodedata import name
 # from msilib.schema import Class
 from django.http import Http404
+from django.shortcuts import redirect
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -57,7 +58,7 @@ class Register(APIView):
         key = Fernet.generate_key()
         fernet = Fernet(key)
         enc_token = fernet.encrypt(token.key.encode())
-        activation_link = f"http://127.0.0.1:8000/users/{key.decode()}/{enc_token.decode()}"
+        activation_link = f"http://127.0.0.1:8000/users/activate/{key.decode()}/{enc_token.decode()}"
         send_mail_user(profile.user.first_name,activation_link,profile.user.email)
         return Response({
             'data':'we sent you a verification email, please check it and click the link',
@@ -246,6 +247,62 @@ class RateDoctor(APIView):
 #         data = DoctorPublicSerializer(doctors,many=True).data
 #         return Response({'data':data},status=status.HTTP_200_OK)
 
+##### Doctor clinics ########
+class DoctorClinicsView(APIView):
+    permission_classes = [IsAuthenticated]
+    # all clinic where doctor in
+    def get(self,request):
+        doctorClinics = DoctorClinics.objects.filter(doctor=Doctor.objects.get(user=request.user))
+        data = DoctorClinicsSerializer(doctorClinics,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
+
+class DoctorOwnClinicsView(APIView):
+    permission_classes = [IsAuthenticated]
+    # all clinic where doctor owned
+    def get(self,request):
+        doctorClinics = DoctorClinics.objects.filter(doctor=Doctor.objects.get(user=request.user),clinic_owner=True)
+        data = DoctorClinicsSerializer(doctorClinics,many=True).data
+        return Response(data,status=status.HTTP_200_OK)
+
+
+
+class DoctorClinic_ClinicView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request,pk):
+        clinic = Clinic.objects.get(id=pk)
+        doctorClinics = DoctorClinics.objects.filter(clinic=clinic)
+        doctors=[]
+        for doctor in doctorClinics:
+            doctors.append(doctor.doctor)
+        doctors_inclinic_serializer=DoctorSerializer(doctors,many=True).data
+        return Response(doctors_inclinic_serializer,status=status.HTTP_200_OK)
+
+    # delete doctor from clinic by clinic owner
+    def post(self,request,pk):
+        try:
+            clinic = Clinic.objects.get(id=pk)
+            clinic_owner = Doctor.objects.get(user=request.user)
+            doctor = Doctor.objects.get(id=request.data["doctor_id"])
+            if DoctorClinics.objects.filter(clinic=clinic, clinic_owner=True)[0].doctor == clinic_owner or doctor == Doctor.objects.filter(user=request.user)[0]:
+                if DoctorClinics.objects.filter(clinic=clinic, doctor=doctor)[0]: 
+                    doctor_clinics = DoctorClinics.objects.filter(doctor=doctor,clinic=clinic).delete()
+                    return Response({
+                                    'msg':'Doctor deleted from clinic Successfully',
+                                },status=status.HTTP_200_OK)
+                else:
+                    return Response({
+                            'errors':"Doctor is not in this clinic!"
+                        },status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'msg':"You can't delete doctor from clinic if you aren't the doctor him/her self \
+                or the clinic owner!"},
+                    status.HTTP_401_UNAUTHORIZED) 
+        except:                  
+            return Response({
+                    'error':'Data is not valid',
+                },status=status.HTTP_404_NOT_FOUND)
+
 
 ################## Profile ######################
 class ViewProfile(APIView):
@@ -324,20 +381,18 @@ class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
 
 class UpcomingAppointmentsListByUser(generics.ListAPIView):
     def get_queryset(self):
-        return Appiontments.objects.filter(user=self.request.user, schedule__date__gte=date.today())
+        return Appiontments.objects.filter(user=self.request.user, date__gte=date.today())
     
     serializer_class = AppointmentSerializer
     pagination_class = StandardResultsSetPagination
-    lookup_url_kwarg = 'pk'
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 class PreviousAppointmentsListByUser(generics.ListAPIView):
     def get_queryset(self):
-        return Appiontments.objects.filter(user=self.request.user, schedule__date__lt=date.today())
+        return Appiontments.objects.filter(user=self.request.user, date__lt=date.today())
     
     serializer_class = AppointmentSerializer
     pagination_class = StandardResultsSetPagination
-    lookup_url_kwarg = 'pk'
     permission_classes = [IsAuthenticatedOrReadOnly]
     
 #/////////doctor filter/////////#

@@ -1,9 +1,12 @@
 import { createChatBotMessage } from "react-chatbot-kit";
+import { content } from "../translation/translation";
+
+const lang = localStorage.getItem("lang");
+
 class ActionProvider {
   constructor(createChatbotMessage, setStateFunc) {
     this.setState = setStateFunc;
   }
-
   handleDefault = () => {
     const message = createChatBotMessage(
       "How can I help? Here is the overview.",
@@ -46,7 +49,7 @@ class ActionProvider {
     this.updateChatbotState(messages);
   };
   updateChatbotState(message) {
-    this.setState(state => ({
+    this.setState((state) => ({
       ...state,
       messages: [...state.messages, message],
     }));

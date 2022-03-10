@@ -31,10 +31,10 @@ function CatStep(props) {
               className="d-flex justify-content-center align-items-start"
               style={{
                 transform: lang === "ar" ? "rotate(-270deg)" : "rotate(270deg)",
-                height: 170,
+                height: 130,
               }}
             >
-              <hr width="170" size="4" />
+              <hr width="130" size="4" />
               <span>
                 <img
                   src={paw}
@@ -84,10 +84,10 @@ function CatStep(props) {
               className="d-flex justify-content-center align-items-center"
               style={{
                 transform: "rotate(270deg)",
-                height: 170,
+                height: 90,
               }}
             >
-              <hr width="170" size="4" />
+              <hr width="90" size="4" />
               <span>
                 <img
                   src={paw}

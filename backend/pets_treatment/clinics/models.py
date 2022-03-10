@@ -20,7 +20,7 @@ def tech_upload(instance, filename):
     return "clinics/%s/techid.%s" % (instance.name, extension)
 
 def image_upload(instance, filename):
-    return f'clinics/{instance.id}/galary/{filename}'
+    return f'clinics/{instance.clinic.id}/galary/{filename}'
 
 # egyptian phone number validation
 def validate_egyptian_number(value):
@@ -44,8 +44,13 @@ class Clinic(models.Model):
     technical_registration = models.ImageField(upload_to=tech_upload,null=True)
     technical_registration_number = models.CharField(max_length=100) # edit after discuss
     price = models.IntegerField()
+
+    def __str__(self):
+        return self.name
 ######################## ClinicPicture Models ############################
 class ClinicPicture(models.Model):
     picture = models.ImageField(upload_to= image_upload)
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='images')
-    
+
+    def __str__(self):
+        return f'{self.clinic.name} clinic picture - {self.id}'
