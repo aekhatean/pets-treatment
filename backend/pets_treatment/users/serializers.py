@@ -227,17 +227,28 @@ class ScheduleSerializer(serializers.ModelSerializer):
         'appointment_duration','doctor','clinic','active','date')
 ######### Appointment serialziers ##########
 class AppointmentSerializer(serializers.ModelSerializer):
-    doctor = serializers.CharField(source='schedule.doctor')
-    clinic = serializers.CharField(source='schedule.clinic.name')
+    doctor = serializers.CharField(source='schedule.doctor', required = False)
+    clinic = serializers.CharField(source='schedule.clinic.name', required = False)
     address = serializers.SerializerMethodField('get_full_address')
 
     def get_full_address(self, obj):
-        return f'{obj.schedule.clinic.address}, {obj.schedule.clinic.area}, {obj.schedule.clinic.city}'
+        schedule_id = self.context.get('request').data.get('schedule')
+        schedule = Schedule.objects.filter(id=schedule_id)[0]
+        return f'{schedule.clinic.address}, {schedule.clinic.area}, {schedule.clinic.city}'
 
     class Meta:
         model = Appiontments
-        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address', 'date')
+        fields = ('id', 'user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address', 'date')
         depth = 1
+
+    def create(self, validated_data):
+        schedule_id = self.context.get('request').data.get('schedule')
+        user_id = self.context.get('request').data.get('user')
+        schedule = Schedule.objects.filter(id=schedule_id)[0]
+        user = User.objects.filter(id=user_id)[0]
+        appointment = Appiontments.objects.create(**validated_data, schedule=schedule, user=user)
+        print(appointment, "hello")
+        return appointment
         
         
 #////////////

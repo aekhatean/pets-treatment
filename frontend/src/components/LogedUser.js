@@ -55,8 +55,8 @@ function LogedUser(props) {
     return (
       <>
         <NavDropdown
-          className="shadow px-3  bg-warning"
-          style={{ borderRadius: 50 }}
+          className="shadow px-3 "
+          style={{ borderRadius: 50, backgroundColor: '#F6EEBD' }}
           title={
             <>
               <img

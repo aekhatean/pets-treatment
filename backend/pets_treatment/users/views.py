@@ -365,10 +365,22 @@ class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
     queryset = Schedule.objects.all()
     permission_classes = [IsAuthenticated]
 
-class AppointmentList(generics.ListCreateAPIView):
-    queryset = Appiontments.objects.all()
-    serializer_class = AppointmentSerializer
+class AppointmentList(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        appointments = Appiontments.objects.all()
+        print(appointments)
+        appointments_serializer = AppointmentSerializer(appointments,many=True).data
+        print(appointments_serializer)
+        return Response(
+            appointments_serializer, status.HTTP_200_OK
+        )
+    def post(self, request):
+        appointment_serializer = AppointmentSerializer(data=request.data,  context={'request':request})
+        appointment_serializer.is_valid(raise_exception=True)
+        appointment_serializer.save()
+        return Response(appointment_serializer.data,status.HTTP_201_CREATED)
 
 
 class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
