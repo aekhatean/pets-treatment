@@ -63,11 +63,12 @@ function CatStep(props) {
           </Col>
           <Col>
             <Card
-              className="shadow"
+              className="shadow-sm"
               style={{
                 transform: "skew(-10deg)",
                 borderRadius: 30,
                 backgroundColor: colors.bg.light,
+                borderColor: colors.bg.blond,
               }}
             >
               <Card.Body>
@@ -140,6 +141,7 @@ function CatStep(props) {
                 transform: "skew(-10deg)",
                 borderRadius: 30,
                 backgroundColor: colors.bg.light,
+                borderColor: colors.bg.blond,
               }}
             >
               <Card.Body className="p-4">

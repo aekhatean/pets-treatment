@@ -6,7 +6,7 @@ import StarIcon from "@mui/icons-material/Star";
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
-import ScheduleCard from "./Schedulecard";
+import ScheduleCard from "./ScheduleCard";
 import { Link } from "react-router-dom";
 function DoctorCard(props) {
   const [schedules, setschedule] = useState([]);

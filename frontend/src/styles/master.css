@@ -12,6 +12,9 @@
 button[role="tab"].active {
   background-color: #b8d8d6 !important;
 }
+.accordion-button {
+  background-color: #f9f7f3 !important;
+}
 .card_height {
 }
 .img_height {

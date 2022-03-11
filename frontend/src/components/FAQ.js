@@ -17,8 +17,8 @@ function FAQ(props) {
           <Accordion.Item
             eventKey={index}
             key={faq.q}
-            className="rounded"
-            style={{ backgroundColor: colors.bg.primary }}
+            className="rounded shadow-sm"
+            style={{ backgroundColor: colors.bg.blond }}
           >
             <Accordion.Header>{faq.q}</Accordion.Header>
             <Accordion.Body
