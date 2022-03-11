@@ -108,7 +108,7 @@ export const content = {
     to: "To",
     am: " AM ",
     pm: " PM ",
-    book_appointment: "Book Appointment",
+    book_appointment: "Book",
     feedbacks: "Feedbacks",
     rating: "Rating",
     feedback_details: "What user say's ",
