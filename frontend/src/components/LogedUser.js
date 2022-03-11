@@ -24,11 +24,14 @@ function LogedUser(props) {
     axiosAuthInstance
       .get("users/profilelist")
       .then((res) => {
-        setUser({
-          picture: res.data.data.picture,
-          full_name: `${res.data.data.user.first_name} ${res.data.data.user.last_name}`,
-        });
-        setUserRole(res.data.data.role);
+        if (res.status === 200) {
+          setUser({
+            picture: res.data.data.picture,
+            full_name: `${res.data.data.user.first_name} ${res.data.data.user.last_name}`,
+          });
+          setUserRole(res.data.data.role);
+          localStorage.setItem("user_id", res.data.data.user.id);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -44,6 +47,7 @@ function LogedUser(props) {
   const logoutHandle = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
+    localStorage.removeItem("user_id");
     setUser({});
     setLogging(false);
   };
