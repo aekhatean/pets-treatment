@@ -39,14 +39,16 @@ function Login() {
           .then((response) => {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("email", response.data.email);
+            localStorage.setItem("user_id", response.data.user['id']);
             setLogging(true);
+            history.push('/');
           })
           .catch((e) => {
             console.log(e);
             setLogging(false);
           });
           
-          history.push('/');
+          
       }}
     >
       {(formProps) => {
@@ -60,7 +62,7 @@ function Login() {
           setFieldValue,
         } = formProps;
         return (
-          <Container className="p-5 shadow" dir={lang==='ar'?'rtl':'ltr'}>
+          <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
             <h1 className="my-4 font-weight-bold-display-4">
               {content[lang].login}
             </h1>

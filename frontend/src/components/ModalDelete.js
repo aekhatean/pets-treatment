@@ -22,7 +22,7 @@ const ModalDelete = (props) => {
           right: "20%",
           bottom: "50%",
           textAlign: "center",
-          border: "4px solid orange",
+          border: "4px solid #F6EEBD",
           borderRadius: "10px",
         },
       }}

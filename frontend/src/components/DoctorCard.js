@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import Saleh from "../assets/saleh.jpg";
 import "../styles/doctor_card.css";
 import ProfilePicture from "./ProfilePicture";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import StarIcon from "@mui/icons-material/Star";
+=======
+
+import "../styles/doctor_card.css";
+>>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
@@ -13,12 +18,20 @@ function DoctorCard(props) {
   useEffect(() => {
     axiosInstance
       .get(`users/schedule/doctor/${props.doctor["id"]}`)
+<<<<<<< HEAD
       .then(res => {
+=======
+      .then((res) => {
+>>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
         if (res.status === 200) {
           setschedule(res.data);
         }
       })
+<<<<<<< HEAD
       .catch(err => console.log(err));
+=======
+      .catch((err) => console.log(err));
+>>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
   }, []);
 
   return (
@@ -31,7 +44,12 @@ function DoctorCard(props) {
                 <div className="col-2 mt-2 ml-2">
                   <Link
                     to={`/doctors/${props.doctor["id"]}`}
+<<<<<<< HEAD
                     className="nonlink">
+=======
+                    className="nonlink"
+                  >
+>>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
                     <img
                       src={props.doctor["profile"].picture}
                       className="img-fluid rounded-circle img_height"
@@ -67,6 +85,7 @@ function DoctorCard(props) {
                               overflowX: "auto",
                               display: "flex",
                               justifyContent: "space-between",
+<<<<<<< HEAD
                             }}>
                             {/* ////////////////////////////////// */}
 
@@ -75,6 +94,18 @@ function DoctorCard(props) {
                                 key={feed.id}
                                 schedule={feed}
                                 doctor_id={props.doctor["id"]}></ScheduleCard>
+=======
+                            }}
+                          >
+                            {/* ////////////////////////////////// */}
+
+                            {schedules.map((feed) => (
+                              <ScheduleCard
+                                key={feed.id}
+                                schedule={feed}
+                                doctor_id={props.doctor["id"]}
+                              ></ScheduleCard>
+>>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
                             ))}
 
                             {/* /////////////////////////////// */}
@@ -87,6 +118,7 @@ function DoctorCard(props) {
               </div>
             </div>
           </div>
+<<<<<<< HEAD
         </div>
       </div>
 
@@ -141,6 +173,10 @@ function DoctorCard(props) {
         <div className="card_right">   </div>
     </div>
     </Link> */}
+=======
+        </div>
+      </div>
+>>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
     </>
   );
 }

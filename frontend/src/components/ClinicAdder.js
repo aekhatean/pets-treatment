@@ -246,7 +246,7 @@ const ClinicAdder = (props) => {
     >
       {({ values, setFieldValue }) => (
         <Form className="d-flex my-3">
-          <div className="card">
+          <div className="card shadow">
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <InputField
@@ -343,7 +343,7 @@ const ClinicAdder = (props) => {
                 />
               </li>
               <li className="list-group-item">
-                <button className="btn btn-primary" type="submit">
+                <button className="btn blue-bg text-white" type="submit">
                   {lang === "en"
                     ? content.en.add_clinic
                     : content.ar.add_clinic}

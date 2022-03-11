@@ -21,6 +21,7 @@ var u_area=''
 var c_name=''
 var c_city=''
 var c_area=''
+var specialization=''
 
 
 function Doctors() {
@@ -33,6 +34,7 @@ function Doctors() {
     c_name=document.getElementById("clinic_name").value
     c_city=document.getElementById("clinic_city").value
     c_area=document.getElementById("clinic_area").value
+    specialization=document.getElementById("specailization").value
     axios(config).then((res) => {
      if (res.status === 200) {
        updatealldoctors(res.data);
@@ -56,6 +58,7 @@ let config = {
       'clinics__name':  c_name,
       'clinics__city':  c_city,
       'clinics__area':  c_area,
+      'specialization__name':specialization,
     }
 }
 
@@ -101,8 +104,9 @@ let config = {
           <div>
             <input type="text" placeholder="clinic area.." className="form-control my-2" name="clinic_area" id='clinic_area'/>
           </div>
-          
-
+          <div>
+            <input type="text" placeholder="specailization.." className="form-control my-2" name="specailization" id='specailization'/>
+          </div>
 <input type="submit" class="btn btn-primary my-2 w-100" onClick={(event)=>filterChinging(event)} value="search"/>
         </form>
       
@@ -125,32 +129,32 @@ let config = {
                 <div class="search"> <input type="text" class="search-input" placeholder="Search..." name="" style={{height:'75%',backgroundColor:'white'}}/> <a href="#" class="search-icon"> <i class="fa fa-search"></i> </a> </div>
                 </div>
                 <div class="row mt-4 g-1 px-4 mb-5">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/Mb8kaPV.png" width="50"/>
                             <div class="text-center mg-text"> <span class="mg-text">Account</span> </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    {/* <div class="col-md-2">
                         <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/ueLEPGq.png" width="50"/>
                             <div class="text-center mg-text"> <span class="mg-text">Payments</span> </div>
                         </div>
-                    </div>
-                    <div class="col-md-2">
+                    </div> */}
+                    {/* <div class="col-md-2">
                         <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/tmqv0Eq.png" width="50"/>
                             <div class="text-center mg-text"> <span class="mg-text">Delivery</span> </div>
                         </div>
-                    </div>
-                    <div class="col-md-2">
+                    </div> */}
+                    <div class="col-md-3">
                         <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/D0Sm15i.png" width="50"/>
                             <div class="text-center mg-text"> <span class="mg-text">Product</span> </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/Z7BJ8Po.png" width="50"/>
                             <div class="text-center mg-text"> <span class="mg-text">Return</span> </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/YLsQrn3.png" width="50"/>
                             <div class="text-center mg-text"> <span class="mg-text">Guarantee</span> </div>
                         </div>

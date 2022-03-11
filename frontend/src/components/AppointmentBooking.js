@@ -61,7 +61,8 @@ function AppointmentBooking(props) {
             date : selected_schedule.date,
             visiting_time: '',
             schedule: selected_schedule.id,
-            user: 1,
+            // edit to dynamic
+            user: localStorage.getItem("user_id"),
         }}
         validationSchema={validate}
         onSubmit = { async (values) => {

@@ -246,6 +246,8 @@ export const content = {
     service_experts:
       "Petsania brings you the best veterinary experts in the region only just a click away from your hands",
     search_call: "Search For a Clinic",
+    name_len_valid: "Name must be at least 3 characters",
+    message_len_valid: "Your message must have at least 50 character",
   },
   ar: {
     brand: "بيتسانيا",
@@ -491,5 +493,7 @@ export const content = {
     service_experts:
       "تقدم لك بيتسانيا أفضل الخبراء البيطريين في المنطقة فقط على بعد ضغطة زر واحدة من يديك",
     search_call: "أبحث عن عيادة",
+    name_len_valid: "يجب ان يتكون الاسم من 3 أحرف على الأقل",
+    message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
   },
 };
