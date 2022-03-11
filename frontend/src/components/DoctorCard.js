@@ -1,9 +1,8 @@
-
 import "../styles/doctor_card.css";
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
-import ScheduleCard from "./ScheduleCard";
+import ScheduleCard from "./Schedulecard";
 import { Link } from "react-router-dom";
 function DoctorCard(props) {
   const [schedules, setschedule] = useState([]);
@@ -16,7 +15,6 @@ function DoctorCard(props) {
         }
       })
       .catch((err) => console.log(err));
-
   }, []);
 
   return (
@@ -29,9 +27,8 @@ function DoctorCard(props) {
                 <div className="col-2 mt-2 ml-2">
                   <Link
                     to={`/doctors/${props.doctor["id"]}`}
-
-                    className="nonlink">
-
+                    className="nonlink"
+                  >
                     <img
                       src={props.doctor["profile"].picture}
                       className="img-fluid rounded-circle doctor_image"
@@ -77,7 +74,6 @@ function DoctorCard(props) {
                                 schedule={feed}
                                 doctor_id={props.doctor["id"]}
                               ></ScheduleCard>
-
                             ))}
 
                             {/* /////////////////////////////// */}
@@ -90,8 +86,8 @@ function DoctorCard(props) {
               </div>
             </div>
           </div>
-            </div>
-            </div>
+        </div>
+      </div>
     </>
   );
 }
