@@ -46,15 +46,18 @@ const getAppointmentInfo = (res, setAppointments) => {
     const appointmentsList = [];
     for (const result of res.data.results) {
       const { appointment_duration } = result.schedule;
-      const { visiting_time, doctor, clinic, address, date } = result;
+      const { address, area, city } = result.schedule.clinic;
+      const { visiting_time, doctor, clinic, date } = result;
       const { from, to } = getAppointmentJSTimeDuration(
         visiting_time,
         appointment_duration
       );
+
+      const fullAddress = `${address}, ${area}, ${city}`;
       const newAppointment = {
         doctor: doctor,
         clinic: clinic,
-        address: address,
+        address: fullAddress,
         date: getAppointmentJSDate(date),
         from: from,
         to: to,

@@ -27,7 +27,6 @@ export default function UserProfileEdit(props) {
   });
 
   const userData = props.userData;
-  const user = userData.user;
   if (userData && Object.keys(userData).length) {
     return (
       <Container>
@@ -50,7 +49,6 @@ export default function UserProfileEdit(props) {
               city: values.city,
               picture: values.picture,
               user: {
-                ...user,
                 first_name: values.firstName,
                 last_name: values.lastName,
                 email: values.email,
@@ -64,8 +62,7 @@ export default function UserProfileEdit(props) {
           }}
         >
           {(formProps) => {
-            const { values, handleSubmit, handleReset, setFieldValue } =
-              formProps;
+            const { values, handleSubmit, setFieldValue } = formProps;
             return (
               <Row>
                 <Col md={8}>

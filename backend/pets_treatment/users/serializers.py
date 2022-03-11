@@ -97,15 +97,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         user_data = validated_data.pop('user')
-        user_serializer = UserSerializer(instance.user,data=user_data)
+        user_serializer = UserSerializer(instance.user,data=user_data, partial=True)
         user_serializer.is_valid(raise_exception=True)
         user = user_serializer.save()
 
         user_picture = validated_data.pop('picture')
         if user_picture:
             instance.picture = user_picture
-            
-            
+                        
         for key in validated_data:
             if key in self.fields:
                     setattr(instance,key,validated_data.get(key))
@@ -225,19 +224,24 @@ class ScheduleSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = ('id','from_time','to_time','day',
         'appointment_duration','doctor','clinic','active','date')
-######### Appointment serialziers ##########
+######### Appointment serialziers ##########filter
 class AppointmentSerializer(serializers.ModelSerializer):
-    doctor = serializers.CharField(source='schedule.doctor')
-    clinic = serializers.CharField(source='schedule.clinic.name')
-    address = serializers.SerializerMethodField('get_full_address')
-
-    def get_full_address(self, obj):
-        return f'{obj.schedule.clinic.address}, {obj.schedule.clinic.area}, {obj.schedule.clinic.city}'
+    doctor = serializers.CharField(source='schedule.doctor', required=False)
+    clinic = serializers.CharField(source='schedule.clinic.name', required=False)
 
     class Meta:
         model = Appiontments
-        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address', 'date')
+        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'date')
         depth = 1
+        
+    def create(self, validated_data):
+        schedule_id = self.context.get('request').data.get('schedule')
+        user_id = self.context.get('request').data.get('user')
+        schedule = Schedule.objects.get(id=schedule_id)
+        user = User.objects.get(id=user_id)
+        appointment = Appiontments.objects.create(**validated_data, schedule=schedule, user=user)
+        return appointment
+
         
         
 #////////////
