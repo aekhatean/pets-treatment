@@ -256,6 +256,8 @@ export const content = {
     search_call: "Search For a Clinic",
     name_len_valid: "Name must be at least 3 characters",
     message_len_valid: "Your message must have at least 50 character",
+    wrong_auth_login: "Wrong username or password",
+    verify_email: "Please check your email and verify your account.",
     login_widget:
       "The login page gives you access to your profile and clinic reservation service",
     search_qoute: " Hi! How can we help You?",
@@ -514,6 +516,8 @@ export const content = {
     search_call: "أبحث عن عيادة",
     name_len_valid: "يجب ان يتكون الاسم من 3 أحرف على الأقل",
     message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
+    wrong_auth_login: "البريد الالكتروني أو كلمة المرور غير صحيح",
+    verify_email: "من فضلك تفقد بريدك الالكتروني وأكد حسابك",
     login_widget:
       "تتيح لك صفحة تسجيل الدخول التحكم فى حسابك الشخصى و أيضا خدمة حجز الكشف للأطباء البيطريين",
     search_qoute: "  مرحبا! كيف نستطيع مساعدك؟",
