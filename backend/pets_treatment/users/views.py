@@ -394,6 +394,23 @@ class PreviousAppointmentsListByUser(generics.ListAPIView):
     serializer_class = AppointmentSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticatedOrReadOnly]
+class UpcomingAppointmentsListByDoctor(generics.ListAPIView):
+    def get_queryset(self):
+        clinic = self.request.query_params.get("clinic")
+        return Appiontments.objects.filter(schedule__doctor__user=self.request.user, schedule__clinic=clinic, date__gte=date.today())
+    
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class PreviousAppointmentsListByDoctor(generics.ListAPIView):
+    def get_queryset(self):
+        clinic = self.request.query_params.get("clinic")
+        return Appiontments.objects.filter(schedule__doctor__user=self.request.user, schedule__clinic=clinic, date__lt=date.today())
+    
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
 #/////////doctor filter/////////#
 class Findmydoctor(generics.ListCreateAPIView):

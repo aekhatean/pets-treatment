@@ -3,7 +3,6 @@ import { Table } from "react-bootstrap";
 
 export default function DynamicTable(props) {
   const { tableContent } = props;
-  console.log(tableContent);
 
   if (tableContent.length) {
     const columns = Object.keys(tableContent[0]);

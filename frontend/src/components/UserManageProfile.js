@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { LanguageContext } from "../context/LanguageContext";
 
 // Bootsratp
-import { Container, Row, Col, Spinner } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 // API consumption
 import { axiosInstance } from "../api";
@@ -19,7 +19,7 @@ const getUserData = (res, setData) => {
 };
 
 export default function UserManageProfile(props) {
-  const { lang, setLang } = useContext(LanguageContext);
+  const { lang } = useContext(LanguageContext);
   const [userData, setUserData] = useState({});
   const [viewPanelState, setViewPanelState] = useState(true);
   const userInfo = `users/profilelist`;

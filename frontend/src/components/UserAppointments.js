@@ -5,7 +5,7 @@ import DynamicTable from "../components/DynamicTable";
 import { axiosInstance } from "../api";
 
 // Convert Python date to JS date with weekday
-const getAppointmentJSDate = (pyDate) => {
+export const getAppointmentJSDate = (pyDate) => {
   const dateComponents = pyDate.split("-");
   const [year, month, day] = dateComponents;
 
@@ -13,7 +13,7 @@ const getAppointmentJSDate = (pyDate) => {
 };
 
 // Convert Python time to JS millisec time
-const getAppointmentJSTimeDuration = (pyTime, duration) => {
+export const getAppointmentJSTimeDuration = (pyTime, duration) => {
   // Get hour, minute, sec as numbers
   let timeComponents = pyTime.split(":");
   timeComponents = timeComponents.map((timeComponent) =>
@@ -45,17 +45,12 @@ const getAppointmentInfo = (res, setAppointments) => {
   if (res.status === 200) {
     const appointmentsList = [];
     for (const result of res.data.results) {
-      console.log("result", result);
       const { appointment_duration } = result.schedule;
       const { visiting_time, doctor, clinic, address, date } = result;
       const { from, to } = getAppointmentJSTimeDuration(
         visiting_time,
         appointment_duration
       );
-      console.log("doctor", doctor);
-      console.log("clinic", clinic);
-      console.log("address", address);
-      console.log("date", date);
       const newAppointment = {
         doctor: doctor,
         clinic: clinic,
@@ -64,10 +59,8 @@ const getAppointmentInfo = (res, setAppointments) => {
         from: from,
         to: to,
       };
-      console.log("newAppointment", newAppointment);
       appointmentsList.push(newAppointment);
     }
-    // console.log("appointmentsList", appointmentsList);
     setAppointments(appointmentsList);
   }
 };
@@ -101,7 +94,6 @@ function UserAppointments() {
       .then((res) => getAppointmentInfo(res, setPrviousAppointments));
   }, [userPreviousAppointments, token]);
 
-  // console.log("prviousAppointments", prviousAppointments);
   return (
     <div id="user-appointments" className="my-5">
       <div className="h1 text-md-start my-5">Upcoming appointments</div>

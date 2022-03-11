@@ -1,6 +1,7 @@
 import SideBar from "../components/SideBar";
 import Appointments from "../components/Appointments";
 import ManageClinics from "../components/ManageClinics";
+import UserManageProfile from "../components/UserManageProfile";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useContext } from "react";
@@ -17,6 +18,11 @@ const DoctorDashboard = () => {
       name: lang === "en" ? content.en.clinics : content.ar.clinics,
       value: content.en.clinics,
       view: <ManageClinics />,
+    },
+    {
+      name: lang === "en" ? content.en.manageProfile : content.ar.manageProfile,
+      value: content.en.manageProfile,
+      view: <UserManageProfile />,
     },
   ];
   return <SideBar selections={selections} />;

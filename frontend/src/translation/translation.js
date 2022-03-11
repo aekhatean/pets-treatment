@@ -54,6 +54,7 @@ export const content = {
     editAccountInfo: "Edit account info",
     phone: "Phone",
     message: "Message",
+    manageProfile: "Manage profile",
     vets: "Vets",
     pets_medicine: "Pets Medicine",
     howsteps: [
@@ -264,6 +265,7 @@ export const content = {
     editAccountInfo: "تعديل بيانات الحساب",
     phone: "رقم الهاتف",
     message: "الرسالة",
+    manageProfile: "ادارة الحساب",
     vets: "الأطباء البيطريين",
     pets_medicine: "أدوية الحيوانات الأليفة",
     howsteps: [
