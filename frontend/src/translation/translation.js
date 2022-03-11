@@ -54,7 +54,7 @@ export const content = {
         a: "We are so sorry for this to happend, please contact us for support.",
       },
     ],
-    services: "Services",
+    services: "Our Services",
     informations: "Informations",
     rights: "© 2022 Petsania EGY, Inc. All Rights Reserved.",
     contact_us: "Contact Us",
@@ -228,6 +228,27 @@ export const content = {
     pick_date: "Pick a date",
     invalid_date: "Date cannot be in the past",
     invalid_day_date: "Date must match day",
+    sent: "Sent",
+    support_message_confirm:
+      "Thanks for contacting us, Message is received and one of our support team will check it and contact you as soon as possible.",
+    home_slogan1: "We Care For Your",
+    home_slogan2: "Pet's Welfare",
+    home_slogan3:
+      "Petsania works on connecting you with the best veterinary clinics around",
+    home_slogan4: "Book your appointment now for free",
+    home_banner:
+      "All The Health care Your Pet Needs. Register Now And Get Started!",
+    veterinarian: "Veterinarian",
+    service_derma:
+      "A veterinary dermatologist can perform allergy tests, skin biopsies, and other diagnostic tests to determine what is causing your pet’s problems.",
+    vet_derma: "Pet Dermatology",
+    vet_checkup: "Pet Checkup",
+    service_checkup:
+      "Early detection and treatment of illness or disease can save you a lot of money in emergency and long-term medical costs.",
+    service_vet: "Expert Veterinarians",
+    service_experts:
+      "Petsania brings you the best veterinary experts in the region only just a click away from your hands",
+    search_call: "Search For a Clinic",
     name_len_valid: "Name must be at least 3 characters",
     message_len_valid: "Your message must have at least 50 character",
     wrong_auth_login: "Wrong username or password",
@@ -380,7 +401,7 @@ export const content = {
     invalid_national_id_min: "يجب أن يكون الرقم القومي 14 رقم",
     invalid_national_id_max: "يجب أن يكون الرقم القومي 14 رقم",
     invalid_phone: "يجب أن يكون رقم الهاتف مصريا",
-    pet_owner: "عميل",
+    pet_owner: "عميل ",
     overview_widget: " مرحبا بك كيف يمكننى مساعدتك؟ لتأخذ نظرة عامة ",
     about_widget:
       "تحتوى صفحة 'من نحن' على كل المعلومات عن رسالة فريق عمل بيتسانيا",
@@ -460,6 +481,26 @@ export const content = {
     pick_date: "اختر تاريخا",
     invalid_date: "لا يمكن أن يكون التاريح في الماضي",
     invalid_day_date: "يجب أن يطابق التاريخ اليوم",
+    sent: "تم الارسال",
+    support_message_confirm:
+      "نشكرك علي التواصل معانا، احد افراض فريق الدعم سوف يفحص رسالتك ثم يتواصل معك في اقرب وقت ممكن.",
+    home_slogan1: "نحن نهتم كثيرا بصحة ",
+    home_slogan2: " حيوانك الأليف",
+    home_slogan3: " بيتسانيا تعمل على توصيلك بأفضل العيادات البيطرية",
+    home_slogan4: "أحجز كشف مع طبيب بيطرى الأن مجانا",
+    home_banner:
+      ".سجل لدينا الأن ثم يمكنك حجز كشف مع أفضل الأطباء البيطريين لكى يحصل حيوانك الأليف على أفضل رعاية صحية",
+    veterinarian: " طبيب بيطرى",
+    service_derma:
+      " يمكن لطبيب الأمراض الجلدية البيطري إجراء اختبارات الحساسية وخزعات الجلد وغيرها من الاختبارات التشخيصية لتحديد سبب مشاكل حيوانك الأليف",
+    vet_derma: " بيطرى جلدية",
+    vet_checkup: "فحص دورى",
+    service_checkup:
+      "يمكن أن يتيح لك الفحص الدورى الاكتشاف المبكر للمرض أو المرض وعلاجه توفير آلاف الأموال من تكاليف طبية الطارئة أو مصاريف طبية طويلة الأمد",
+    service_vet: "خبراء بيطريون",
+    service_experts:
+      "تقدم لك بيتسانيا أفضل الخبراء البيطريين في المنطقة فقط على بعد ضغطة زر واحدة من يديك",
+    search_call: "أبحث عن عيادة",
     name_len_valid: "يجب ان يتكون الاسم من 3 أحرف على الأقل",
     message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
     wrong_auth_login: "البريد الالكتروني أو كلمة المرور غير صحيح",

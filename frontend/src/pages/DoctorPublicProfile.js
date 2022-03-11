@@ -102,7 +102,7 @@ function DoctorPublicProfile(props) {
                 lang === "ar" ? "fs-5 text-end m-2" : "fs-5 text-start m-2"
               }
             >
-              <TagList tags={doctor.specializations} />
+              <TagList tags={doctor.specializations} clickable={true} />
             </div>
 
             {/* doctor  clinics tabs*/}

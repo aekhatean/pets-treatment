@@ -83,7 +83,6 @@ function ClinicSchedule(props) {
       </Table>
       <Modal
         show={show}
-        fullscreen={true}
         onHide={() => handleHide()}
         dir={lang === "ar" ? "rtl" : "ltr"}
       >
