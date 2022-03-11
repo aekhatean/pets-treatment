@@ -16,8 +16,7 @@
   
 }
 .img_height{
-  width: 75px; 
-  height: 75px; 
+  border-radius: 50%;
 }
 
 .pets_doctor_background{

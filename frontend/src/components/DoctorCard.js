@@ -1,37 +1,24 @@
-<<<<<<< HEAD
-import Saleh from "../assets/saleh.jpg";
-import "../styles/doctor_card.css";
-import ProfilePicture from "./ProfilePicture";
-import { Container, Row, Col, Card } from "react-bootstrap";
-import StarIcon from "@mui/icons-material/Star";
-=======
 
 import "../styles/doctor_card.css";
->>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
+
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
-import ScheduleCard from "./Schedulecard";
+import ScheduleCard from "./ScheduleCard";
 import { Link } from "react-router-dom";
 function DoctorCard(props) {
   const [schedules, setschedule] = useState([]);
   useEffect(() => {
     axiosInstance
       .get(`users/schedule/doctor/${props.doctor["id"]}`)
-<<<<<<< HEAD
-      .then(res => {
-=======
+
       .then((res) => {
->>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
         if (res.status === 200) {
           setschedule(res.data);
         }
       })
-<<<<<<< HEAD
-      .catch(err => console.log(err));
-=======
       .catch((err) => console.log(err));
->>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
+
   }, []);
 
   return (
@@ -44,15 +31,12 @@ function DoctorCard(props) {
                 <div className="col-2 mt-2 ml-2">
                   <Link
                     to={`/doctors/${props.doctor["id"]}`}
-<<<<<<< HEAD
+
                     className="nonlink">
-=======
-                    className="nonlink"
-                  >
->>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
+
                     <img
                       src={props.doctor["profile"].picture}
-                      className="img-fluid rounded-circle img_height"
+                      className="img-fluid rounded-circle doctor_image"
                       alt="..."
                     />
                   </Link>
@@ -85,16 +69,6 @@ function DoctorCard(props) {
                               overflowX: "auto",
                               display: "flex",
                               justifyContent: "space-between",
-<<<<<<< HEAD
-                            }}>
-                            {/* ////////////////////////////////// */}
-
-                            {schedules.map(feed => (
-                              <ScheduleCard
-                                key={feed.id}
-                                schedule={feed}
-                                doctor_id={props.doctor["id"]}></ScheduleCard>
-=======
                             }}
                           >
                             {/* ////////////////////////////////// */}
@@ -105,7 +79,7 @@ function DoctorCard(props) {
                                 schedule={feed}
                                 doctor_id={props.doctor["id"]}
                               ></ScheduleCard>
->>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
+
                             ))}
 
                             {/* /////////////////////////////// */}
@@ -118,65 +92,8 @@ function DoctorCard(props) {
               </div>
             </div>
           </div>
-<<<<<<< HEAD
-        </div>
-      </div>
-
-      {/* <Link to={`/doctors/${props.doctor['id']}`} className="nonlink">
-    <div class='doctor_card'> */}
-      {/* leftdiv */}
-      {/* <div className='card_left'>
-        <img
-                className="doctor_image"
-                src={props.doctor['profile'].picture}
-              />
-        </div> */}
-      {/* center div */}
-      {/* header div */}
-      {/* <div className='card_center'>
-<div className="doctor_header"><div className="doctor_name">Dr.{props.doctor['user'].first_name} {props.doctor['user'].last_name}</div>
-<div className="doctor_rating" style={{marginLeft:"30px"}}> 
-<Ratings rating={props.doctor['average_rate']} />
-
-
-
-</div>
-
-<div className="doctor_address">{props.doctor['profile'].city},{props.doctor['profile'].country}</div>
-
-<div className="doctor_description">{props.doctor['description']}</div>
-
-
-
-<div className="doctor_schedule">
-<div className="scrolling-wrapper"style={{ overflowX: "auto", display: "flex",justifyContent:"space-between"}}>
-{/* <div className="col-1"></div> */}
-
-      {/* {schedules.map((feed) => (
-            <ScheduleCard key={feed.id} schedule={feed}></ScheduleCard>
-          ))}
-      </div>
-     
-</div>
-
-
-
-
-
-</div>
-
-
-
-
-        </div>
-
-        <div className="card_right">   </div>
-    </div>
-    </Link> */}
-=======
-        </div>
-      </div>
->>>>>>> 5093ed19647d161cf7b8fc3e0895cfb239040eaa
+            </div>
+            </div>
     </>
   );
 }
