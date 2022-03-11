@@ -429,4 +429,4 @@ class PreviousAppointmentsListByDoctor(generics.ListAPIView):
 class Findmydoctor(generics.ListCreateAPIView):
     queryset = Doctor.objects.filter(is_varified=True)
     serializer_class = DoctorPublicSerializer
-    filter_fields = ("user__first_name","user__last_name","clinics__name","specialization__name","clinics__city","clinics__area","clinics__country","profile__city","profile__country","profile__area")
+    filter_fields = ("user__first_name","user__last_name","clinics__name","specialization__name","clinics__city","clinics__area","clinics__country","profile__city","profile__country","profile__area","specialization")
