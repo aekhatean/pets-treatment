@@ -1,6 +1,5 @@
 
 import "../styles/doctor_card.css";
-
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
@@ -11,7 +10,6 @@ function DoctorCard(props) {
   useEffect(() => {
     axiosInstance
       .get(`users/schedule/doctor/${props.doctor["id"]}`)
-
       .then((res) => {
         if (res.status === 200) {
           setschedule(res.data);
