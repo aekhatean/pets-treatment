@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useFormik } from 'formik';
 
-function TimePickerFeild() {
+function TimePickerFeild({ name, value, onChange, from_time, to_time, duration }) {
     const [time, setTime] = React.useState('');
     console.log(time)
     const handleChange = (event) => {
@@ -33,7 +33,7 @@ function TimePickerFeild() {
         result.push(`12 : 30 PM`)
         return result;
     } 
-    console.log(generateTimeSteps())
+    // console.log(generateTimeSteps())
 
     return (
         <div className="mb-3 text-start">

@@ -194,6 +194,8 @@ export const content = {
     clinic_updated: "Clinic data updated successfully.",
     invitation_sent: "Invitation sent successfully",
     pick_date : "Pick a date",
+    invalid_date : "Date cannot be in the past",
+    invalid_day_date: "Date must match day",
   },
   ar: {
     brand: "بيتسانيا",
@@ -315,7 +317,7 @@ export const content = {
     cairo: "القاهرة",
     shoubra: "شبرا",
     th_october: "السادس من أكتور",
-    register_petowner: "إنشاء حساب صاحب حيوان",
+    register_petowner: "إنشاء حساب مالك الحيوان",
     required: "هذا الحقل مطلوب",
     invalid_email: "البريد الالكتروني خطأ",
     invalid_firstname: "لا يمكن أن يكون الاسم الأول أكثر من 20 حرف",
@@ -388,5 +390,7 @@ export const content = {
     clinic_updated: "تم تعديل بيانات العيادة بنجاح.",
     invitation_sent: "تم ارسال الدعوة بنجاح.",
     pick_date : "اختر تاريخا",
+    invalid_date : "لا يمكن أن يكون التاريح في الماضي",
+    invalid_day_date: "يجب أن يطابق التاريخ اليوم",
   },
 };
