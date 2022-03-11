@@ -127,7 +127,14 @@ const Appointments = () => {
       {selectedClinic ? (
         <DynamicTable tableContent={upcomingAppointments} />
       ) : (
-        <Alert variant="secondary">Please select a clinic</Alert>
+        <div
+          className={`mx-3 w-50 ${
+            lang === "en" ? "text-start" : "text-end"
+          } alert text-dark primary-bg`}
+          role="alert"
+        >
+          {content[lang].selectClinic}
+        </div>
       )}
       <h4 className={`m-4 ${lang === "en" ? "text-start" : "text-end"}`}>
         {lang === "en"
@@ -137,7 +144,14 @@ const Appointments = () => {
       {selectedClinic ? (
         <DynamicTable tableContent={previousAppointments} />
       ) : (
-        <Alert variant="secondary">Please select a clinic</Alert>
+        <div
+          className={`mx-3 w-50 ${
+            lang === "en" ? "text-start" : "text-end"
+          } alert text-dark primary-bg`}
+          role="alert"
+        >
+          {content[lang].selectClinic}
+        </div>
       )}
     </div>
   );
