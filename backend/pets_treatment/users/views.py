@@ -365,10 +365,22 @@ class ScheduleVview(generics.RetrieveUpdateDestroyAPIView):
     queryset = Schedule.objects.all()
     permission_classes = [IsAuthenticated]
 
-class AppointmentList(generics.ListCreateAPIView):
-    queryset = Appiontments.objects.all()
-    serializer_class = AppointmentSerializer
+class AppointmentList(APIView):
     permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        appointments = Appiontments.objects.all()
+        print(appointments)
+        appointments_serializer = AppointmentSerializer(appointments,many=True).data
+        print(appointments_serializer)
+        return Response(
+            appointments_serializer, status.HTTP_200_OK
+        )
+    def post(self, request):
+        appointment_serializer = AppointmentSerializer(data=request.data,  context={'request':request})
+        appointment_serializer.is_valid(raise_exception=True)
+        appointment_serializer.save()
+        return Response(appointment_serializer.data,status.HTTP_201_CREATED)
 
 
 class AppointmentVview(generics.RetrieveUpdateDestroyAPIView):
@@ -390,6 +402,23 @@ class UpcomingAppointmentsListByUser(generics.ListAPIView):
 class PreviousAppointmentsListByUser(generics.ListAPIView):
     def get_queryset(self):
         return Appiontments.objects.filter(user=self.request.user, date__lt=date.today())
+    
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
+class UpcomingAppointmentsListByDoctor(generics.ListAPIView):
+    def get_queryset(self):
+        clinic = self.request.query_params.get("clinic")
+        return Appiontments.objects.filter(schedule__doctor__user=self.request.user, schedule__clinic=clinic, date__gte=date.today())
+    
+    serializer_class = AppointmentSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class PreviousAppointmentsListByDoctor(generics.ListAPIView):
+    def get_queryset(self):
+        clinic = self.request.query_params.get("clinic")
+        return Appiontments.objects.filter(schedule__doctor__user=self.request.user, schedule__clinic=clinic, date__lt=date.today())
     
     serializer_class = AppointmentSerializer
     pagination_class = StandardResultsSetPagination

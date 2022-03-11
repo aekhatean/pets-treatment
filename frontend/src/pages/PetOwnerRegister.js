@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 import TextFeild from '../components/TextField';
 import * as Yup from 'yup';
 import {Input} from "reactstrap";
@@ -10,11 +10,13 @@ import { axiosInstance } from '../api';
 import {colors} from '../colors/colors';
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
+import { useHistory } from "react-router-dom";
 // import SuccessModal from '../components/SuccessModal';
 // import ErrorModal from '../components/ErrorModal';
 // import axios from 'axios';
 // const imageToBase64 = require('image-to-base64');
 function Register() {
+  let history = useHistory();
   const { lang, setLang } = useContext(LanguageContext);
   // image
   const [baseImage, setBaseImage] = useState("");
@@ -82,8 +84,14 @@ function Register() {
           ),
 
 
-        // photo:Yup.string()
-        // .required("Photo is required"),
+          photo:Yup.string()
+          .required(content[lang].required),
+      
+          city:Yup.string()
+          .required(content[lang].required),
+      
+          area:Yup.string()
+          .required(content[lang].required),
 
     })
 
@@ -166,6 +174,8 @@ function Register() {
                   // setErrorModal(true)
                   console.error(e.response)
                 });
+
+                history.push('/');
               }}
               
         >
@@ -180,7 +190,7 @@ function Register() {
             setFieldValue
           } = formProps;
           return (
-                <Container className='p-5 shadow ' >
+                <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
                     <h1 className='my-4 font-weight-bold-display-4'>{content[lang].register_petowner}</h1>
 
                     <Form onSubmit={handleSubmit}>
@@ -193,7 +203,7 @@ function Register() {
                         <TextFeild label={content[lang].phone} name="phone" type="text"/>
 
 
-                        <div className="mb-3 text-start">
+                        <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                         <label className="form-label" htmlFor="photo">{content[lang].upload_photo}</label>
                           <Input
                             name='photo'
@@ -202,20 +212,22 @@ function Register() {
                               uploadImage(e);
                             }}
                           />
+                          <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
                         </div>
                           <br></br>
                               {/* <img src={baseImage} height="200px" /> */}
 
                         
-                              <div className="mb-3 text-start">
+                              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
 
                                 <label className="form-label" htmlFor="country">{content[lang].country}</label>
                                 <Field as="select" name="country" id="country" className="form-select">
                                     <option value="egypt">{content[lang].egypt}</option>
                                 </Field>
+                                <ErrorMessage name={'country'} component="div" style={{color:"red"}} className="error"/>
                                 </div>
 
-                                <div className="mb-3 text-start">
+                                <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                                 <label className="form-label" htmlFor="city">{content[lang].city}</label>
                                 <Field
                                     id="city"
@@ -237,9 +249,10 @@ function Register() {
                                     <option value="Giza">{content[lang].giza}</option>
                                     <option value="Cairo">{content[lang].cairo}</option>
                                 </Field>
+                                <ErrorMessage name={'city'} component="div" style={{color:"red"}} className="error"/>
                                 </div>
                                 
-                                <div className="mb-3 text-start">
+                                <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                                 <label className="form-label" htmlFor="area">{content[lang].area}</label>
                                 <Field
                                     value={values.area}
@@ -257,7 +270,9 @@ function Register() {
                                         {a.label}
                                         </option>
                                     ))}
-                                </Field><br/>
+                                </Field>
+                                <ErrorMessage name={'area'} component="div" style={{color:"red"}} className="error"/>
+                                <br/>
 
                                 </div>
 

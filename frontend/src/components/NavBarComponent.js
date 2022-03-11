@@ -33,7 +33,6 @@ function NavBarComponent() {
   //handle app language
   const handleAppLang = (event) => {
     let language = event.currentTarget.innerHTML;
-    console.log(language);
     setLang(language === "English" ? "en" : "ar");
   };
   return (

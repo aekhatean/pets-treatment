@@ -44,7 +44,7 @@ function ClinicSchedule(props) {
         borderless
         className=" my-3"
         size="sm"
-        style={{ backgroundColor: colors.bg.primary, borderRadius: 30 }}
+        style={{ backgroundColor: colors.bg.primary, borderRadius: 20 }}
       >
         <thead>
           <tr>

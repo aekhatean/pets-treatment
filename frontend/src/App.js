@@ -5,7 +5,6 @@ import SearchPage from "./pages/SearchPage";
 import HowItWorks from "./pages/HowItWorks";
 import About from "./pages/About";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import DoctorPublicProfile from "./pages/DoctorPublicProfile";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import UserDashboard from "./pages/UserDashboard";
