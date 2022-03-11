@@ -25,6 +25,8 @@ urlpatterns = [
     # path('doctor-appointment/<int:pk>', AppointmentsListByDoctor.as_view()),
     path('user-upcoming-appointment/', UpcomingAppointmentsListByUser.as_view()),
     path('user-previous-appointment/',PreviousAppointmentsListByUser.as_view()),
+    path('doctor-upcoming-appointment/', UpcomingAppointmentsListByDoctor.as_view()),
+    path('doctor-previous-appointment/',PreviousAppointmentsListByDoctor.as_view()),
     path('register/', Register.as_view()),
     path('activate/<str:key>/<str:enc_token>', ActivateUser.as_view()),
     path('doctors/rating/<int:pk>', RateDoctor.as_view()),

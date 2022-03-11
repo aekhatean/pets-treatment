@@ -50,7 +50,7 @@ function LogedUser(props) {
     setUser({});
     setLogging(false);
   };
-  console.log(user);
+  // console.log(user);
   if (is_loged && user !== {}) {
     return (
       <>
