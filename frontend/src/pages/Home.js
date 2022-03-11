@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import get from "../assets/contact_form.png";
+import hero from "../assets/contact_form.png";
 import dogger_checkup from "../assets/dogger_checkup.svg";
 import dogger_dermatology from "../assets/dogger_dermatology.svg";
 import dogger_veterinarian from "../assets/dogger_veterinarian.svg";
@@ -17,71 +17,66 @@ function Home() {
             <div className="col-md-7 align-self-center text-center text-md-left">
               <div className="intro-text">
                 <h1>
-                  We Care For <span className="d-md-block">Your Pet</span>
+                  {content[lang].home_slogan1}
+                  <span className="d-md-block">
+                    {content[lang].home_slogan2}
+                  </span>
                 </h1>
                 <p className="mb-4">
-                  We always try to provide your pet the best
-                  <span className="d-block">services.</span>
+                  {content[lang].home_slogan3}
+                  <span className="d-block">{content[lang].home_slogan4}</span>
                 </p>
               </div>
+              <Link to="/search" className="btn-1">
+                {content[lang].search_call}
+              </Link>
             </div>
             <div className="col-md-5 align-self-end text-center text-md-right">
-              <img src={get} className="cover-img" />
+              <img src={hero} className="cover-img" />
             </div>
           </div>
         </div>
       </section>
       <div className="get-started">
         <div className="heading-section">
-          <h2 className="text-black">
-            Everything Your Pet Needs All in One Place. Get Started Now!
-          </h2>
+          <h2 className="text-black">{content[lang].home_banner}</h2>
           <br></br>
           <Link to="/petowner_register" className="btn-1">
             {content[lang].pet_owner}
           </Link>
           <Link to="/doctor_register" className="btn-2">
-            Veterinarian
+            {content[lang].veterinarian}
           </Link>
         </div>
       </div>
-      <section class="site-section " id="services-section">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-6 text-center heading-section mb-5">
-              <h2 class="text-black mb-2">Our Services</h2>
+      <section className="site-section " id="services-section">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-6 text-center heading-section mb-5">
+              <h2 className="text-black mb-2">{content[lang].services}</h2>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6 mb-4 col-lg-4">
-              <div class="block_service">
+          <div className="row">
+            <div className="col-md-6 mb-4 col-lg-4">
+              <div className="block_service">
                 <img src={dogger_checkup} alt="mb-5" />
-                <h3>Pet Checkup</h3>
-                <p>
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia, there live the blind texts.
-                </p>
+                <h3>{content[lang].vet_checkup}</h3>
+                <p>{content[lang].service_checkup}</p>
               </div>
             </div>
-            <div class="col-md-6 mb-4 col-lg-4">
-              <div class="block_service">
+            <div className="col-md-6 mb-4 col-lg-4">
+              <div className="block_service">
                 <img src={dogger_dermatology} alt="mb-5" />
-                <h3>Pet Dermatology</h3>
-                <p>
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia, there live the blind texts.
-                </p>
+                <h3>{content[lang].vet_derma}</h3>
+                <p>{content[lang].service_derma}</p>
               </div>
             </div>
 
-            <div class="col-md-6 mb-4 col-lg-4">
-              <div class="block_service">
+            <div className="col-md-6 mb-4 col-lg-4">
+              <div className="block_service">
                 <img src={dogger_veterinarian} alt="mb-5" />
-                <h3>Expert Veterinarians</h3>
-                <p>
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia, there live the blind texts.
-                </p>
+                <h3> {content[lang].service_vet}</h3>
+                <p>{content[lang].service_experts}</p>
               </div>
             </div>
           </div>
