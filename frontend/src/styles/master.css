@@ -1,32 +1,27 @@
-.mybody{
-display: flex;
-justify-content: space-around;
-
-
+.mybody {
+  display: flex;
+  justify-content: space-around;
 }
-.parent_cards_div{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
-
+.parent_cards_div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+#controlled-tab-example-tab-3 {
+  background-color: #f9f7f3;
 }
 
 /* On screens that are 992px or less, set the background color to */
 @media screen and (max-width: 992px) {
+}
 
+/* On screens that are 600px or less, set the background color to  */
+@media screen and (max-width: 770px) {
+  .mybody {
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
   }
-  
-  /* On screens that are 600px or less, set the background color to  */
-  @media screen and (max-width: 770px) {
-    .mybody{
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-        
-        }
-  }
-
-
-
+}

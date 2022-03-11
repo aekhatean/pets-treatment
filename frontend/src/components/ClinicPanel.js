@@ -37,7 +37,10 @@ function ClinicPanel(props) {
   }, [clinic_id]);
 
   return (
-    <Container className="shadow-sm p-4">
+    <Container
+      className="shadow-sm p-4 "
+      style={{ backgroundColor: colors.bg.light, borderRadius: 20 }}
+    >
       {/* clinic name */}
       <div className={lang === "ar" ? "text-end mb-4" : "text-start mb-4"}>
         <SubtitleText subtitle={clinic.name} />
@@ -50,7 +53,10 @@ function ClinicPanel(props) {
       {/* clinic price */}
       <div className={lang === "ar" ? "text-end fs-6" : "fs-6 text-start"}>
         <PaymentsIcon className="text-success" />
-        <span className="fw-light"> {clinic.price}</span>
+        <span className="fw-light">
+          {clinic.price}
+          {content[lang].pound}
+        </span>
       </div>
 
       {/* clinic schedule */}

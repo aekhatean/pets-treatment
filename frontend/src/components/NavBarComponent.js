@@ -2,12 +2,18 @@ import React, { useContext, useState } from "react";
 import { content } from "../translation/translation";
 import { LanguageContext } from "../context/LanguageContext";
 import { Link } from "react-router-dom";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Image, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { colors } from "../colors/colors";
 import Logo from "../assets/Logo.png";
 import { routes } from "../routes/routes";
 import LogedUser from "./LogedUser";
-
+import LogoDark1 from "../assets/LogoDark1.png";
+import LogoDark2 from "../assets/LogoDark2.png";
+import LogoBlond from "../assets/LogoBlond.png";
+import LogoLight from "../assets/LogoLight.png";
+import LogoPrimary from "../assets/LogoPrimary.png";
+import LogoBlue from "../assets/LogoBlue.png";
+import LogoBrown from "../assets/LogoBrown.png";
 function NavBarComponent() {
   const { lang, setLang } = useContext(LanguageContext);
   //items in navbar options
@@ -40,13 +46,7 @@ function NavBarComponent() {
     >
       <Container>
         <Navbar.Brand href="/">
-          <img
-            src={Logo}
-            className="img-fluid"
-            alt="logo"
-            style={{ width: 30 }}
-          />
-          <div className="fw-normal fs-6 mt-0">{content[lang].brand}</div>
+          <Image src={LogoBlond} alt="how-it-works-cat" fluid width={150} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">

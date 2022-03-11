@@ -6,7 +6,7 @@ function Tag(props) {
   return (
     <span
       className="badge rounded-pill m-1 fw-normal"
-      style={{ backgroundColor: colors.bg.primary, color: colors.text.dark }}
+      style={{ backgroundColor: colors.bg.light, color: colors.text.dark }}
     >
       {name}
     </span>
