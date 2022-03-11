@@ -39,7 +39,7 @@ function ClinicPanel(props) {
   return (
     <Container
       className="shadow-sm p-4 "
-      style={{ backgroundColor: colors.bg.light, borderRadius: 20 }}
+      style={{ backgroundColor: colors.bg.primary, borderRadius: 20 }}
     >
       {/* clinic name */}
       <div className={lang === "ar" ? "text-end mb-4" : "text-start mb-4"}>

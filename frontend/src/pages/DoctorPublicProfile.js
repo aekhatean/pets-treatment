@@ -58,9 +58,9 @@ function DoctorPublicProfile(props) {
   }
   return (
     <Container
-      className="my-5 shadow-sm"
+      className="my-5 "
       dir={lang === "ar" ? "rtl" : "ltr"}
-      style={{ borderRadius: 20, backgroundColor: colors.bg.primary }}
+      style={{ borderRadius: 20, backgroundColor: colors.bg.light }}
     >
       <Row>
         <Col>
@@ -88,7 +88,7 @@ function DoctorPublicProfile(props) {
                   ? "shadow-sm m-2 p-3 text-end"
                   : "shadow-sm m-2 p-3 text-start"
               }
-              style={{ backgroundColor: colors.bg.light, borderRadius: 10 }}
+              style={{ backgroundColor: colors.bg.primary, borderRadius: 10 }}
             >
               <SubtitleText subtitle={content[lang].about_dr} />
               <div className="m-1">
