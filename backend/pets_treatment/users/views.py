@@ -78,17 +78,12 @@ class ActivateUser(APIView):
                 user.is_active = True
                 user.save()
                 token.delete()
-                return Response({
-                    'msg':'User Activated Successfully, You can login now'
-                },status=status.HTTP_200_OK)
+                return redirect("http://localhost:3000/activate_message")
             else:
-                    return Response({
-                    'error':'Sorry the link is expired'
-                },status=status.HTTP_400_BAD_REQUEST)                       
+                return redirect("http://localhost:3000/expired_activation")
         except:
-            return Response({
-                    'error':'Sorry the link is expired',
-                },status=status.HTTP_400_BAD_REQUEST)
+            return redirect("http://localhost:3000/expired_activation")
+
 
 
 

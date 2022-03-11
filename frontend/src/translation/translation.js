@@ -264,6 +264,7 @@ export const content = {
       "The login page gives you access to your profile and clinic reservation service",
     search_qoute: " Hi! How can we help You?",
     delete_from_clinic: "Delete From Clinic",
+    syndicate_id: "Syndicate ID",
   },
   ar: {
     brand: "بيتسانيا",
@@ -527,5 +528,6 @@ export const content = {
       "تتيح لك صفحة تسجيل الدخول التحكم فى حسابك الشخصى و أيضا خدمة حجز الكشف للأطباء البيطريين",
     search_qoute: "  مرحبا! كيف نستطيع مساعدك؟",
     delete_from_clinic: "احذف من العيادة",
+    syndicate_id: "كارنيه النقابة",
   },
 };

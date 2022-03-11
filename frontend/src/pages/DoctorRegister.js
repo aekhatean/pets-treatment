@@ -12,17 +12,24 @@ import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useHistory } from "react-router-dom";
 import { FileUpload } from "../components/Inputs";
+import ModalSuccess from "../components/ModalSuccess";
+import ModalFail from "../components/ModalFail";
 import {
   checkForImageFormat,
   checkForImageSize,
 } from "../components/ClinicAdder";
 
 function DoctorRegister() {
-  let history = useHistory();
   const { lang, setLang } = useContext(LanguageContext);
   const [modal, setModal] = useState(undefined);
   const [errorModal, setErrorModal] = useState(undefined);
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const [isModalFailOpen, setIsModalFailOpen] = useState(false);
 
+  let history = useHistory();
+  const redic = () => {
+    history.push("/");
+  };
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, content[lang].invalid_firstname)
@@ -160,8 +167,6 @@ function DoctorRegister() {
       validationSchema={validate}
       onSubmit={(values) => {
         console.log(values);
-        // console.log(typeof baseImage)
-        // console.log(syncId)
         const data = {
           profile: {
             user: {
@@ -183,21 +188,13 @@ function DoctorRegister() {
           national_id: values.national_id,
           specialization: values.special,
         };
-        console.log(values.special);
-        console.log(data);
-
         axios
           .post("http://127.0.0.1:8000/users/doctors/new", data)
-
           .then((response) => {
-            // setModal(true)
-            console.log(response);
-            console.log("sucess");
+            response.status === 201 && setIsModalSuccessOpen(true);
           })
-
           .catch((e) => {
-            // setErrorModal(true)
-            console.error(e.response);
+            setIsModalFailOpen(true);
           });
 
         // history.push('/');
@@ -271,7 +268,7 @@ function DoctorRegister() {
                 <Field
                   name="photo"
                   component={FileUpload}
-                  label={"Photo"}
+                  label={content[lang].profilePicture}
                   isCardStyles={false}
                 />
               </div>
@@ -282,7 +279,7 @@ function DoctorRegister() {
                 <Field
                   name="syndicate_id"
                   component={FileUpload}
-                  label={"Syndicate ID"}
+                  label={content[lang].syndicate_id}
                   isCardStyles={false}
                 />
               </div>
@@ -435,6 +432,17 @@ function DoctorRegister() {
               >
                 {content[lang].reset}
               </button>
+              <ModalSuccess
+                setIsModalOpen={setIsModalSuccessOpen}
+                isModalOpen={isModalSuccessOpen}
+                successText={content[lang].verify_email}
+                hideFunc={redic}
+              />
+              <ModalFail
+                setIsModalOpen={setIsModalFailOpen}
+                isModalOpen={isModalFailOpen}
+                errorText={content[lang].error_general_msg}
+              />
             </Form>
           </Container>
         );
