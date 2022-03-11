@@ -25,7 +25,7 @@ const ModalSuccess = (props) => {
           right: "20%",
           bottom: "50%",
           textAlign: "center",
-          border: "4px solid lightgreen",
+          border: "4px solid #b8d8d6",
           borderRadius: "10px",
         },
       }}
@@ -37,7 +37,7 @@ const ModalSuccess = (props) => {
         </h4>
         <p>{props.successText}</p>
         <button
-          className="btn btn-success mx-2"
+          className="btn primary-bg mx-2"
           onClick={() => {
             props.setIsModalOpen(false);
             props.hideFunc && props.hideFunc(false);

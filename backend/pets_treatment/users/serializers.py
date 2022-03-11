@@ -14,6 +14,7 @@ import django_filters
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
     email = serializers.EmailField(required=False)
+    password = serializers.CharField(write_only=True)
     class Meta:
         model = User
         fields = ('id','username','first_name','last_name','email','password')
@@ -139,9 +140,12 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
+        # print(1, validated_data)
         specialization_data = validated_data.pop('specialization')
+        # print(2, validated_data)
         profile = validated_data.pop('profile')
         profile_serializer = ProfileSerializer(data=profile)
+        print(profile.get('picture'))
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
         doctor = Doctor.objects.create(user=profile.user,profile=profile,**validated_data)
@@ -233,6 +237,15 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = Appiontments
         fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'date')
         depth = 1
+
+    def create(self, validated_data):
+        schedule_id = self.context.get('request').data.get('schedule')
+        user_id = self.context.get('request').data.get('user')
+        schedule = Schedule.objects.filter(id=schedule_id)[0]
+        user = User.objects.filter(id=user_id)[0]
+        appointment = Appiontments.objects.create(**validated_data, schedule=schedule, user=user)
+        print(appointment, "hello")
+        return appointment
         
     def create(self, validated_data):
         schedule_id = self.context.get('request').data.get('schedule')

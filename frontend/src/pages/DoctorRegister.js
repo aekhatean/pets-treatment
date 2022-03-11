@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import TextFeild from "../components/TextField";
 import * as Yup from "yup";
 import { Input } from "reactstrap";
@@ -10,44 +10,13 @@ import { axiosInstance } from "../api";
 import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
+import { useHistory } from "react-router-dom";
+import { FileUpload } from "../components/Inputs"; 
 
-// import SuccessModal from '../components/SuccessModal';
-// import ErrorModal from '../components/ErrorModal';
 function DoctorRegister() {
+  let history = useHistory();
   const { lang, setLang } = useContext(LanguageContext);
-  // image
-  const [baseImage, setBaseImage] = useState("");
-  const [syncId, setSyncId] = useState("");
 
-  const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setBaseImage(base64);
-    console.log(baseImage);
-  };
-
-  const uploadSyncId = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setSyncId(base64);
-    console.log(syncId);
-  };
-
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  // end image
   const [modal, setModal] = useState(undefined);
   const [errorModal, setErrorModal] = useState(undefined);
   const validate = Yup.object({
@@ -86,13 +55,20 @@ function DoctorRegister() {
       .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
 
     // specialization:Yup.string()
-    // .required("You must choose a Specialization")
+    // .required(content[lang].required),
 
-    // syndicate_id:Yup.string()
-    // .required("Syndicate id is reqired"),
+    syndicate_id:Yup.string()
+    .required(content[lang].required),
 
-    // photo:Yup.string()
-    // .required("Photo is required"),
+    photo:Yup.string()
+    .required(content[lang].required),
+
+    city:Yup.string()
+    .required(content[lang].required),
+
+    area:Yup.string()
+    .required(content[lang].required),
+
   });
 
   const getareas = (city) => {
@@ -131,8 +107,6 @@ function DoctorRegister() {
         console.log(err);
       });
   }, []);
-  console.log(syncId);
-  console.log(baseImage);
   return (
     <Formik
       initialValues={{
@@ -171,10 +145,10 @@ function DoctorRegister() {
             city: values.city,
             area: values.area,
             phone: values.phone,
-            picture: baseImage,
+            picture: values.photo,
           },
           description: values.description,
-          syndicate_id: syncId,
+          syndicate_id: values.syndicate_id,
           national_id: values.national_id,
           specialization: values.special,
         };
@@ -194,6 +168,8 @@ function DoctorRegister() {
             // setErrorModal(true)
             console.error(e.response);
           });
+
+          // history.push('/');
       }}
     >
       {(formProps) => {
@@ -207,7 +183,7 @@ function DoctorRegister() {
           setFieldValue,
         } = formProps;
         return (
-          <Container className="p-5 shadow ">
+          <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
             <h1 className="my-4 font-weight-bold-display-4">
               {content[lang].register_doctor}
             </h1>
@@ -255,37 +231,64 @@ function DoctorRegister() {
               />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
 
-              <div className="mb-3 text-start">
+              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="photo">
                   {content[lang].upload_photo}
                 </label>
-                <Input
+                <Field
                   name="photo"
                   type="file"
                   onChange={(e) => {
-                    uploadImage(e);
+                    const file = e.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (event) {
+                    setFieldValue('photo', event.target.result);
+                    };
                   }}
                 />
-              </div>
+                <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
+              </div> */}
+              <Field
+                  name="photo"
+                  component={FileUpload}
+                  label={
+                    'photooo'
+                  }
+                />
               <br></br>
-              {/* <img src={baseImage} height="200px" /> */}
 
-              <div className="mb-3 text-start">
+              <Field
+                  name="syndicate_id"
+                  component={FileUpload}
+                  label={
+                    "syndicate_idddddd"
+                  }
+                />
+
+              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="synd_id">
                   {content[lang].upload_syndicate}
                 </label>
-                <Input
+                <Field
                   id="synd_id"
                   name="syndicate_id"
                   type="file"
                   onChange={(e) => {
-                    uploadSyncId(e);
+                    const file = e.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (event) {
+                    setFieldValue('syndicate_id', event.target.result);
+                    };
                   }}
                 />
-              </div>
+                <ErrorMessage name={'syndicate_id'} component="div" style={{color:"red"}} className="error"/>
+              </div> */}
               <br></br>
 
-              <div className="mb-3 text-start">
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"} 
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                 <label className="form-label" htmlFor="country">
                   {content[lang].country}
                 </label>
@@ -297,13 +300,16 @@ function DoctorRegister() {
                 >
                   <option value="egypt">{content[lang].egypt}</option>
                 </Field>
+                <ErrorMessage name={'country'} component="div" style={{color:"red"}} className="error"/>
               </div>
 
-              <div className="mb-3 text-start">
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"} 
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                 <label className="form-label" htmlFor="city">
                   {content[lang].city}
                 </label>
                 <Field
+                  dir={lang === 'ar' ? 'rtl' : 'ltr'}
                   id="city"
                   name="city"
                   as="select"
@@ -319,13 +325,15 @@ function DoctorRegister() {
                     setFieldValue("areas", _areas);
                   }}
                 >
-                  <option value="None">{content[lang].select_city}</option>
+                  <option className="m-2" value="None">{content[lang].select_city}</option>
                   <option value="Giza">{content[lang].giza}</option>
                   <option value="Cairo">{content[lang].cairo}</option>
                 </Field>
+                <ErrorMessage name={'city'} component="div" style={{color:"red"}} className="error"/>
               </div>
 
-              <div className="mb-3 text-start">
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                 <label className="form-label" htmlFor="area">
                   {content[lang].area}
                 </label>
@@ -346,10 +354,11 @@ function DoctorRegister() {
                       </option>
                     ))}
                 </Field>
+                <ErrorMessage name={'area'} component="div" style={{color:"red"}} className="error"/>
                 <br />
               </div>
 
-              <div className="mb-3 text-start">
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="special">
                   {content[lang].specialization}
                 </label>
@@ -373,6 +382,7 @@ function DoctorRegister() {
                     </option>
                   ))}
                 </Field>
+                <ErrorMessage name={'special'} component="div" style={{color:"red"}} className="error"/>
               </div>
               <br></br>
 

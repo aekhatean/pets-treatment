@@ -1,68 +1,87 @@
 import React, { useContext } from "react";
-import homeImg from "../assets/homeImage.png";
-import getStarted from "../assets/GetStartedImg.png";
+import hero from "../assets/contact_form.png";
+import dogger_checkup from "../assets/dogger_checkup.svg";
+import dogger_dermatology from "../assets/dogger_dermatology.svg";
+import dogger_veterinarian from "../assets/dogger_veterinarian.svg";
 import { Link } from "react-router-dom";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
-
+import "../styles/home.css";
 function Home() {
   const { lang, setLang } = useContext(LanguageContext);
   return (
     <div>
-      <h1>Get the best treatment for your pet right at the moment.</h1>
-      <div className="form">
-        <img src={homeImg} alt="landing img" className="home-img" />
-        <form className="form-content">
-          <div className="search">
-            <input type="text" placeholder="Search.." name="search" />
-            <button type="submit">
-              <i className="fa fa-search"></i>
-            </button>
+      <section className="site-blocks-cover overflow-hidden">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-7 align-self-center text-center text-md-left">
+              <div className="intro-text">
+                <h1>
+                  {content[lang].home_slogan1}
+                  <span className="d-md-block">
+                    {content[lang].home_slogan2}
+                  </span>
+                </h1>
+                <p className="mb-4">
+                  {content[lang].home_slogan3}
+                  <span className="d-block">{content[lang].home_slogan4}</span>
+                </p>
+              </div>
+              <Link to="/search" className="btn-1">
+                {content[lang].search_call}
+              </Link>
+            </div>
+            <div className="col-md-5 align-self-end text-center text-md-right">
+              <img src={hero} className="cover-img" />
+            </div>
           </div>
-          <select name="city" id="city" defaultValue={"DEFAULT"} required>
-            <option value="DEFAULT" disabled>
-              City
-            </option>
-            <option value="Cairo">Cairo</option>
-            <option value="Alexandria">Alexandria</option>
-          </select>
-          <select name="Area" id="area" defaultValue={"DEFAULT"} required>
-            <option value="DEFAULT" disabled>
-              Area
-            </option>
-            <option value="Settelement">New Settelement</option>
-            <option value="nasrCity">Nasr-city</option>
-            <option value="Giza">Giza</option>
-            <option value="6thOctober">6th October</option>
-          </select>
-          <select
-            name="specialization"
-            id="specialization"
-            defaultValue={"DEFAULT"}
-            required>
-            <option value="DEFAULT" disabled>
-              Specialization
-            </option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Neurology">Neurology</option>
-            <option value="Oncology">Oncology</option>
-            <option value="Nutrition">Nutrition</option>
-          </select>
-        </form>
-      </div>
+        </div>
+      </section>
       <div className="get-started">
-        <img src={getStarted} alt="cat-img" />
-        <div>
-          <h1>Everything your pet needs All in one place. Get Started now!</h1>
+        <div className="heading-section">
+          <h2 className="text-black">{content[lang].home_banner}</h2>
           <br></br>
           <Link to="/petowner_register" className="btn-1">
             {content[lang].pet_owner}
           </Link>
           <Link to="/doctor_register" className="btn-2">
-            Veterinarian
+            {content[lang].veterinarian}
           </Link>
         </div>
       </div>
+      <section className="site-section " id="services-section">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-6 text-center heading-section mb-5">
+              <h2 className="text-black mb-2">{content[lang].services}</h2>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6 mb-4 col-lg-4">
+              <div className="block_service">
+                <img src={dogger_checkup} alt="mb-5" />
+                <h3>{content[lang].vet_checkup}</h3>
+                <p>{content[lang].service_checkup}</p>
+              </div>
+            </div>
+            <div className="col-md-6 mb-4 col-lg-4">
+              <div className="block_service">
+                <img src={dogger_dermatology} alt="mb-5" />
+                <h3>{content[lang].vet_derma}</h3>
+                <p>{content[lang].service_derma}</p>
+              </div>
+            </div>
+
+            <div className="col-md-6 mb-4 col-lg-4">
+              <div className="block_service">
+                <img src={dogger_veterinarian} alt="mb-5" />
+                <h3> {content[lang].service_vet}</h3>
+                <p>{content[lang].service_experts}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

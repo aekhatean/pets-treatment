@@ -35,7 +35,10 @@ function ClinicGallary(props) {
   }, [clinic_id]);
 
   return (
-    <Container className="my-5">
+    <Container
+      className="my-5 p-3"
+      style={{ backgroundColor: colors.bg.light }}
+    >
       <div className={lang === "ar" ? "text-end fs-6" : "fs-6 text-start"}>
         <CameraAltIcon className="text-success" />
         <span className="fw-light">

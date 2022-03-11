@@ -38,26 +38,40 @@ function ClinicSchedule(props) {
   }, [clinic_id, doctor_id]);
 
   return (
-    <div className=" rounded bg-light">
-      <Table responsive borderless size="sm">
+    <div>
+      <Table
+        responsive
+        borderless
+        className=" my-3"
+        size="sm"
+        style={{ backgroundColor: colors.bg.light, borderRadius: 20 }}
+      >
         <thead>
           <tr>
-            <th width={"20%"}>{content[lang].from}</th>
-            <th width={"20%"}>{content[lang].to}</th>
-            <th width={"20%"}>{content[lang].day}</th>
-            <th width={"30%"}></th>
+            <th width={"20%"} className="p-2">
+              {content[lang].from}
+            </th>
+            <th width={"20%"} className="p-2">
+              {content[lang].to}
+            </th>
+            <th width={"20%"} className="p-2">
+              {content[lang].day}
+            </th>
+            <th width={"30%"} className="p-2"></th>
           </tr>
         </thead>
         <tbody>
           {scheduleList.map((schedule) => (
             <tr key={schedule.id}>
-              <td>{schedule.from_time}</td>
-              <td>{schedule.to_time}</td>
-              <td>{content[lang].weekdays[schedule.day.toLowerCase()]}</td>
-              <td>
+              <td className="p-2">{schedule.from_time}</td>
+              <td className="p-2">{schedule.to_time}</td>
+              <td className="p-2">
+                {content[lang].weekdays[schedule.day.toLowerCase()]}
+              </td>
+              <td className="p-2">
                 <Button
-                  style={{ backgroundColor: colors.bg.primary, border: "none" }}
-                  className="me-2 btn-outline-dark"
+                  className="btn-outline-light mb-2"
+                  style={{ backgroundColor: colors.bg.blue, border: "none" }}
                   onClick={() => handleShow(schedule)}
                 >
                   {content[lang].book_appointment}
@@ -69,7 +83,6 @@ function ClinicSchedule(props) {
       </Table>
       <Modal
         show={show}
-        fullscreen={true}
         onHide={() => handleHide()}
         dir={lang === "ar" ? "rtl" : "ltr"}
       >

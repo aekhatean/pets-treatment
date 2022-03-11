@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { LanguageContext } from "../context/LanguageContext";
+import { colors } from "../colors/colors";
 
 const SideBar = ({ selections }) => {
   const { lang } = useContext(LanguageContext);
@@ -9,15 +10,18 @@ const SideBar = ({ selections }) => {
   return (
     <div className="container-fluid" dir={lang === "en" ? "ltr" : "rtl"}>
       <div className="row">
-        <div className="col-lg-2 secondary-bg d-flex flex-column py-4">
+        <div
+          className="col-lg-2 d-flex flex-column py-4 shadow-sm"
+          style={{ backgroundColor: colors.bg.blond }}
+        >
           {selections.map((selection) => {
             return (
               <p
                 key={selection.name}
                 className={`h6 ${
                   activeSelectionValue !== selection.value
-                    ? "inactive-sidebar-selection"
-                    : "active-sidebar-selection"
+                    ? "inactive-sidebar-selection blonde-bg"
+                    : "active-sidebar-selection blue-bg text-white"
                 }`}
                 onClick={() => setActiveSelectionValue(selection.value)}
               >

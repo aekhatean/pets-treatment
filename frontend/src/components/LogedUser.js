@@ -24,18 +24,15 @@ function LogedUser(props) {
     axiosAuthInstance
       .get("users/profilelist")
       .then((res) => {
-        if (res.status === 200) {
-          setUser({
-            picture: res.data.data.picture,
-            full_name: `${res.data.data.user.first_name} ${res.data.data.user.last_name}`,
-          });
-          setUserRole(res.data.data.role);
-        }
+        setUser({
+          picture: res.data.data.picture,
+          full_name: `${res.data.data.user.first_name} ${res.data.data.user.last_name}`,
+        });
+        setUserRole(res.data.data.role);
       })
       .catch((err) => {
         console.log(err);
         setUser({});
-        setLogging(false);
         setUserRole("");
       });
   }, [is_loged]);
@@ -55,8 +52,11 @@ function LogedUser(props) {
     return (
       <>
         <NavDropdown
-          className="shadow px-3  bg-warning"
-          style={{ borderRadius: 50 }}
+          className="shadow px-3 "
+          style={{
+            borderRadius: 50,
+            backgroundColor: colors.bg.blond,
+          }}
           title={
             <>
               <img
@@ -69,7 +69,9 @@ function LogedUser(props) {
                   borderRadius: "50%",
                 }}
               />
-              <Navbar.Text>{user.full_name}</Navbar.Text>
+              <Navbar.Text className="m-2" style={{ color: colors.text.dark }}>
+                {user.full_name}
+              </Navbar.Text>
             </>
           }
           id="collasible-nav-dropdown"
@@ -96,8 +98,12 @@ function LogedUser(props) {
   return (
     <>
       <NavDropdown
-        className="shadow-sm bg-warning"
-        style={{ borderRadius: 15 }}
+        className="shadow-sm"
+        style={{
+          borderRadius: 15,
+          backgroundColor: colors.bg.blond,
+          color: colors.text.dark,
+        }}
         title={content[lang].guest}
         id="collasible-nav-dropdown"
       >

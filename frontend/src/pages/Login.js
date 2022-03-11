@@ -9,7 +9,9 @@ import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { LogingContext } from "../context/LogingContext";
+import { useHistory } from "react-router-dom";
 function Login() {
+  let history = useHistory();
   const { is_loged, setLogging } = useContext(LogingContext);
   const { lang, setLang } = useContext(LanguageContext);
   const validate = Yup.object({
@@ -37,12 +39,16 @@ function Login() {
           .then((response) => {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("email", response.data.email);
+            localStorage.setItem("user_id", response.data.user['id']);
             setLogging(true);
+            history.push('/');
           })
           .catch((e) => {
             console.log(e);
             setLogging(false);
           });
+          
+          
       }}
     >
       {(formProps) => {
@@ -56,7 +62,7 @@ function Login() {
           setFieldValue,
         } = formProps;
         return (
-          <Container className="p-5 shadow ">
+          <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
             <h1 className="my-4 font-weight-bold-display-4">
               {content[lang].login}
             </h1>

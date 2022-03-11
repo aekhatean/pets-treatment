@@ -4,6 +4,7 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import paw from "../assets/paw.svg";
 import DescriptionText from "./DescriptionText";
 import Tag from "./Tag";
+import { colors } from "../colors/colors";
 
 function useWindowSize() {
   const [size, setSize] = useState([0, 0]);
@@ -34,21 +35,41 @@ function CatStep(props) {
                 height: 130,
               }}
             >
-              <hr width="130" size="4" />
+              <hr
+                width="130"
+                size="5"
+                style={{ color: colors.bg.primary }}
+                className="shadow-sm"
+              />
               <span>
                 <img
                   src={paw}
                   alt="catpaw"
-                  style={{ width: 40, transform: "rotate(270deg)" }}
+                  className="shadow-sm"
+                  style={{
+                    width: 40,
+                    transform: "rotate(270deg)",
+                    borderRadius: "50%",
+                  }}
                 />
               </span>
-              <hr width="40" size="4" />
+              <hr
+                width="40"
+                size="5"
+                style={{ color: colors.bg.primary }}
+                className="shadow-sm"
+              />
             </div>
           </Col>
           <Col>
             <Card
               className="shadow-sm"
-              style={{ transform: "skew(-10deg)", borderRadius: 30 }}
+              style={{
+                transform: "skew(-10deg)",
+                borderRadius: 30,
+                backgroundColor: colors.bg.light,
+                borderColor: colors.bg.blond,
+              }}
             >
               <Card.Body>
                 <span
@@ -87,21 +108,41 @@ function CatStep(props) {
                 height: 90,
               }}
             >
-              <hr width="90" size="4" />
+              <hr
+                width="90"
+                size="5"
+                style={{ color: colors.bg.primary }}
+                className="shadow-sm"
+              />
               <span>
                 <img
                   src={paw}
                   alt="catpaw"
-                  style={{ width: 40, transform: "rotate(270deg)" }}
+                  className="shadow-sm"
+                  style={{
+                    width: 40,
+                    transform: "rotate(270deg)",
+                    borderRadius: "50%",
+                  }}
                 />
               </span>
-              <hr width="40" size="4" />
+              <hr
+                width="40"
+                size="5"
+                style={{ color: colors.bg.primary }}
+                className="shadow-sm"
+              />
             </div>
           </Col>
           <Col>
             <Card
-              className="shadow-sm my-5"
-              style={{ transform: "skew(-10deg)", borderRadius: 30 }}
+              className="shadow my-5"
+              style={{
+                transform: "skew(-10deg)",
+                borderRadius: 30,
+                backgroundColor: colors.bg.light,
+                borderColor: colors.bg.blond,
+              }}
             >
               <Card.Body className="p-4">
                 <span
@@ -113,7 +154,13 @@ function CatStep(props) {
                 >
                   <Tag name={step} />
                 </span>
-                <DescriptionText description={content} />
+                <p
+                  className={
+                    lang === "ar" ? "fs-5 text-end" : "fs-5 text-start"
+                  }
+                >
+                  {content}
+                </p>
               </Card.Body>
             </Card>
           </Col>

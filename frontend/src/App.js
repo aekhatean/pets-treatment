@@ -5,7 +5,6 @@ import SearchPage from "./pages/SearchPage";
 import HowItWorks from "./pages/HowItWorks";
 import About from "./pages/About";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import DoctorPublicProfile from "./pages/DoctorPublicProfile";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import UserDashboard from "./pages/UserDashboard";
@@ -38,18 +37,14 @@ function App() {
           <Route exact path="/doctor_register" component={DoctorRegister} />
           <Route exact path="/petowner_register" component={PetOwnerRegister} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
-          <Route exact path="/doctors/" component={Doctors} />
-          {is_loged ? (
-            userRole === "DR" ? (
+          <Route path="/doctors" component={Doctors} />
+          <Route path="/error404" component={NotFoundPage} />
+          {is_loged &&
+            (userRole === "DR" ? (
               <Route exact path="/dashboard" component={DoctorDashboard} />
             ) : (
               <Route exact path="/dashboard" component={UserDashboard} />
-            )
-          ) : (
-            <Redirect to="login" />
-          )}
-
-          <Route path="/error404" component={NotFoundPage} />
+            ))}
 
           <Redirect to="error404" />
         </Switch>

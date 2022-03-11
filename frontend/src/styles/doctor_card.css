@@ -40,8 +40,8 @@ justify-content: flex-start;
 }
 .doctor_image{
     margin-top: 10px;
-    width: 70px;
-    height: 70px;
+    width: 75px;
+    aspect-ratio: 1;
     border-radius: 50%;
     margin-top: 10px;
     margin-left: 10px;
@@ -136,3 +136,86 @@ margin-left: 30px;
     align-items: center;
 }
 }
+
+
+
+.search-input {
+    color: white;
+    border: 0;
+    outline: 0;
+    background: none;
+    width: 0;
+    margin-top: 5px;
+    caret-color: transparent;
+    line-height: 20px;
+    transition: width 0.4s linear
+}
+
+.search .search-input {
+    padding: 0 10px;
+    width: 100%;
+    caret-color: #536bf6;
+    font-size: 19px;
+    font-weight: 300;
+    color: black;
+    transition: width 0.4s linear
+}
+
+.search-icon {
+    height: 75%;
+    width: 34px;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #536bf6;
+    font-size: 10px;
+    bottom: 30px;
+    position: relative;
+    border-radius: 5px
+}
+
+.search-icon:hover {
+    color: #fff !important
+}
+
+a:link {
+    text-decoration: none
+}
+
+.card-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: .25rem;
+    border: none;
+    cursor: pointer;
+    transition: all 2s
+}
+
+.card-inner:hover {
+    transform: scale(1.1)
+}
+
+.mg-text span {
+    font-size: 12px
+}
+
+.mg-text {
+    line-height: 14px
+}
+
+.overdescription {
+    white-space: wrap; 
+    width: 100%; 
+    height: 11vh;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+   
+  }

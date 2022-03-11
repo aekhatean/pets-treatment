@@ -68,7 +68,7 @@ const ScheduleCard = (props) => {
 
   return (
     <div className="col-lg-3 col-md-4 col-6">
-      <div className="card mb-3">
+      <div className="card mb-3 primary-bg shadow">
         <div className="card-header">{translatedDay(props.schedule.day)}</div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item">
@@ -106,7 +106,7 @@ const ScheduleCard = (props) => {
             {lang === "en" ? content.en.next_date : content.ar.next_date}:{" "}
             <span className="fw-bold">{props.schedule.date}</span>
           </li>
-          <li className="list-group-item">
+          <li className="list-group-item ">
             <button
               className="btn btn-danger"
               onClick={() => setIsModalOpen(true)}
