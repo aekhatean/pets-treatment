@@ -25,6 +25,11 @@ const GeneralOptions = props => {
       handler: props.actionProvider.handleAboutUs,
       id: 5,
     },
+    {
+      name: content[lang].login,
+      handler: props.actionProvider.handleLogin,
+      id: 6,
+    },
   ];
 
   return <Options options={options} title="Options" {...props} />;
