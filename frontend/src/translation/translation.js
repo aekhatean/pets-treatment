@@ -230,6 +230,8 @@ export const content = {
     invalid_day_date: "Date must match day",
     name_len_valid: "Name must be at least 3 characters",
     message_len_valid: "Your message must have at least 50 character",
+    wrong_auth_login: "Wrong username or password",
+    verify_email: "Please check your email and verify your account.",
   },
   ar: {
     brand: "بيتسانيا",
@@ -460,5 +462,7 @@ export const content = {
     invalid_day_date: "يجب أن يطابق التاريخ اليوم",
     name_len_valid: "يجب ان يتكون الاسم من 3 أحرف على الأقل",
     message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
+    wrong_auth_login: "البريد الالكتروني أو كلمة المرور غير صحيح",
+    verify_email: "من فضلك تفقد بريدك الالكتروني وأكد حسابك",
   },
 };

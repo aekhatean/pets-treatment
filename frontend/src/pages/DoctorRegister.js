@@ -12,13 +12,15 @@ import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useHistory } from "react-router-dom";
 import { FileUpload } from "../components/Inputs"; 
+import ModalSuccess from "../components/ModalSuccess";
 
 function DoctorRegister() {
   let history = useHistory();
+  const redic = ()=>{
+    history.push('/');
+  }
   const { lang, setLang } = useContext(LanguageContext);
-
-  const [modal, setModal] = useState(undefined);
-  const [errorModal, setErrorModal] = useState(undefined);
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, content[lang].invalid_firstname)
@@ -130,8 +132,6 @@ function DoctorRegister() {
       validationSchema={validate}
       onSubmit={(values) => {
         console.log(values);
-        // console.log(typeof baseImage)
-        // console.log(syncId)
         const data = {
           profile: {
             user: {
@@ -159,17 +159,15 @@ function DoctorRegister() {
           .post("http://127.0.0.1:8000/users/doctors/new", data)
 
           .then((response) => {
-            // setModal(true)
+            setIsModalSuccessOpen(true);
             console.log(response);
             console.log("sucess");
           })
 
           .catch((e) => {
-            // setErrorModal(true)
             console.error(e.response);
           });
 
-          // history.push('/');
       }}
     >
       {(formProps) => {
@@ -231,7 +229,7 @@ function DoctorRegister() {
               />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
 
-              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="photo">
                   {content[lang].upload_photo}
                 </label>
@@ -248,25 +246,26 @@ function DoctorRegister() {
                   }}
                 />
                 <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
-              </div> */}
-              <Field
+              </div>
+
+              {/* <Field
                   name="photo"
                   component={FileUpload}
                   label={
                     'photooo'
                   }
-                />
+                /> */}
               <br></br>
 
-              <Field
+              {/* <Field
                   name="syndicate_id"
                   component={FileUpload}
                   label={
                     "syndicate_idddddd"
                   }
-                />
+                /> */}
 
-              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="synd_id">
                   {content[lang].upload_syndicate}
                 </label>
@@ -284,7 +283,7 @@ function DoctorRegister() {
                   }}
                 />
                 <ErrorMessage name={'syndicate_id'} component="div" style={{color:"red"}} className="error"/>
-              </div> */}
+              </div>
               <br></br>
 
               <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"} 
@@ -369,6 +368,7 @@ function DoctorRegister() {
                   controlId="validationFormik05"
                   name="special"
                   id="special"
+                  value={values.special&&values.special.name}
                   onChange={(e) => {
                     let arr = [];
                     arr.push({ name: e.target.value });
@@ -405,6 +405,16 @@ function DoctorRegister() {
               >
                 {content[lang].reset}
               </button>
+
+
+              <ModalSuccess
+              setIsModalOpen={setIsModalSuccessOpen}
+              isModalOpen={isModalSuccessOpen}
+              successText={
+                content[lang].verify_email
+              }
+              hideFunc={redic}
+            />
             </Form>
           </Container>
         );

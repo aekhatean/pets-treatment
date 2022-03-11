@@ -80,7 +80,10 @@ function UserAppointments() {
           Authorization: "Token " + token,
         },
       })
-      .then((res) => getAppointmentInfo(res, setUpcomingAppointments));
+      .then((res) => getAppointmentInfo(res, setUpcomingAppointments))
+      .catch(
+          error=>{console.log(error.response)}
+      );
   }, [userUpcomingAppointments, token]);
 
   // Get previous apponitmnets

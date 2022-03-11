@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import TextFeild from "../components/TextField";
 import * as Yup from "yup";
@@ -12,6 +12,7 @@ import { LogingContext } from "../context/LogingContext";
 import { useHistory } from "react-router-dom";
 function Login() {
   let history = useHistory();
+  const [isLoginValid, setIsLoginValid] = useState(true);
   const { is_loged, setLogging } = useContext(LogingContext);
   const { lang, setLang } = useContext(LanguageContext);
   const validate = Yup.object({
@@ -40,12 +41,15 @@ function Login() {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("email", response.data.email);
             localStorage.setItem("user_id", response.data.user['id']);
+            setIsLoginValid(true);
             setLogging(true);
             history.push('/');
           })
           .catch((e) => {
             console.log(e);
+            setIsLoginValid(false);
             setLogging(false);
+            
           });
           
           
@@ -78,6 +82,9 @@ function Login() {
                 name="password"
                 type="password"
               />
+              
+              {!isLoginValid &&
+                <p className={`text-danger`}> {content[lang].wrong_auth_login} </p>}
 
               <button
                 className="btn mt-3 btn-outline-dark"
