@@ -1,22 +1,37 @@
+<<<<<<< HEAD
 import Saleh from "../assets/saleh.jpg";
+=======
+>>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
 import "../styles/doctor_card.css";
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
 import ScheduleCard from "./Schedulecard";
 import { Link } from "react-router-dom";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
 function DoctorCard(props) {
+  const { lang, setLang } = useContext(LanguageContext);
   const [schedules, setschedule] = useState([]);
+
   useEffect(() => {
     axiosInstance
       .get(`users/schedule/doctor/${props.doctor["id"]}`)
+<<<<<<< HEAD
 
       .then(res => {
+=======
+      .then((res) => {
+>>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
         if (res.status === 200) {
           setschedule(res.data);
         }
       })
+<<<<<<< HEAD
       .catch(err => console.log(err));
+=======
+      .catch((err) => console.log(err));
+>>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
   }, []);
 
   return (
@@ -29,7 +44,12 @@ function DoctorCard(props) {
                 <div className="col-2 mt-2 ml-2">
                   <Link
                     to={`/doctors/${props.doctor["id"]}`}
+<<<<<<< HEAD
                     className="nonlink">
+=======
+                    className="nonlink"
+                  >
+>>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
                     <img
                       src={props.doctor["profile"].picture}
                       className="img-fluid rounded-circle doctor_image"
@@ -39,21 +59,33 @@ function DoctorCard(props) {
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
-                    <h5 className="card-title text-start">
+                    <h5
+                      className={
+                        lang === "ar"
+                          ? "card-title text-end"
+                          : "card-title text-start"
+                      }
+                    >
                       Dr.{props.doctor["user"].first_name}{" "}
                       {props.doctor["user"].last_name}
                     </h5>
-                    <p className=" text-start ">
+                    <p className={lang === "ar" ? "text-end" : "text-start "}>
                       Pets doctor graduated from helwan university
                     </p>
-                    <p className=" text-start">
+                    <p className={lang === "ar" ? "text-end" : "text-start "}>
                       <Ratings rating={props.doctor["average_rate"]} />
                     </p>
-                    <p className=" text-start">
+                    <p className={lang === "ar" ? "text-end" : "text-start "}>
                       {props.doctor["profile"].city},
                       {props.doctor["profile"].country}
                     </p>
-                    <p className=" text-start overdescription">
+                    <p
+                      className={
+                        lang === "ar"
+                          ? "text-end overdescription"
+                          : " text-start overdescription"
+                      }
+                    >
                       {props.doctor["description"]}
                     </p>
                     <p className="card-text">
@@ -72,7 +104,12 @@ function DoctorCard(props) {
                               <ScheduleCard
                                 key={feed.id}
                                 schedule={feed}
+<<<<<<< HEAD
                                 doctor_id={props.doctor["id"]}></ScheduleCard>
+=======
+                                doctor_id={props.doctor["id"]}
+                              ></ScheduleCard>
+>>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
                             ))}
 
                             {/* /////////////////////////////// */}

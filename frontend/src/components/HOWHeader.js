@@ -34,7 +34,7 @@ function HOWHeader(props) {
         >
           <a
             href="#howdoctor"
-            className="btn btn-sm btn-outline-dark m-1"
+            className="btn btn-sm btn-outline-dark m-1 shadow-sm"
             style={{
               backgroundColor: colors.bg.primary,
               border: "none",
@@ -45,7 +45,7 @@ function HOWHeader(props) {
           </a>
           <a
             href="#howpetowner"
-            className="btn btn-sm btn-outline-dark m-1"
+            className="btn btn-sm btn-outline-dark m-1 shadow-sm"
             style={{
               backgroundColor: colors.bg.primary,
               border: "none",
@@ -56,7 +56,7 @@ function HOWHeader(props) {
           </a>
           <a
             href="#faq"
-            className="btn btn-sm btn-outline-dark m-1"
+            className="btn btn-sm btn-outline-dark m-1 shadow-sm"
             style={{
               backgroundColor: colors.bg.primary,
               border: "none",

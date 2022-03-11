@@ -21,6 +21,19 @@ function ClinicSchedule(props) {
     setSelected_schedule({});
     setShow(false);
   }
+  function tConvert(time) {
+    // Check correct time format and split into components
+    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)/) || [time];
+
+    if (time.length > 1) {
+      // If time format correct
+      time = time.slice(1); // Remove full string match value
+      time[5] = +time[0] < 12 ? content[lang].am : content[lang].pm; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join(""); // return adjusted time or original string
+  }
+
   useEffect(() => {
     axiosInstance
       .get(`users/schedule/clinic/${clinic_id}`)
@@ -63,8 +76,8 @@ function ClinicSchedule(props) {
         <tbody>
           {scheduleList.map((schedule) => (
             <tr key={schedule.id}>
-              <td className="p-2">{schedule.from_time}</td>
-              <td className="p-2">{schedule.to_time}</td>
+              <td className="p-2">{tConvert(schedule.from_time)}</td>
+              <td className="p-2">{tConvert(schedule.to_time)}</td>
               <td className="p-2">
                 {content[lang].weekdays[schedule.day.toLowerCase()]}
               </td>
@@ -83,7 +96,6 @@ function ClinicSchedule(props) {
       </Table>
       <Modal
         show={show}
-        fullscreen={true}
         onHide={() => handleHide()}
         dir={lang === "ar" ? "rtl" : "ltr"}
       >

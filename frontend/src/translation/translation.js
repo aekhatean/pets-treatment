@@ -105,6 +105,8 @@ export const content = {
     time: "Time",
     from: "From",
     to: "To",
+    am: " AM ",
+    pm: " PM ",
     book_appointment: "Book Appointment",
     feedbacks: "Feedbacks",
     rating: "Rating",
@@ -167,6 +169,9 @@ export const content = {
     not_verified_clinic:
       "Your clinic is not verified yet, please consider checking your email. Once it is verified we'll inform you and you will be able to Add doctors & schedules to your clinic.",
     clinics: "Clinics",
+    clinic_name: "Clinic Name",
+    clinic_city: "Clinic City",
+    clinic_area: "Clinic Area",
     appointments: "Appointments",
     add_new_clinic: "Add New Clinic",
     add_clinic: "Add Clinic",
@@ -228,7 +233,10 @@ export const content = {
     pick_date: "Pick a date",
     invalid_date: "Date cannot be in the past",
     invalid_day_date: "Date must match day",
-    home_slogan1: "We Care For Your ",
+    sent: "Sent",
+    support_message_confirm:
+      "Thanks for contacting us, Message is received and one of our support team will check it and contact you as soon as possible.",
+    home_slogan1: "We Care For Your",
     home_slogan2: "Pet's Welfare",
     home_slogan3:
       "Petsania works on connecting you with the best veterinary clinics around",
@@ -250,6 +258,7 @@ export const content = {
     message_len_valid: "Your message must have at least 50 character",
     login_widget:
       "The login page gives you access to your profile and clinic reservation service",
+    search_qoute: " Hi! How can we help You?",
   },
   ar: {
     brand: "بيتسانيا",
@@ -355,6 +364,8 @@ export const content = {
     time: "وقت",
     from: "من",
     to: "إلي",
+    am: " صباحا ",
+    pm: " مساء ",
     book_appointment: "حجز موعد",
     feedbacks: "التقيمات",
     rating: "التقيم",
@@ -417,6 +428,9 @@ export const content = {
     not_verified_clinic:
       "عيادتك ليست موثقة بعد. من فضلك تابع بريدك الالكتروني. بمجرد ان توثق عيادتك سنخبرك و حينها سيمكنك اضافة أطباء و مواعيد الى عيادتك.",
     clinics: "العيادات",
+    clinic_name: "اسم العيادة",
+    clinic_city: "مدينة العيادة",
+    clinic_area: "منطقة العيادة",
     appointments: "الحجوزات",
     add_new_clinic: "أضف عيادة جديدة",
     add_clinic: "أضف العيادة",
@@ -478,6 +492,9 @@ export const content = {
     pick_date: "اختر تاريخا",
     invalid_date: "لا يمكن أن يكون التاريح في الماضي",
     invalid_day_date: "يجب أن يطابق التاريخ اليوم",
+    sent: "تم الارسال",
+    support_message_confirm:
+      "نشكرك علي التواصل معانا، احد افراض فريق الدعم سوف يفحص رسالتك ثم يتواصل معك في اقرب وقت ممكن.",
     home_slogan1: "نحن نهتم كثيرا بصحة ",
     home_slogan2: " حيوانك الأليف",
     home_slogan3: " بيتسانيا تعمل على توصيلك بأفضل العيادات البيطرية",
@@ -499,5 +516,6 @@ export const content = {
     message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
     login_widget:
       "تتيح لك صفحة تسجيل الدخول التحكم فى حسابك الشخصى و أيضا خدمة حجز الكشف للأطباء البيطريين",
+    search_qoute: "  مرحبا! كيف نستطيع مساعدك؟",
   },
 };
