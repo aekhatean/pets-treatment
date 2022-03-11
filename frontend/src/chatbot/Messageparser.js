@@ -40,7 +40,12 @@ class MessageParser {
       lowerCase.includes("حساب") ||
       lowerCase.includes("Sign up")
     ) {
-      this.actionProvider.handleSignUp();
+    } else if (
+      lowerCase.includes("login") ||
+      lowerCase.includes("دخول") ||
+      lowerCase.includes("log in")
+    ) {
+      this.actionProvider.handleLogin();
     } else return this.actionProvider.handleDefault();
   }
 }

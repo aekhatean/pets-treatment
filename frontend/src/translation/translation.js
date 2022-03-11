@@ -105,6 +105,8 @@ export const content = {
     time: "Time",
     from: "From",
     to: "To",
+    am: " AM ",
+    pm: " PM ",
     book_appointment: "Book Appointment",
     feedbacks: "Feedbacks",
     rating: "Rating",
@@ -167,6 +169,9 @@ export const content = {
     not_verified_clinic:
       "Your clinic is not verified yet, please consider checking your email. Once it is verified we'll inform you and you will be able to Add doctors & schedules to your clinic.",
     clinics: "Clinics",
+    clinic_name: "Clinic Name",
+    clinic_city: "Clinic City",
+    clinic_area: "Clinic Area",
     appointments: "Appointments",
     add_new_clinic: "Add New Clinic",
     add_clinic: "Add Clinic",
@@ -253,6 +258,9 @@ export const content = {
     message_len_valid: "Your message must have at least 50 character",
     wrong_auth_login: "Wrong username or password",
     verify_email: "Please check your email and verify your account.",
+    login_widget:
+      "The login page gives you access to your profile and clinic reservation service",
+    search_qoute: " Hi! How can we help You?",
   },
   ar: {
     brand: "بيتسانيا",
@@ -358,6 +366,8 @@ export const content = {
     time: "وقت",
     from: "من",
     to: "إلي",
+    am: " صباحا ",
+    pm: " مساء ",
     book_appointment: "حجز موعد",
     feedbacks: "التقيمات",
     rating: "التقيم",
@@ -420,6 +430,9 @@ export const content = {
     not_verified_clinic:
       "عيادتك ليست موثقة بعد. من فضلك تابع بريدك الالكتروني. بمجرد ان توثق عيادتك سنخبرك و حينها سيمكنك اضافة أطباء و مواعيد الى عيادتك.",
     clinics: "العيادات",
+    clinic_name: "اسم العيادة",
+    clinic_city: "مدينة العيادة",
+    clinic_area: "منطقة العيادة",
     appointments: "الحجوزات",
     add_new_clinic: "أضف عيادة جديدة",
     add_clinic: "أضف العيادة",
@@ -505,5 +518,8 @@ export const content = {
     message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
     wrong_auth_login: "البريد الالكتروني أو كلمة المرور غير صحيح",
     verify_email: "من فضلك تفقد بريدك الالكتروني وأكد حسابك",
+    login_widget:
+      "تتيح لك صفحة تسجيل الدخول التحكم فى حسابك الشخصى و أيضا خدمة حجز الكشف للأطباء البيطريين",
+    search_qoute: "  مرحبا! كيف نستطيع مساعدك؟",
   },
 };

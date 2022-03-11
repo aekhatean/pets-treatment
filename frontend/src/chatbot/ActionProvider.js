@@ -47,6 +47,15 @@ class ActionProvider {
     });
     this.updateChatbotState(messages);
   };
+  handleLogin = () => {
+    let lang = localStorage.getItem("lang");
+    const messages = createChatBotMessage(content[lang].login_widget, {
+      widget: "Login",
+      withAvatar: true,
+    });
+    this.updateChatbotState(messages);
+  };
+
   updateChatbotState(message) {
     this.setState(state => ({
       ...state,
