@@ -3,26 +3,91 @@ import { useState, useEffect, useContext } from "react";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import "../style.css";
+import DynamicTable from "../components/DynamicTable";
+import {
+  getAppointmentJSDate,
+  getAppointmentJSTimeDuration,
+} from "../components/UserAppointments";
+import { Alert } from "react-bootstrap";
+
+const getAppointmentInfo = (res, setAppointments) => {
+  if (res.status === 200) {
+    const appointmentsList = [];
+    for (const result of res.data.results) {
+      const { appointment_duration } = result.schedule;
+      const { first_name, last_name, email } = result.user;
+      const { visiting_time, date } = result;
+      const { from, to } = getAppointmentJSTimeDuration(
+        visiting_time,
+        appointment_duration
+      );
+      const newAppointment = {
+        patient: `${first_name} ${last_name}`,
+        email: email,
+        date: getAppointmentJSDate(date),
+        from: from,
+        to: to,
+      };
+      appointmentsList.push(newAppointment);
+    }
+    setAppointments(appointmentsList);
+  }
+};
 
 const Appointments = () => {
-  const { lang } = useContext(LanguageContext);
   const [token] = useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken;
   });
+  const { lang } = useContext(LanguageContext);
   const [doctorClinics, setDoctorClinics] = useState([]);
-  // const [doctorAppointments, setDoctorAppointments] = useState([]);
-  async function fetchClinics() {
-    const response = await axiosInstance
+  const [selectedClinic, setSelectedClinic] = useState("");
+  const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+  const [previousAppointments, setPrviousAppointments] = useState([]);
+  const doctorUpcomingAppointments = `users/doctor-upcoming-appointment/`;
+  const doctorPreviousAppointments = `users/doctor-previous-appointment/`;
+
+  // Fetch doctor's clinics
+  useEffect(() => {
+    axiosInstance
       .get("users/doctors/clinics", {
         headers: { Authorization: `Token ${token}` },
       })
+      .then((res) => setDoctorClinics(res.data))
       .catch((err) => console.error(err.response));
-    setDoctorClinics(response.data);
-  }
+  }, [token]);
+
+  // Get upcoming apponitmnets
   useEffect(() => {
-    fetchClinics();
-  }, []);
+    if (selectedClinic) {
+      axiosInstance
+        .get(doctorUpcomingAppointments, {
+          headers: {
+            Authorization: "Token " + token,
+          },
+          params: {
+            clinic: selectedClinic,
+          },
+        })
+        .then((res) => getAppointmentInfo(res, setUpcomingAppointments));
+    }
+  }, [doctorUpcomingAppointments, selectedClinic, token]);
+
+  // Get previous apponitmnets
+  useEffect(() => {
+    if (selectedClinic) {
+      axiosInstance
+        .get(doctorPreviousAppointments, {
+          headers: {
+            Authorization: "Token " + token,
+          },
+          params: {
+            clinic: selectedClinic,
+          },
+        })
+        .then((res) => getAppointmentInfo(res, setPrviousAppointments));
+    }
+  }, [doctorPreviousAppointments, selectedClinic, token]);
 
   return (
     <div>
@@ -31,11 +96,16 @@ const Appointments = () => {
           ? content.en.select_a_clinic
           : content.ar.select_a_clinic}
       </h4>
+
       <select
         className="form-select w-25 m-4 primary-color"
         aria-label="Default select example"
+        value={selectedClinic}
+        onChange={(e) => {
+          setSelectedClinic(e.target.value);
+        }}
       >
-        <option defaultValue>
+        <option defaultValue value="">
           {lang === "en"
             ? content.en.select_a_clinic
             : content.ar.select_a_clinic}
@@ -48,18 +118,27 @@ const Appointments = () => {
           );
         })}
       </select>
+
       <h4 className={`m-4 ${lang === "en" ? "text-start" : "text-end"}`}>
         {lang === "en"
           ? content.en.upcoming_appointments
           : content.ar.upcoming_appointments}
       </h4>
-      <div>appointments here</div>
+      {selectedClinic ? (
+        <DynamicTable tableContent={upcomingAppointments} />
+      ) : (
+        <Alert variant="secondary">Please select a clinic</Alert>
+      )}
       <h4 className={`m-4 ${lang === "en" ? "text-start" : "text-end"}`}>
         {lang === "en"
           ? content.en.history_appointments
           : content.ar.history_appointments}
       </h4>
-      <div>appointments here</div>
+      {selectedClinic ? (
+        <DynamicTable tableContent={previousAppointments} />
+      ) : (
+        <Alert variant="secondary">Please select a clinic</Alert>
+      )}
     </div>
   );
 };
