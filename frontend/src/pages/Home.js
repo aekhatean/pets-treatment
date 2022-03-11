@@ -41,10 +41,10 @@ function Home() {
         <div className="heading-section">
           <h2 className="text-black">{content[lang].home_banner}</h2>
           <br></br>
-          <Link to="/petowner_register" className="btn-1">
+          <Link to="petowner_register" className="btn-1">
             {content[lang].pet_owner}
           </Link>
-          <Link to="/doctor_register" className="btn-2">
+          <Link to="doctor_register" className="btn-2">
             {content[lang].veterinarian}
           </Link>
         </div>
