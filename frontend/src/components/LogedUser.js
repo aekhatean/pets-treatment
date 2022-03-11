@@ -10,10 +10,11 @@ import { content } from "../translation/translation";
 
 function LogedUser(props) {
   const { lang } = useContext(LanguageContext);
-  const { is_loged, setLogging } = useContext(LogingContext);
+  const { is_loged, setLogging, userRole, setUserRole } =
+    useContext(LogingContext);
   const [user, setUser] = useState({ picture: "", full_name: "" });
   // const [is_loged, setLog] = useState(false);
-  const loged_routes = [content[lang].profile];
+  const loged_routes = [content[lang].dashboard];
   const unloged_routes = [
     content[lang].login,
     content[lang].doctor_register,
@@ -28,12 +29,14 @@ function LogedUser(props) {
             picture: res.data.data.picture,
             full_name: `${res.data.data.user.first_name} ${res.data.data.user.last_name}`,
           });
+          setUserRole(res.data.data.role);
         }
       })
       .catch((err) => {
         console.log(err);
         setUser({});
         setLogging(false);
+        setUserRole("");
       });
   }, [is_loged]);
 

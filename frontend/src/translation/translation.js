@@ -11,6 +11,7 @@ export const content = {
     login: "Login",
     logout: "Logout",
     profile: "Profile",
+    dashboard: "Dashboard",
     guest: "Guest",
     greeting: "Hi!",
     test: "Doctor Dashboard",
@@ -133,6 +134,20 @@ export const content = {
     invalid_national_id_min: "National id must be 14 number",
     invalid_national_id_max: "National id must be 14 number",
     invalid_phone: "Must be egyptian number",
+    pet_owner: "Pet Owner",
+    overview_widget: "How can I help? Here is the overview",
+    about_widget:
+      "The About Us page contains all the information you need about the team behind petsania",
+    howItWorks_widget:
+      "The How it works page will provide you with all the information you need to start using our website",
+    search_widget:
+      "Let's get started, search for a clinic and get the best care for your pet",
+    signUp_widget:
+      "Sign up now for free to access petsania's clinic reservation services, first things first choose if you are a pet owner or a vet",
+    search: "Search",
+    clinicSearch: "Search for a clinic",
+    bot_message:
+      "Hi​! I'm a Bot. Let me know if you have any questions regarding our website!",
     select_a_clinic: "Select a clinic",
     no_selected_clinic: "Select or add new clinic to open your dashboard.",
     not_verified_clinic:
@@ -208,6 +223,7 @@ export const content = {
     login: "تسجيل دخول",
     logout: "تسجيل خروج",
     profile: "الملف الشخصي",
+    dashboard: "لوحة التحكم بالحساب",
     guest: "زائر",
     greeting: "مرحبا!",
     language: "اللغة",
@@ -319,7 +335,7 @@ export const content = {
     th_october: "السادس من أكتور",
     register_petowner: "إنشاء حساب مالك الحيوان",
     required: "هذا الحقل مطلوب",
-    invalid_email: "البريد الالكتروني خطأ",
+    invalid_email: "بريد اليكترونى غير صحيح",
     invalid_firstname: "لا يمكن أن يكون الاسم الأول أكثر من 20 حرف",
     invalid_lastname: "لا يمكن أن يكون الاسم الأخير أكثر من 15 حرف",
     invalid_username: "لا يمكن أن يكون اسم المستخدم أكثر من 15 حرف",
@@ -329,6 +345,20 @@ export const content = {
     invalid_national_id_min: "يجب أن يكون الرقم القومي 14 رقم",
     invalid_national_id_max: "يجب أن يكون الرقم القومي 14 رقم",
     invalid_phone: "يجب أن يكون رقم الهاتف مصريا",
+    pet_owner: "عميل",
+    overview_widget: " مرحبا بك كيف يمكننى مساعدتك؟ لتأخذ نظرة عامة ",
+    about_widget:
+      "تحتوى صفحة 'من نحن' على كل المعلومات عن رسالة فريق عمل بيتسانيا",
+    howItWorks_widget:
+      "تحتوى صفحة 'كيف' على كل المعلومات الضرورية لتستطيع البدأ فى أستخدام بيتسانيا",
+    search_widget:
+      "هيا بنا نبدأ البحث عن عيادة لحيوانك الأليف لنحصل له على أفضل خدمة",
+    signUp_widget:
+      "سجل لدينا مجانا لتستطيع أستخدام حجز العيادات البيطرية لكن أولا حدد اذا كنت عميل أو طبيب بيطرى",
+    search: "بحث",
+    clinicSearch: "أبحث عن عيادة",
+    bot_message:
+      "مرحبا بك أنا بوت لا تترد وأخبرنى اذا أحتجت مساعدة بخصوص موقعنا",
     select_a_clinic: "أختر عيادة",
     no_selected_clinic: "اختر أو أضف عيادة جديدة لفتح لوحة التحكم الخاصة بك",
     not_verified_clinic:

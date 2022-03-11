@@ -4,7 +4,7 @@ export const routes = {
   about: "/about",
   doctor_register: "/doctor_register",
   petowner_register: "/petowner_register",
-  profile: "/user",
+  dashboard: "/dashboard",
   login: "/login",
   doctors: "/doctors",
   search_page: "/searchpage",

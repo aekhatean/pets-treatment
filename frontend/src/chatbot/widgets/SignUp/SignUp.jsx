@@ -1,17 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { content } from "../../../translation/translation";
 
 const SignUp = props => {
+  let lang = localStorage.getItem("lang");
   return (
     <>
       <Link
         to="/petowner_register"
         className="btn btn-primary"
         style={{ marginRight: "4px" }}>
-        Pet Owner
+        {content[lang].pet_owner}
       </Link>
       <Link to="/doctor_register" className="btn btn-secondary">
-        Vet
+        {content[lang].vets}
       </Link>
     </>
   );
