@@ -1,5 +1,5 @@
 from functools import partial
-from msilib.schema import Class
+# from msilib.schema import Class
 from pydoc import doc
 from wsgiref.util import application_uri
 from django.shortcuts import render
