@@ -191,7 +191,7 @@ const ClinicUpdater = (props) => {
       >
         {({ values, setFieldValue }) => (
           <Form className="d-flex my-3">
-            <div className="card">
+            <div className="card shadow">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
                   <InputField
@@ -332,7 +332,7 @@ const ClinicUpdater = (props) => {
                   )}
                 </li>
                 <li className="list-group-item">
-                  <button className="btn btn-warning" type="submit">
+                  <button className="btn blonde-bg" type="submit">
                     {lang === "en"
                       ? content.en.update_clinic
                       : content.ar.update_clinic}

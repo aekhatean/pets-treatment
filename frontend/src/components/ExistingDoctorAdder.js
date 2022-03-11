@@ -52,7 +52,7 @@ const ExistingDoctorAdder = (props) => {
     >
       {(formik) => (
         <Form className="d-flex my-3">
-          <div className="card">
+          <div className="card shadow">
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <InputField
@@ -66,7 +66,7 @@ const ExistingDoctorAdder = (props) => {
                 />
               </li>
               <li className="list-group-item">
-                <button className="btn btn-primary" type="submit">
+                <button className="btn blue-bg text-white" type="submit">
                   {lang === "en"
                     ? content.en.add_to_clinic
                     : content.ar.add_to_clinic}

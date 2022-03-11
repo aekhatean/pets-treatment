@@ -41,7 +41,7 @@ const DoctorDashboardCard = (props) => {
   if (doctorProfile && Object.keys(doctorProfile).length) {
     return (
       <div className="col-lg-3 col-md-4 col-6">
-        <div className="card mb-3">
+        <div className="card shadow mb-3">
           <div className="card-header">
             <img
               src={`http://localhost:8000${doctorProfile.profile.picture}`}

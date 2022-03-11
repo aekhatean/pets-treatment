@@ -109,7 +109,7 @@ const ScheduleCardAdder = (props) => {
     >
       {(formik) => (
         <Form className="d-flex my-3">
-          <div className="card">
+          <div className="card shadow">
             <ul className="list-group list-group-flush">
               <div className="list-group-item">
                 <Select
@@ -142,7 +142,7 @@ const ScheduleCardAdder = (props) => {
                 />
               </li>
               <li className="list-group-item">
-                <button className="btn btn-primary" type="submit">
+                <button className="btn blue-bg text-white" type="submit">
                   {lang === "en" ? content.en.save : content.ar.save}
                 </button>
               </li>

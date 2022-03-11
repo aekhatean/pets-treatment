@@ -228,6 +228,8 @@ export const content = {
     pick_date: "Pick a date",
     invalid_date: "Date cannot be in the past",
     invalid_day_date: "Date must match day",
+    name_len_valid: "Name must be at least 3 characters",
+    message_len_valid: "Your message must have at least 50 character",
   },
   ar: {
     brand: "بيتسانيا",
@@ -456,5 +458,7 @@ export const content = {
     pick_date: "اختر تاريخا",
     invalid_date: "لا يمكن أن يكون التاريح في الماضي",
     invalid_day_date: "يجب أن يطابق التاريخ اليوم",
+    name_len_valid: "يجب ان يتكون الاسم من 3 أحرف على الأقل",
+    message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
   },
 };
