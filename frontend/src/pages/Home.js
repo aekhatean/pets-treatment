@@ -27,7 +27,7 @@ function Home() {
                   <span className="d-block">{content[lang].home_slogan4}</span>
                 </p>
               </div>
-              <Link to="/search" className="btn-1">
+              <Link to="/doctors" className="btn-1">
                 {content[lang].search_call}
               </Link>
             </div>
