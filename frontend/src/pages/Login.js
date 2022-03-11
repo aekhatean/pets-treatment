@@ -39,14 +39,16 @@ function Login() {
           .then((response) => {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("email", response.data.email);
+            localStorage.setItem("user_id", response.data.user['id']);
             setLogging(true);
+            history.push('/');
           })
           .catch((e) => {
             console.log(e);
             setLogging(false);
           });
           
-          history.push('/');
+          
       }}
     >
       {(formProps) => {
