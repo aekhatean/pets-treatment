@@ -62,7 +62,7 @@ function Login() {
           setFieldValue,
         } = formProps;
         return (
-          <Container className="p-5 shadow" dir={lang==='ar'?'rtl':'ltr'}>
+          <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
             <h1 className="my-4 font-weight-bold-display-4">
               {content[lang].login}
             </h1>
