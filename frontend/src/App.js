@@ -24,24 +24,33 @@ import { LogingContext } from "./context/LogingContext";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(false);
-  const { is_loged } = useContext(LogingContext);
+  const { is_loged, userRole } = useContext(LogingContext);
   return (
     <div className="App">
       <BrowserRouter>
         <NavBarComponent />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/search" component={SearchPage} />
-          <Route path="/howitworks" component={HowItWorks} />
-          <Route path="/about" component={About} />
-          <Route path="/login" component={Login} />
-          <Route path="/doctor_register" component={DoctorRegister} />
-          <Route path="/petowner_register" component={PetOwnerRegister} />
-          <Route path="/user" component={UserDashboard} />
+          <Route exact path="/search" component={SearchPage} />
+          <Route exact path="/howitworks" component={HowItWorks} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/doctor_register" component={DoctorRegister} />
+          <Route exact path="/petowner_register" component={PetOwnerRegister} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
-          <Route path="/doctors/" component={Doctors} />
+          <Route exact path="/doctors/" component={Doctors} />
+          {is_loged ? (
+            userRole === "DR" ? (
+              <Route exact path="/dashboard" component={DoctorDashboard} />
+            ) : (
+              <Route exact path="/dashboard" component={UserDashboard} />
+            )
+          ) : (
+            <Redirect to="login" />
+          )}
+
           <Route path="/error404" component={NotFoundPage} />
-          {is_loged && <Route path="/dashboard" component={DoctorDashboard} />}
+
           <Redirect to="error404" />
         </Switch>
         <div className="app-chatbot-container">
