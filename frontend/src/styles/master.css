@@ -15,11 +15,8 @@ button[role="tab"].active {
 .accordion-button {
   background-color: #f9f7f3 !important;
 }
-.card_height {
-}
 .img_height {
-  width: 75px;
-  height: 75px;
+  border-radius: 50%;
 }
 
 .pets_doctor_background {
