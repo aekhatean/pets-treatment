@@ -12,6 +12,20 @@
 #controlled-tab-example-tab-3 {
   background-color: #b8d8d6;
 }
+.card_height{
+  
+}
+.img_height{
+  width: 75px; 
+  height: 75px; 
+}
+
+.pets_doctor_background{
+  background-image: url('https://www.panthercreekpetclinic.com/uploads/SiteAssets/164/images/home-hero/panther-creek-cat-hero-1443px.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 
 /* On screens that are 992px or less, set the background color to */
 @media screen and (max-width: 992px) {
