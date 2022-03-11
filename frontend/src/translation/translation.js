@@ -211,6 +211,9 @@ export const content = {
       "Clinic add request was sent successfully, the clinic data will be revised and verified in case that all the given data was correct, so please consider checking your email frequently.",
     clinic_updated: "Clinic data updated successfully.",
     invitation_sent: "Invitation sent successfully",
+    team: "team",
+    doctor_bot: "doctor",
+    information_bot: "info",
     pick_date : "Pick a date",
     invalid_date : "Date cannot be in the past",
     invalid_day_date: "Date must match day",
@@ -425,8 +428,12 @@ export const content = {
       "تم ارسال طلب اضافة العيادة بنجاح, سيتم مراجعة بيانات العيادة و توثيقها في حال ثبوت صحة البيانات, لذلك برجاء متابعة البريد الالكتروني الخاص بك",
     clinic_updated: "تم تعديل بيانات العيادة بنجاح.",
     invitation_sent: "تم ارسال الدعوة بنجاح.",
+    team: "فريق",
+    doctor_bot: "دكتور",
+    information_bot: "معلومات",
     pick_date : "اختر تاريخا",
     invalid_date : "لا يمكن أن يكون التاريح في الماضي",
     invalid_day_date: "يجب أن يطابق التاريخ اليوم",
+
   },
 };
