@@ -1,10 +1,5 @@
 import Saleh from "../assets/saleh.jpg";
 import "../styles/doctor_card.css";
-import ProfilePicture from "./ProfilePicture";
-import { Container, Row, Col, Card } from "react-bootstrap";
-import StarIcon from "@mui/icons-material/Star";
-
-import "../styles/doctor_card.css";
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
@@ -15,6 +10,7 @@ function DoctorCard(props) {
   useEffect(() => {
     axiosInstance
       .get(`users/schedule/doctor/${props.doctor["id"]}`)
+
       .then(res => {
         if (res.status === 200) {
           setschedule(res.data);
@@ -36,7 +32,7 @@ function DoctorCard(props) {
                     className="nonlink">
                     <img
                       src={props.doctor["profile"].picture}
-                      className="img-fluid rounded-circle img_height"
+                      className="img-fluid rounded-circle doctor_image"
                       alt="..."
                     />
                   </Link>

@@ -228,7 +228,7 @@ export const content = {
     pick_date: "Pick a date",
     invalid_date: "Date cannot be in the past",
     invalid_day_date: "Date must match day",
-    home_slogan1: "We Care For Your",
+    home_slogan1: "We Care For Your ",
     home_slogan2: "Pet's Welfare",
     home_slogan3:
       "Petsania works on connecting you with the best veterinary clinics around",
@@ -248,6 +248,8 @@ export const content = {
     search_call: "Search For a Clinic",
     name_len_valid: "Name must be at least 3 characters",
     message_len_valid: "Your message must have at least 50 character",
+    login_widget:
+      "The login page gives you access to your profile and clinic reservation service",
   },
   ar: {
     brand: "بيتسانيا",
@@ -495,5 +497,7 @@ export const content = {
     search_call: "أبحث عن عيادة",
     name_len_valid: "يجب ان يتكون الاسم من 3 أحرف على الأقل",
     message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
+    login_widget:
+      "تتيح لك صفحة تسجيل الدخول التحكم فى حسابك الشخصى و أيضا خدمة حجز الكشف للأطباء البيطريين",
   },
 };
