@@ -141,9 +141,12 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
+        # print(1, validated_data)
         specialization_data = validated_data.pop('specialization')
+        # print(2, validated_data)
         profile = validated_data.pop('profile')
         profile_serializer = ProfileSerializer(data=profile)
+        print(profile.get('picture'))
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
         doctor = Doctor.objects.create(user=profile.user,profile=profile,**validated_data)

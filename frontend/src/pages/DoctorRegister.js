@@ -11,43 +11,12 @@ import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useHistory } from "react-router-dom";
+import { FileUpload } from "../components/Inputs"; 
 
 function DoctorRegister() {
   let history = useHistory();
   const { lang, setLang } = useContext(LanguageContext);
-  // image
-  const [baseImage, setBaseImage] = useState("");
-  const [syncId, setSyncId] = useState("");
 
-  const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setBaseImage(base64);
-    console.log(baseImage);
-  };
-
-  const uploadSyncId = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setSyncId(base64);
-    console.log(syncId);
-  };
-
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  // end image
   const [modal, setModal] = useState(undefined);
   const [errorModal, setErrorModal] = useState(undefined);
   const validate = Yup.object({
@@ -85,8 +54,8 @@ function DoctorRegister() {
       .required(content[lang].required)
       .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
 
-    specialization:Yup.string()
-    .required(content[lang].required),
+    // specialization:Yup.string()
+    // .required(content[lang].required),
 
     syndicate_id:Yup.string()
     .required(content[lang].required),
@@ -138,8 +107,6 @@ function DoctorRegister() {
         console.log(err);
       });
   }, []);
-  console.log(syncId);
-  console.log(baseImage);
   return (
     <Formik
       initialValues={{
@@ -178,10 +145,10 @@ function DoctorRegister() {
             city: values.city,
             area: values.area,
             phone: values.phone,
-            picture: baseImage,
+            picture: values.photo,
           },
           description: values.description,
-          syndicate_id: syncId,
+          syndicate_id: values.syndicate_id,
           national_id: values.national_id,
           specialization: values.special,
         };
@@ -202,7 +169,7 @@ function DoctorRegister() {
             console.error(e.response);
           });
 
-          history.push('/');
+          // history.push('/');
       }}
     >
       {(formProps) => {
@@ -264,36 +231,60 @@ function DoctorRegister() {
               />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="photo">
                   {content[lang].upload_photo}
                 </label>
-                <Input
+                <Field
                   name="photo"
                   type="file"
                   onChange={(e) => {
-                    uploadImage(e);
+                    const file = e.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (event) {
+                    setFieldValue('photo', event.target.result);
+                    };
                   }}
                 />
                 <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
-              </div>
+              </div> */}
+              <Field
+                  name="photo"
+                  component={FileUpload}
+                  label={
+                    'photooo'
+                  }
+                />
               <br></br>
-              {/* <img src={baseImage} height="200px" /> */}
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+              <Field
+                  name="syndicate_id"
+                  component={FileUpload}
+                  label={
+                    "syndicate_idddddd"
+                  }
+                />
+
+              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="synd_id">
                   {content[lang].upload_syndicate}
                 </label>
-                <Input
+                <Field
                   id="synd_id"
                   name="syndicate_id"
                   type="file"
                   onChange={(e) => {
-                    uploadSyncId(e);
+                    const file = e.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (event) {
+                    setFieldValue('syndicate_id', event.target.result);
+                    };
                   }}
                 />
                 <ErrorMessage name={'syndicate_id'} component="div" style={{color:"red"}} className="error"/>
-              </div>
+              </div> */}
               <br></br>
 
               <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"} 
