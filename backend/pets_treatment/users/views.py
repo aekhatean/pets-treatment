@@ -143,7 +143,7 @@ class AddDoctor(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({'msg':'New Doctor has been added,\
-we sent you a verification email, please check it and click the link','data':serializer.data},status=status.HTTP_200_OK)
+we sent you a verification email, please check it and click the link','data':serializer.data},status=status.HTTP_201_CREATED)
         return Response({'msg':"Error can't create new doctor, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
