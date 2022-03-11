@@ -16,6 +16,7 @@ function FeedbackCard(props) {
       }
       style={{
         borderRadius: 10,
+        backgroundColor: colors.bg.primary,
       }}
     >
       <Ratings rating={feedback.rating} />

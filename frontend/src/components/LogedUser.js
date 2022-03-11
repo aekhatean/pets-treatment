@@ -56,7 +56,10 @@ function LogedUser(props) {
       <>
         <NavDropdown
           className="shadow px-3 "
-          style={{ borderRadius: 50, backgroundColor: '#F6EEBD' }}
+          style={{
+            borderRadius: 50,
+            backgroundColor: colors.bg.blond,
+          }}
           title={
             <>
               <img
@@ -69,7 +72,9 @@ function LogedUser(props) {
                   borderRadius: "50%",
                 }}
               />
-              <Navbar.Text>{user.full_name}</Navbar.Text>
+              <Navbar.Text className="m-2" style={{ color: colors.text.dark }}>
+                {user.full_name}
+              </Navbar.Text>
             </>
           }
           id="collasible-nav-dropdown"
@@ -96,8 +101,12 @@ function LogedUser(props) {
   return (
     <>
       <NavDropdown
-        className="shadow-sm bg-warning"
-        style={{ borderRadius: 15 }}
+        className="shadow-sm"
+        style={{
+          borderRadius: 15,
+          backgroundColor: colors.bg.blond,
+          color: colors.text.dark,
+        }}
         title={content[lang].guest}
         id="collasible-nav-dropdown"
       >

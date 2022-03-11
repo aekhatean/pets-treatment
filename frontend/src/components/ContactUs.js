@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import { content } from "../translation/translation";
 import { useContext } from "react";
 import { LanguageContext } from "../context/LanguageContext";
+import { colors } from "../colors/colors";
+import { axiosAuthInstance } from "../api";
 
 const ContactUs = () => {
   const { lang } = useContext(LanguageContext);
@@ -18,6 +20,10 @@ const ContactUs = () => {
       .min(50, "Your message must have at least 50 character")
       .required("*message is required"),
   });
+  const submitMessage = (values) => {
+    const data = values;
+    axiosAuthInstance.post(`support/`, data).catch((err) => console.error(err));
+  };
 
   return (
     <Formik
@@ -27,7 +33,7 @@ const ContactUs = () => {
         message: "",
       }}
       validationSchema={validate}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values) => submitMessage(values)}
     >
       {(formik) => (
         <Form className="mx-3">
@@ -55,7 +61,7 @@ const ContactUs = () => {
               className="btn text-white mt-2 w-25 align-self-end"
               name="submit"
               type="submit"
-              style={{ backgroundColor: "#413c58" }}
+              style={{ backgroundColor: colors.bg.blue }}
             >
               {lang === "ar" ? content.ar.send : content.en.send}
             </button>

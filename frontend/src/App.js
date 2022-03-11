@@ -37,18 +37,14 @@ function App() {
           <Route exact path="/doctor_register" component={DoctorRegister} />
           <Route exact path="/petowner_register" component={PetOwnerRegister} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
-          <Route exact path="/doctors/" component={Doctors} />
-          {is_loged ? (
-            userRole === "DR" ? (
+          <Route path="/doctors" component={Doctors} />
+          <Route path="/error404" component={NotFoundPage} />
+          {is_loged &&
+            (userRole === "DR" ? (
               <Route exact path="/dashboard" component={DoctorDashboard} />
             ) : (
               <Route exact path="/dashboard" component={UserDashboard} />
-            )
-          ) : (
-            <Redirect to="login" />
-          )}
-
-          <Route path="/error404" component={NotFoundPage} />
+            ))}
 
           <Redirect to="error404" />
         </Switch>

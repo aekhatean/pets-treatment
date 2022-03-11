@@ -23,7 +23,10 @@ function FeedbacksList(props) {
       .catch((err) => console.log(err));
   }, [doctor_id]);
   return (
-    <Container className="p-3">
+    <Container
+      className="p-3 my-5 shadow-sm"
+      style={{ width: "97%", borderRadius: 10 }}
+    >
       <div className={lang === "ar" ? "text-end m-1" : "text-start m-1"}>
         <SubtitleText subtitle={content[lang].feedbacks} />
       </div>

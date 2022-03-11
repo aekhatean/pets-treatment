@@ -9,12 +9,18 @@ import LinkedIn from "../assets/LinkedIn.png";
 import { content } from "../translation/translation";
 import { useContext } from "react";
 import { LanguageContext } from "../context/LanguageContext";
+import { colors } from "../colors/colors";
+import LogoBlond from "../assets/LogoBlond.png";
+import { Container, Image } from "react-bootstrap";
 
 const Footer = () => {
   const { lang } = useContext(LanguageContext);
 
   return (
-    <div dir={lang === "ar" ? "rtl" : "ltr"}>
+    <div
+      dir={lang === "ar" ? "rtl" : "ltr"}
+      style={{ backgroundColor: colors.bg.primary }}
+    >
       {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
         <path
           fill="#b8d8d6"
@@ -22,15 +28,17 @@ const Footer = () => {
           d="M0,128L26.7,122.7C53.3,117,107,107,160,133.3C213.3,160,267,224,320,261.3C373.3,299,427,309,480,272C533.3,235,587,149,640,144C693.3,139,747,213,800,213.3C853.3,213,907,139,960,122.7C1013.3,107,1067,149,1120,165.3C1173.3,181,1227,171,1280,165.3C1333.3,160,1387,160,1413,160L1440,160L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"
         ></path>
       </svg> */}
-      <div className="container-fluid primary-light-bg">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-md-3">
             <div className="d-flex justify-content-between">
               <div className="mx-auto my-auto">
-                <img src={Logo} className="img-fluid" alt="logo" />
-                <p className="h3 my-3">
-                  {lang === "ar" ? content.ar.brand : content.en.brand}
-                </p>
+                <Image
+                  src={LogoBlond}
+                  alt="how-it-works-cat"
+                  fluid
+                  width={300}
+                />
               </div>
 
               <div
@@ -83,7 +91,9 @@ const Footer = () => {
             </div>
           </div>
           <div className="col-md-5">
-            <ContactUs />
+            <Container className="my-4 shadow-sm p-3">
+              <ContactUs />
+            </Container>
           </div>
           <div className="d-flex justify-content-center my-md-2 my-4">
             <a href="/#" className="mx-5">
@@ -96,7 +106,10 @@ const Footer = () => {
               <img src={LinkedIn} alt="Facebook" className="contact-icons" />
             </a>
           </div>
-          <div className="d-flex justify-content-center text-white primary-bg">
+          <div
+            className="d-flex justify-content-center text-white"
+            style={{ backgroundColor: colors.bg.blue }}
+          >
             <span className="my-2 fw-bold">
               {lang === "ar" ? content.ar.rights : content.en.rights}
             </span>

@@ -57,10 +57,14 @@ function DoctorPublicProfile(props) {
     return <Redirect to="/error404" />;
   }
   return (
-    <Container dir={lang === "ar" ? "rtl" : "ltr"}>
+    <Container
+      className="my-5 "
+      dir={lang === "ar" ? "rtl" : "ltr"}
+      style={{ borderRadius: 20, backgroundColor: colors.bg.light }}
+    >
       <Row>
         <Col>
-          <div className="">
+          <div className="p-0">
             <Row>
               <Col className="m-4">
                 {/* doctor picture */}
@@ -84,9 +88,7 @@ function DoctorPublicProfile(props) {
                   ? "shadow-sm m-2 p-3 text-end"
                   : "shadow-sm m-2 p-3 text-start"
               }
-              style={{
-                borderRadius: 10,
-              }}
+              style={{ backgroundColor: colors.bg.primary, borderRadius: 10 }}
             >
               <SubtitleText subtitle={content[lang].about_dr} />
               <div className="m-1">
@@ -112,7 +114,13 @@ function DoctorPublicProfile(props) {
             className="mb-3"
           >
             {doctor.clinics.map((clinic) => (
-              <Tab key={clinic.id} eventKey={clinic.id} title={clinic.area}>
+              <Tab
+                className="shadow-sm  bg-light mx-3"
+                key={clinic.id}
+                eventKey={clinic.id}
+                title={clinic.area}
+                style={{ borderRadius: 10 }}
+              >
                 <ClinicPanel clinic_id={clinic.id} doctor_id={id} />
               </Tab>
             ))}

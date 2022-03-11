@@ -3,13 +3,15 @@ import '../styles/sidebar.css'
 import '../styles/master.css'
 import homeImg from "../assets/homeImage.png";
 import getStarted from "../assets/GetStartedImg.png";
-
+import Saleh from "../assets/saleh.jpg";
 
 
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
 import axios from 'axios';
 import DoctorCard from '../components/DoctorCard';
+import { maxHeight, maxWidth } from '@mui/system';
+import Ratings from '../components/Ratings';
 
 
 var firstname=''
@@ -23,41 +25,24 @@ var c_area=''
 
 function Doctors() {
 
-const filterChinging = (event) =>{
- firstname=document.getElementById("first_name").value
- lastname=document.getElementById("last_name").value
- u_city=document.getElementById("doctor_city").value
- u_area=document.getElementById("doctor_area").value
- c_name=document.getElementById("clinic_name").value
- c_city=document.getElementById("clinic_city").value
- c_area=document.getElementById("clinic_area").value
- axios(config).then((res) => {
-  if (res.status === 200) {
-    updatealldoctors(res.data);
-  }
-})
-.catch((err) => console.log(err));
-  event.preventDefault();
-  
-
-}
-
-// "user__first_name","user__last_name","clinics__name","specialization__name","clinics__city","clinics__area","clinics__country","profile__city","profile__country","profile__area"
-
-
-
-
-//  const mydata={
-//     find: "cairo",
-//     filters: {
-//         areas: [],
-//         cities: [],
-//         countries: [],
-//         specializations: []
-//     }
-// }
-
-
+  function filterChinging(event) {
+    firstname=document.getElementById("first_name").value
+    lastname=document.getElementById("last_name").value
+    u_city=document.getElementById("doctor_city").value
+    u_area=document.getElementById("doctor_area").value
+    c_name=document.getElementById("clinic_name").value
+    c_city=document.getElementById("clinic_city").value
+    c_area=document.getElementById("clinic_area").value
+    axios(config).then((res) => {
+     if (res.status === 200) {
+       updatealldoctors(res.data);
+     }
+   })
+   .catch((err) => console.log(err));
+     event.preventDefault();
+     
+   
+   }
 
 //  let data = JSON.stringify( mydata);
 let config = {
@@ -86,105 +71,122 @@ let config = {
         }
       })
       .catch((err) => console.log(err));
-  });
+  },[]);
  
 
   return ( <>
-  <div className='mybody'>
-  <div className='sidebar'>
-  
-        <form>
+  <div className='Container'>
+    <div className='row'>
+      <div className='col-lg-3 col-sm-12 d-flex justify-content-center my-4 shadow' style={{borderRadius:'10px',height:'80vh'}}> 
+      
+      <form className='m-auto'>
         <div>
-            <input type="text" placeholder="doctor first name.." class="form-control" name="doctor_first_name" id='first_name' />
+            <input type="text" placeholder="doctor first name.." className="form-control my-2" name="doctor_first_name" id='first_name' />
           </div>
           <div>
-            <input type="text" placeholder="doctor last name.." class="form-control" name="doctor_last_name" id='last_name'/>
+            <input type="text" placeholder="doctor last name.." className="form-control my-2" name="doctor_last_name" id='last_name'/>
           </div>
           <div>
-            <input type="text" placeholder="doctor area.." class="form-control" name="doctor_area" id='doctor_area'/>
+            <input type="text" placeholder="doctor area.." className="form-control my-2" name="doctor_area" id='doctor_area'/>
           </div>
           <div>
-            <input type="text" placeholder="doctor city.." class="form-control" name="doctor_city" id='doctor_city'/>
+            <input type="text" placeholder="doctor city.." className="form-control my-2" name="doctor_city" id='doctor_city'/>
           </div>
           <div>
-            <input type="text" placeholder="clinic name.." class="form-control" name="clinic_name" id='clinic_name'/>
+            <input type="text" placeholder="clinic name.." className="form-control my-2" name="clinic_name" id='clinic_name'/>
           </div>
           <div>
-            <input type="text" placeholder="clinic city.." class="form-control" name="clinic_city" id='clinic_city'/>
+            <input type="text" placeholder="clinic city.." className="form-control my-2" name="clinic_city" id='clinic_city'/>
           </div>
           <div>
-            <input type="text" placeholder="clinic area.." class="form-control" name="clinic_area" id='clinic_area'/>
+            <input type="text" placeholder="clinic area.." className="form-control my-2" name="clinic_area" id='clinic_area'/>
           </div>
-          {/* <div>
-            <input type="text" placeholder="clinic name.." class="form-control" name="clinic_name" />
-          </div> */}
-           {/* <div className="search1 formchild">
-            <input type="text" placeholder="Search.." class="form-control" name="search" />
-            <button type="submit">
-              <i className="fa fa-search"></i>
-            </button>
-          </div> */}
-          {/* <div> */}
-          {/* <select name="city" id="city" defaultValue={"DEFAULT"} required className="formchild">
-            <option value="DEFAULT" disabled>
-              City
-            </option>
-            <option value="Cairo">Cairo</option>
-                <option value="Alexandria">Alexandria</option>
-                <option value="Giza">Giza</option>
-                <option value="Qalyubia">Qalyubia</option>
-                <option value="Port Said">Port Said</option>
-                <option value="Suez">Suez</option>
-                <option value="Gharbia">Gharbia</option>
-                <option value="Luxor">Luxor</option>
-                <option value="Mansoura">Mansoura</option>
-                <option value="Asyut">Asyut</option>
-                <option value="Ismailia">Ismailia</option>
-                <option value="Faiyum">Faiyum</option>
-                <option value="Sharqia">Sharqia</option>
-                <option value="Damietta">Damietta</option>
-                <option value="Aswan">Aswan</option>
-                <option value="Minya">Minya</option>
-                <option value="Beheira">Beheira</option>
-                <option value="Beni Suef">Beni Suef</option>
-                <option value="Red Sea">Red Sea</option>
-                <option value="Qena">Qena</option>
-                <option value="Sohag">Sohag</option>
-                <option value="North Sinai">North Sinai</option>
-          </select> */}
-{/* <input type="text" placeholder="city.." class="form-control" name="city" />
+          
 
-          </div>
-          <div>
-            <input type="text" placeholder="area.." class="form-control" name="area" />
-          </div>
-          <div>
-          <select
-            name="specialization"
-            id="specialization"
-            defaultValue={"DEFAULT"}
-            required  className="formchild">
-            <option value="DEFAULT" disabled>
-              Specialization
-            </option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Neurology">Neurology</option>
-            <option value="Oncology">Oncology</option>
-            <option value="Nutrition">Nutrition</option>
-          </select>
-          </div> */}
-
-<input type="submit" class="btn btn-primary" onClick={(event)=>filterChinging(event)} value="search"/>
+<input type="submit" class="btn btn-primary my-2 w-100" onClick={(event)=>filterChinging(event)} value="search"/>
         </form>
-      </div>
+      
+      
+       </div>
 
-  <div className='parent_cards_div'>
-  {doctors.map((feed) => (
+
+
+      
+       <div className='col-lg-9 col-sm-12'>
+
+ {/* ///////////////////////////////// */}
+
+ <div class="container mt-2 ">
+    <div class="row d-flex justify-content-center">
+        <div class="col-12 ">
+            <div class="card p-4 mt-3 shadow pets_doctor_background">
+                <h3 class="heading mt-5 text-center text-white">Hi! How can we help You?</h3>
+                <div class="d-flex justify-content-center px-5">
+                <div class="search"> <input type="text" class="search-input" placeholder="Search..." name="" style={{height:'75%',backgroundColor:'white'}}/> <a href="#" class="search-icon"> <i class="fa fa-search"></i> </a> </div>
+                </div>
+                <div class="row mt-4 g-1 px-4 mb-5">
+                    <div class="col-md-2">
+                        <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/Mb8kaPV.png" width="50"/>
+                            <div class="text-center mg-text"> <span class="mg-text">Account</span> </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/ueLEPGq.png" width="50"/>
+                            <div class="text-center mg-text"> <span class="mg-text">Payments</span> </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/tmqv0Eq.png" width="50"/>
+                            <div class="text-center mg-text"> <span class="mg-text">Delivery</span> </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/D0Sm15i.png" width="50"/>
+                            <div class="text-center mg-text"> <span class="mg-text">Product</span> </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/Z7BJ8Po.png" width="50"/>
+                            <div class="text-center mg-text"> <span class="mg-text">Return</span> </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/YLsQrn3.png" width="50"/>
+                            <div class="text-center mg-text"> <span class="mg-text">Guarantee</span> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+       {/* //////////////////////////////////////// */}
+
+
+
+
+{/* //////////////////////////////////////////////////////////////////////////////// */}
+
+<div class="container mt-2">
+    <div class="row d-flex justify-content-center">
+      <div className='col-12 text-center my-3'>
+      
+      {doctors.map((feed) => (
             <DoctorCard key={feed.id} doctor={feed}></DoctorCard>
           ))}
+      
+      
+      </div>
+      </div>
+      </div>
 
-  
-  </div>
+
+{/* /////////////////////////////////////////////////////////////////////////////////////// */}
+
+</div>
+      </div>
+
 
   </div>
 
