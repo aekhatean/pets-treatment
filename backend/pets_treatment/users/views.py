@@ -39,7 +39,8 @@ class Login(ObtainAuthToken):
         return Response({
             'token': token.key,
             'username':user.username,
-            'email': user.email
+            'email': user.email,
+            'user':UserSerializer(user).data
         }, status=status.HTTP_200_OK)
 class Logout(APIView):
     permission_classes = [IsAuthenticated]

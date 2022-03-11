@@ -13,14 +13,14 @@ const ContactUs = () => {
   const [popMessage, setPopMessage] = useState(false);
   const validate = Yup.object({
     name: Yup.string()
-      .min(3, "Name must be at least 3 characters")
-      .required("*name is required"),
+      .min(3, content[lang].name_len_valid)
+      .required(content[lang].required),
     email: Yup.string()
-      .email("Email format is invalid")
-      .required("*email is required"),
+      .email(content[lang].invalid_email)
+      .required(content[lang].required),
     message: Yup.string()
-      .min(50, "Your message must have at least 50 character")
-      .required("*message is required"),
+      .min(50, content[lang].message_len_valid)
+      .required(content[lang].required),
   });
   const submitMessage = (values, actions) => {
     const data = values;

@@ -14,6 +14,7 @@ import django_filters
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
     email = serializers.EmailField(required=False)
+    password = serializers.CharField(write_only=True)
     class Meta:
         model = User
         fields = ('id','username','first_name','last_name','email','password')

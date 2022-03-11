@@ -59,7 +59,7 @@ const UnRegisteredDoctorAdderCard = (props) => {
     >
       {(formik) => (
         <Form className="d-flex my-3">
-          <div className="card">
+          <div className="card shadow">
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <InputField
@@ -74,7 +74,7 @@ const UnRegisteredDoctorAdderCard = (props) => {
               </li>
               <li className="list-group-item d-flex align-items-center justify-content-center">
                 <button
-                  className="btn btn-primary"
+                  className="btn blue-bg text-white"
                   type="submit"
                   disabled={formik.isSubmitting ? true : false}
                 >

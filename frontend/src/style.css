@@ -19,35 +19,21 @@ code {
 }
 
 .primary-bg {
-  background-color: #413c58;
+  background-color: #b8d8d6 !important;
 }
 
-.primary-color {
-  color: #413c58;
-}
-.primary-light-bg {
-  background-color: #9eb6d0;
+.blonde-bg {
+  background-color: #f6eebd !important;
 }
 
-.primary-light-color {
-  color: #9eb6d0;
+.blonde-text {
+  color: #f6eebd !important;
 }
-
-.secondary-bg {
-  background-color: #ced9dd;
+.blue-bg {
+  background-color: #1a2e3b !important;
 }
-
-.secondary-color {
-  color: #ced9dd;
-  background-color: #ced9dd;
-}
-
-.secondary-dark-bg {
-  background-color: #7884a5;
-}
-
-.secondary-dark-color {
-  color: #7884a5;
+.light-bg {
+  background-color: #f9f7f3 !important;
 }
 
 ul {
@@ -185,8 +171,6 @@ li {
 }
 
 .active-sidebar-selection {
-  background-color: #7884a5;
-  color: white;
   border-radius: 40px;
   padding: 1.5em;
   cursor: pointer;

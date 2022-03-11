@@ -231,6 +231,8 @@ export const content = {
     sent: "Sent",
     support_message_confirm:
       "Thanks for contacting us, Message is received and one of our support team will check it and contact you as soon as possible.",
+    name_len_valid: "Name must be at least 3 characters",
+    message_len_valid: "Your message must have at least 50 character",
   },
   ar: {
     brand: "بيتسانيا",
@@ -462,5 +464,7 @@ export const content = {
     sent: "تم الارسال",
     support_message_confirm:
       "نشكرك علي التواصل معانا، احد افراض فريق الدعم سوف يفحص رسالتك ثم يتواصل معك في اقرب وقت ممكن.",
+    name_len_valid: "يجب ان يتكون الاسم من 3 أحرف على الأقل",
+    message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
   },
 };
