@@ -20,6 +20,7 @@ import NavBarComponent from "./components/NavBarComponent";
 import DoctorRegister from "./pages/DoctorRegister";
 import PetOwnerRegister from "./pages/PetOwnerRegister";
 import { LogingContext } from "./context/LogingContext";
+import DoctorRegisterClinic from "./pages/DoctorRegisterClinic";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(false);
@@ -38,6 +39,7 @@ function App() {
           <Route exact path="/petowner_register" component={PetOwnerRegister} />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
           <Route path="/doctors" component={Doctors} />
+          <Route path="/register/invitation/:id" component={DoctorRegisterClinic} />
           <Route path="/error404" component={NotFoundPage} />
           {is_loged &&
             (userRole === "DR" ? (

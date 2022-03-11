@@ -11,18 +11,16 @@ import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useHistory } from "react-router-dom";
-import { FileUpload } from "../components/Inputs";
-import {
-  checkForImageFormat,
-  checkForImageSize,
-} from "../components/ClinicAdder";
+import { FileUpload } from "../components/Inputs"; 
+import ModalSuccess from "../components/ModalSuccess";
 
-function DoctorRegister() {
+function DoctorRegisterClinic() {
   let history = useHistory();
+  const redic = ()=>{
+    history.push('/');
+  }
   const { lang, setLang } = useContext(LanguageContext);
-  const [modal, setModal] = useState(undefined);
-  const [errorModal, setErrorModal] = useState(undefined);
-
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, content[lang].invalid_firstname)
@@ -46,17 +44,9 @@ function DoctorRegister() {
       .max(1000, content[lang].invalid_description)
       .required(content[lang].required),
     // numbers not chars
-    national_id: Yup.number()
-      .typeError(content[lang].field_number_valid)
-      // .max(14, content[lang].invalid_national_id_min)
-      // .min(14, content[lang].invalid_national_id_max)
-      .test(
-        "nat_id_length",
-        content[lang].invalid_national_id_min,
-        (nat_id) => {
-          return nat_id.toString().length === 14;
-        }
-      )
+    national_id: Yup.string()
+      .max(14, content[lang].invalid_national_id_min)
+      .min(14, content[lang].invalid_national_id_max)
       .required(content[lang].required),
     username: Yup.string()
       .max(20, content[lang].invalid_username)
@@ -66,39 +56,21 @@ function DoctorRegister() {
       .required(content[lang].required)
       .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
 
-    // specialization: Yup.array().min(1, content[lang].required),
+    // specialization:Yup.string()
+    // .required(content[lang].required),
 
-    syndicate_id: Yup.mixed()
-      .nullable()
-      .required(lang === "en" ? content.en.required : content.ar.required)
-      .test(
-        "imageFormat",
-        lang === "en" ? content.en.image_type_err : content.ar.image_type_err,
-        (image) => checkForImageFormat(image)
-      )
-      .test(
-        "imageSize",
-        lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
-        (image) => checkForImageSize(image)
-      ),
+    syndicate_id:Yup.string()
+    .required(content[lang].required),
 
-    photo: Yup.mixed()
-      .nullable()
-      .required(lang === "en" ? content.en.required : content.ar.required)
-      .test(
-        "imageFormat",
-        lang === "en" ? content.en.image_type_err : content.ar.image_type_err,
-        (image) => checkForImageFormat(image)
-      )
-      .test(
-        "imageSize",
-        lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
-        (image) => checkForImageSize(image)
-      ),
+    photo:Yup.string()
+    .required(content[lang].required),
 
-    city: Yup.string().required(content[lang].required),
+    city:Yup.string()
+    .required(content[lang].required),
 
-    area: Yup.string().required(content[lang].required),
+    area:Yup.string()
+    .required(content[lang].required),
+
   });
 
   const getareas = (city) => {
@@ -160,8 +132,6 @@ function DoctorRegister() {
       validationSchema={validate}
       onSubmit={(values) => {
         console.log(values);
-        // console.log(typeof baseImage)
-        // console.log(syncId)
         const data = {
           profile: {
             user: {
@@ -176,7 +146,6 @@ function DoctorRegister() {
             area: values.area,
             phone: values.phone,
             picture: values.photo,
-            role: "DR",
           },
           description: values.description,
           syndicate_id: values.syndicate_id,
@@ -190,17 +159,15 @@ function DoctorRegister() {
           .post("http://127.0.0.1:8000/users/doctors/new", data)
 
           .then((response) => {
-            // setModal(true)
+            setIsModalSuccessOpen(true);
             console.log(response);
             console.log("sucess");
           })
 
           .catch((e) => {
-            // setErrorModal(true)
             console.error(e.response);
           });
 
-        // history.push('/');
       }}
     >
       {(formProps) => {
@@ -214,11 +181,7 @@ function DoctorRegister() {
           setFieldValue,
         } = formProps;
         return (
-          <Container
-            className="p-5 my-5 shadow"
-            dir={lang === "ar" ? "rtl" : "ltr"}
-            style={{ width: "50%" }}
-          >
+          <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
             <h1 className="my-4 font-weight-bold-display-4">
               {content[lang].register_doctor}
             </h1>
@@ -265,32 +228,66 @@ function DoctorRegister() {
                 type="text"
               />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
-              <div
-                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
-              >
+
+              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+                <label className="form-label" htmlFor="photo">
+                  {content[lang].upload_photo}
+                </label>
                 <Field
                   name="photo"
-                  component={FileUpload}
-                  label={"Photo"}
-                  isCardStyles={false}
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (event) {
+                    setFieldValue('photo', event.target.result);
+                    };
+                  }}
                 />
-              </div>
+                <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
+              </div> */}
 
-              <div
-                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
-              >
-                <Field
+              <Field
+                  name="photo"
+                  component={FileUpload}
+                  label={
+                    'photooo'
+                  }
+                />
+              <br></br>
+
+              <Field
                   name="syndicate_id"
                   component={FileUpload}
-                  label={"Syndicate ID"}
-                  isCardStyles={false}
+                  label={
+                    "syndicate_idddddd"
+                  }
                 />
-              </div>
+{/* 
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+                <label className="form-label" htmlFor="synd_id">
+                  {content[lang].upload_syndicate}
+                </label>
+                <Field
+                  id="synd_id"
+                  name="syndicate_id"
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (event) {
+                    setFieldValue('syndicate_id', event.target.result);
+                    };
+                  }}
+                />
+                <ErrorMessage name={'syndicate_id'} component="div" style={{color:"red"}} className="error"/>
+              </div> */}
+              <br></br>
 
-              <div
-                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
-                dir={lang === "ar" ? "rtl" : "ltr"}
-              >
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"} 
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                 <label className="form-label" htmlFor="country">
                   {content[lang].country}
                 </label>
@@ -302,23 +299,16 @@ function DoctorRegister() {
                 >
                   <option value="egypt">{content[lang].egypt}</option>
                 </Field>
-                <ErrorMessage
-                  name={"country"}
-                  component="div"
-                  style={{ color: "red" }}
-                  className="error"
-                />
+                <ErrorMessage name={'country'} component="div" style={{color:"red"}} className="error"/>
               </div>
 
-              <div
-                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
-                dir={lang === "ar" ? "rtl" : "ltr"}
-              >
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"} 
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                 <label className="form-label" htmlFor="city">
                   {content[lang].city}
                 </label>
                 <Field
-                  dir={lang === "ar" ? "rtl" : "ltr"}
+                  dir={lang === 'ar' ? 'rtl' : 'ltr'}
                   id="city"
                   name="city"
                   as="select"
@@ -334,24 +324,15 @@ function DoctorRegister() {
                     setFieldValue("areas", _areas);
                   }}
                 >
-                  <option className="m-2" value="None">
-                    {content[lang].select_city}
-                  </option>
+                  <option className="m-2" value="None">{content[lang].select_city}</option>
                   <option value="Giza">{content[lang].giza}</option>
                   <option value="Cairo">{content[lang].cairo}</option>
                 </Field>
-                <ErrorMessage
-                  name={"city"}
-                  component="div"
-                  style={{ color: "red" }}
-                  className="error"
-                />
+                <ErrorMessage name={'city'} component="div" style={{color:"red"}} className="error"/>
               </div>
 
-              <div
-                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
-                dir={lang === "ar" ? "rtl" : "ltr"}
-              >
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}>
                 <label className="form-label" htmlFor="area">
                   {content[lang].area}
                 </label>
@@ -372,17 +353,11 @@ function DoctorRegister() {
                       </option>
                     ))}
                 </Field>
-                <ErrorMessage
-                  name={"area"}
-                  component="div"
-                  style={{ color: "red" }}
-                  className="error"
-                />
+                <ErrorMessage name={'area'} component="div" style={{color:"red"}} className="error"/>
+                <br />
               </div>
 
-              <div
-                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
-              >
+              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="special">
                   {content[lang].specialization}
                 </label>
@@ -391,9 +366,9 @@ function DoctorRegister() {
                   as="select"
                   className="form-select"
                   controlId="validationFormik05"
-                  value={values.special && values.special[0].name}
                   name="special"
                   id="special"
+                  value={values.special&&values.special.name}
                   onChange={(e) => {
                     let arr = [];
                     arr.push({ name: e.target.value });
@@ -407,12 +382,7 @@ function DoctorRegister() {
                     </option>
                   ))}
                 </Field>
-                <ErrorMessage
-                  name={"special"}
-                  component="div"
-                  style={{ color: "red" }}
-                  className="error"
-                />
+                <ErrorMessage name={'special'} component="div" style={{color:"red"}} className="error"/>
               </div>
               <br></br>
 
@@ -435,6 +405,16 @@ function DoctorRegister() {
               >
                 {content[lang].reset}
               </button>
+
+
+              <ModalSuccess
+              setIsModalOpen={setIsModalSuccessOpen}
+              isModalOpen={isModalSuccessOpen}
+              successText={
+                content[lang].verify_email
+              }
+              hideFunc={redic}
+            />
             </Form>
           </Container>
         );
@@ -443,4 +423,4 @@ function DoctorRegister() {
   );
 }
 
-export default DoctorRegister;
+export default DoctorRegisterClinic;

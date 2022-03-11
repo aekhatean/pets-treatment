@@ -5,6 +5,8 @@ import getStarted from "../assets/GetStartedImg.png";
 import Saleh from "../assets/saleh.jpg";
 
 import React, { useEffect, useState, useContext } from "react";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
 import { axiosInstance } from "../api";
 import axios from "axios";
 import DoctorCard from "../components/DoctorCard";
@@ -21,8 +23,11 @@ var c_area = "";
 var specialization = "";
 
 function Doctors(props) {
-  const filter_by_tag = props.location.state.specialization;
-  console.log(filter_by_tag);
+  const { lang } = useContext(LanguageContext);
+  const filter_by_tag = props.location.state;
+  if (filter_by_tag) {
+    console.log(filter_by_tag.specialization);
+  }
   function filterChinging(event) {
     firstname = document.getElementById("first_name").value;
     lastname = document.getElementById("last_name").value;
@@ -32,7 +37,6 @@ function Doctors(props) {
     c_city = document.getElementById("clinic_city").value;
     c_area = document.getElementById("clinic_area").value;
     specialization = document.getElementById("specailization").value;
-
     axios(config)
       .then((res) => {
         if (res.status === 200) {
@@ -55,7 +59,9 @@ function Doctors(props) {
       clinics__name: c_name,
       clinics__city: c_city,
       clinics__area: c_area,
-      specialization__name: specialization,
+      specialization__name: specialization
+        ? specialization
+        : filter_by_tag && filter_by_tag.specialization,
     },
   };
 
@@ -72,17 +78,18 @@ function Doctors(props) {
 
   return (
     <>
-      <div className="Container">
+      <div className="Container px-5 my-5" dir={lang === "ar" ? "rtl" : "ltr"}>
         <div className="row">
           <div
             className="col-lg-3 col-sm-12 d-flex justify-content-center my-4 shadow"
             style={{ borderRadius: "10px", height: "80vh" }}
           >
             <form className="m-auto">
+              <p className="display-5 fw-bold">{content[lang].search}</p>
               <div>
                 <input
                   type="text"
-                  placeholder="doctor first name.."
+                  placeholder={content[lang].fist_name}
                   className="form-control my-2"
                   name="doctor_first_name"
                   id="first_name"
@@ -91,7 +98,7 @@ function Doctors(props) {
               <div>
                 <input
                   type="text"
-                  placeholder="doctor last name.."
+                  placeholder={content[lang].last_name}
                   className="form-control my-2"
                   name="doctor_last_name"
                   id="last_name"
@@ -100,7 +107,7 @@ function Doctors(props) {
               <div>
                 <input
                   type="text"
-                  placeholder="doctor area.."
+                  placeholder={content[lang].area}
                   className="form-control my-2"
                   name="doctor_area"
                   id="doctor_area"
@@ -109,7 +116,7 @@ function Doctors(props) {
               <div>
                 <input
                   type="text"
-                  placeholder="doctor city.."
+                  placeholder={content[lang].city}
                   className="form-control my-2"
                   name="doctor_city"
                   id="doctor_city"
@@ -118,7 +125,7 @@ function Doctors(props) {
               <div>
                 <input
                   type="text"
-                  placeholder="clinic name.."
+                  placeholder={content[lang].clinic_name}
                   className="form-control my-2"
                   name="clinic_name"
                   id="clinic_name"
@@ -127,7 +134,7 @@ function Doctors(props) {
               <div>
                 <input
                   type="text"
-                  placeholder="clinic city.."
+                  placeholder={content[lang].clinic_city}
                   className="form-control my-2"
                   name="clinic_city"
                   id="clinic_city"
@@ -136,7 +143,7 @@ function Doctors(props) {
               <div>
                 <input
                   type="text"
-                  placeholder="clinic area.."
+                  placeholder={content[lang].clinic_area}
                   className="form-control my-2"
                   name="clinic_area"
                   id="clinic_area"
@@ -145,7 +152,7 @@ function Doctors(props) {
               <div>
                 <input
                   type="text"
-                  placeholder="specailization.."
+                  placeholder={content[lang].specialization}
                   className="form-control my-2"
                   name="specailization"
                   id="specailization"
@@ -155,7 +162,7 @@ function Doctors(props) {
                 type="submit"
                 class="btn btn-primary my-2 w-100"
                 onClick={(event) => filterChinging(event)}
-                value="search"
+                value={content[lang].search}
               />
             </form>
           </div>
@@ -168,28 +175,12 @@ function Doctors(props) {
                 <div class="col-12 ">
                   <div class="card p-4 mt-3 shadow pets_doctor_background">
                     <h3 class="heading mt-5 text-center text-white">
-                      Hi! How can we help You?
+                      {content[lang].search_qoute}
                     </h3>
-                    <div class="d-flex justify-content-center px-5">
-                      <div class="search">
-                        {" "}
-                        <input
-                          type="text"
-                          class="search-input"
-                          placeholder="Search..."
-                          name=""
-                          style={{ height: "75%", backgroundColor: "white" }}
-                        />{" "}
-                        <a href="#" class="search-icon">
-                          {" "}
-                          <i class="fa fa-search"></i>{" "}
-                        </a>{" "}
-                      </div>
-                    </div>
+                    <div class="d-flex justify-content-center px-5"></div>
                     <div class="row mt-4 g-1 px-4 mb-5">
                       <div class="col-md-3">
                         <div class="card-inner p-3 d-flex flex-column align-items-center">
-                          {" "}
                           <img
                             src="https://i.imgur.com/Mb8kaPV.png"
                             width="50"

@@ -1,5 +1,7 @@
 // Packges imports
-import React from "react";
+import { useContext } from "react";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
@@ -12,6 +14,8 @@ import { FileUpload } from "../components/Inputs";
 import { axiosInstance } from "../api";
 
 export default function UserProfileEdit(props) {
+  const { lang } = useContext(LanguageContext);
+
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, "First Name can't be more than 15 character")
@@ -27,7 +31,6 @@ export default function UserProfileEdit(props) {
   });
 
   const userData = props.userData;
-  const user = userData.user;
   if (userData && Object.keys(userData).length) {
     return (
       <Container>
@@ -50,7 +53,6 @@ export default function UserProfileEdit(props) {
               city: values.city,
               picture: values.picture,
               user: {
-                ...user,
                 first_name: values.firstName,
                 last_name: values.lastName,
                 email: values.email,
@@ -64,23 +66,44 @@ export default function UserProfileEdit(props) {
           }}
         >
           {(formProps) => {
-            const { values, handleSubmit, handleReset, setFieldValue } =
-              formProps;
+            const { values, handleSubmit, setFieldValue } = formProps;
             return (
               <Row>
                 <Col md={8}>
-                  <Form onSubmit={handleSubmit}>
+                  <Form
+                    onSubmit={handleSubmit}
+                    className={`text-md-start mb-5 mt-5 ${
+                      lang === "en" ? "text-start" : "text-end"
+                    }`}
+                  >
                     <TextFeild
-                      label="First Name"
+                      label={content[lang].fist_name}
                       name="firstName"
                       type="text"
                       mx_status="a"
                       flex_status="a"
                     />
-                    <TextFeild label="Last Name" name="lastName" type="text" />
-                    <TextFeild label="Email" name="email" type="email" />
-                    <TextFeild label="Phone" name="phone" type="text" />
-                    <label htmlFor="country">Country</label>
+                    <TextFeild
+                      label={content[lang].last_name}
+                      name="lastName"
+                      type="text"
+                    />
+                    <TextFeild
+                      label={content[lang].email}
+                      name="email"
+                      type="email"
+                    />
+                    <TextFeild
+                      label={content[lang].phone}
+                      name="phone"
+                      type="text"
+                    />
+                    <label
+                      htmlFor="country"
+                      className={`${lang === "en" ? "text-start" : "text-end"}`}
+                    >
+                      {content[lang].country}
+                    </label>
                     <Field
                       as="select"
                       name="country"
@@ -88,35 +111,43 @@ export default function UserProfileEdit(props) {
                       className="form-select"
                       disabled
                     >
-                      <option value="egypt">Egypt</option>
+                      <option value="egypt">{content[lang].egypt}</option>
                     </Field>
-                    <label htmlFor="city" className="mt-3">
-                      city
+                    <label
+                      htmlFor="city"
+                      className={`mt-3 ${
+                        lang === "en" ? "text-start" : "text-end"
+                      }`}
+                    >
+                      {content[lang].city}
                     </label>
                     <Field
                       id="city"
                       name="city"
                       as="select"
                       value={values.city}
-                      className="form-select"
+                      className={`form-select ${
+                        lang === "en" ? "text-start" : "text-end"
+                      }`}
                       onChange={async (e) => {
                         const { value } = e.target;
                         setFieldValue("city", value);
                       }}
                     >
-                      <option value="None">Select city</option>
-                      <option value="Giza">Giza</option>
-                      <option value="Cairo">Cairo</option>
+                      <option value="None">{content[lang].select_city}</option>
+                      <option value="Giza">{content[lang].giza}</option>
+                      <option value="Cairo">{content[lang].cairo}</option>
                     </Field>
                     <br />
                     <Field
                       component={FileUpload}
                       name="picture"
-                      label="Profile picture"
+                      label={content[lang].profilePicture}
+                      className={`${lang === "en" ? "text-start" : "text-end"}`}
                     />
                     <div class="d-flex justify-content-between">
                       <button className="btn mt-3 btn-info" type="submit">
-                        Save changes
+                        {content[lang].save}
                       </button>
                     </div>
                   </Form>

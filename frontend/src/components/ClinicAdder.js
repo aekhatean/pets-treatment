@@ -150,7 +150,8 @@ const ClinicAdder = (props) => {
           const num = "0" + number;
           return num.length === 11;
         }
-      ),
+      )
+      .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
     tax_registration: Yup.mixed()
       .nullable()
       .required(lang === "en" ? content.en.required : content.ar.required)

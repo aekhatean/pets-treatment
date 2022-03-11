@@ -2,13 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { content } from "../../../translation/translation";
 
-const Search = props => {
+const SignUp = props => {
   let lang = localStorage.getItem("lang");
   return (
-    <Link to="/doctors" className="btn btn-primary">
-      {content[lang].search}
-    </Link>
+    <>
+      <Link to="/login" className="btn btn-primary">
+        {content[lang].login}
+      </Link>
+    </>
   );
 };
 
-export default Search;
+export default SignUp;

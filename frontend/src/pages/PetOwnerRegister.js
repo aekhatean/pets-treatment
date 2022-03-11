@@ -11,48 +11,14 @@ import {colors} from '../colors/colors';
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useHistory } from "react-router-dom";
-// import SuccessModal from '../components/SuccessModal';
-// import ErrorModal from '../components/ErrorModal';
-// import axios from 'axios';
-// const imageToBase64 = require('image-to-base64');
+import ModalSuccess from "../components/ModalSuccess";
 function Register() {
-  let history = useHistory();
-  const { lang, setLang } = useContext(LanguageContext);
-  // image
-  const [baseImage, setBaseImage] = useState("");
-  const [syncId, setSyncId] = useState("");
-
-  const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setBaseImage(base64);
-    console.log(baseImage)
-  };
-
-  const uploadSyncId = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setSyncId(base64);
-    console.log(syncId)
-  };
-
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  // end image
-    const [modal, setModal] = useState(undefined);
-    const [errorModal, setErrorModal] = useState(undefined);
+    let history = useHistory();
+    const redic = ()=>{
+      history.push('/');
+    }
+    const { lang, setLang } = useContext(LanguageContext);
+    const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
     const validate = Yup.object({
         firstName:Yup.string()
         .max(15, content[lang].invalid_firstname)
@@ -82,7 +48,6 @@ function Register() {
             /^01[0-2,5]\d{8}$/,
             content[lang].invalid_phone
           ),
-
 
           photo:Yup.string()
           .required(content[lang].required),
@@ -137,8 +102,6 @@ function Register() {
             }}
             validationSchema={validate}
             onSubmit = {(values) => {
-              // console.log(typeof baseImage)
-              // console.log(syncId)
                 const data = {
                     profile:{
                     user:{
@@ -152,7 +115,7 @@ function Register() {
                     city: values.city,
                     area: values.area,
                     phone: values.phone,
-                    picture: baseImage,
+                    picture: values.photo,
                   },
                           
                 };
@@ -165,17 +128,14 @@ function Register() {
                 )
 
                 .then(response => {
-                  // setModal(true)
+                  setIsModalSuccessOpen(true);
                   console.log(response)
                   console.log("sucess")
                 })
 
                 .catch(e => {
-                  // setErrorModal(true)
                   console.error(e.response)
                 });
-
-                history.push('/');
               }}
               
         >
@@ -204,18 +164,24 @@ function Register() {
 
 
                         <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
-                        <label className="form-label" htmlFor="photo">{content[lang].upload_photo}</label>
-                          <Input
-                            name='photo'
-                            type="file"
-                            onChange={(e) => {
-                              uploadImage(e);
-                            }}
-                          />
-                          <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
-                        </div>
+                        <label className="form-label" htmlFor="photo">
+                          {content[lang].upload_photo}
+                        </label>
+                        <Field
+                          name="photo"
+                          type="file"
+                          onChange={(e) => {
+                            const file = e.currentTarget.files[0];
+                            const reader = new FileReader();
+                            reader.readAsDataURL(file);
+                            reader.onload = function (event) {
+                            setFieldValue('photo', event.target.result);
+                            };
+                          }}
+                        />
+                        <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
+                      </div>
                           <br></br>
-                              {/* <img src={baseImage} height="200px" /> */}
 
                         
                               <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
@@ -275,15 +241,21 @@ function Register() {
                                 <br/>
 
                                 </div>
-
-                        
-                        
                         
                         
                         
                         {/* <button className='btn mt-3 btn-dark' type='submit' disabled={isSubmitting} >Submit</button> */}
                         <button className='btn mt-3 btn-outline-dark' type='submit' style={{marginRight:'10px', backgroundColor:colors.bg.primary, border:"none"}}>{content[lang].submit}</button>
                         <button className='btn mt-3 ml-3 btn-danger' type='reset' onClick={handleReset}>{content[lang].reset}</button>
+                        <ModalSuccess
+                          setIsModalOpen={setIsModalSuccessOpen}
+                          isModalOpen={isModalSuccessOpen}
+                          successText={
+                            content[lang].verify_email
+                          }
+                          hideFunc={redic}
+                        />
+                    
                     </Form>
                 </Container>
             )}}

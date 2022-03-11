@@ -4,8 +4,12 @@ import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
 import ScheduleCard from "./Schedulecard";
 import { Link } from "react-router-dom";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
 function DoctorCard(props) {
+  const { lang, setLang } = useContext(LanguageContext);
   const [schedules, setschedule] = useState([]);
+
   useEffect(() => {
     axiosInstance
       .get(`users/schedule/doctor/${props.doctor["id"]}`)
@@ -38,21 +42,33 @@ function DoctorCard(props) {
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
-                    <h5 className="card-title text-start">
+                    <h5
+                      className={
+                        lang === "ar"
+                          ? "card-title text-end"
+                          : "card-title text-start"
+                      }
+                    >
                       Dr.{props.doctor["user"].first_name}{" "}
                       {props.doctor["user"].last_name}
                     </h5>
-                    <p className=" text-start ">
+                    <p className={lang === "ar" ? "text-end" : "text-start "}>
                       Pets doctor graduated from helwan university
                     </p>
-                    <p className=" text-start">
+                    <p className={lang === "ar" ? "text-end" : "text-start "}>
                       <Ratings rating={props.doctor["average_rate"]} />
                     </p>
-                    <p className=" text-start">
+                    <p className={lang === "ar" ? "text-end" : "text-start "}>
                       {props.doctor["profile"].city},
                       {props.doctor["profile"].country}
                     </p>
-                    <p className=" text-start overdescription">
+                    <p
+                      className={
+                        lang === "ar"
+                          ? "text-end overdescription"
+                          : " text-start overdescription"
+                      }
+                    >
                       {props.doctor["description"]}
                     </p>
                     <p className="card-text">
