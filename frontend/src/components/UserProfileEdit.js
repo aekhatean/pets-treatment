@@ -1,34 +1,17 @@
-import React, { useState } from "react";
+// Packges imports
+import React from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
-import { Spinner } from "react-bootstrap";
-import { Input } from "reactstrap";
-import { axiosInstance } from "../api";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
+
+// Components
 import TextFeild from "../components/TextField";
+import { FileUpload } from "../components/Inputs";
 
-const convertBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-
-    fileReader.onload = () => {
-      resolve(fileReader.result);
-    };
-
-    fileReader.onerror = (error) => {
-      reject(error);
-    };
-  });
-};
+// API consumption
+import { axiosInstance } from "../api";
 
 export default function UserProfileEdit(props) {
-  const [baseImage, setBaseImage] = useState("");
-  const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setBaseImage(base64);
-  };
-
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, "First Name can't be more than 15 character")
@@ -47,99 +30,102 @@ export default function UserProfileEdit(props) {
   const user = userData.user;
   if (userData && Object.keys(userData).length) {
     return (
-      <Formik
-        initialValues={{
-          profilePicture: userData.picture,
-          firstName: userData.user.first_name,
-          lastName: userData.user.last_name,
-          email: userData.user.email,
-          country: userData.country,
-          city: userData.city,
-          phone: userData.phone,
-        }}
-        validationSchema={validate}
-        onSubmit={async (values) => {
-          const data = {
-            ...userData,
-            phone: values.phone,
-            country: values.country,
-            city: values.city,
-            picture: values.profilePicture,
-            user: {
-              ...user,
-              first_name: values.firstName,
-              last_name: values.lastName,
-              email: values.email,
-            },
-          };
-          await axiosInstance.put("/users/profilelist", data, {
-            headers: {
-              Authorization: `Token ${localStorage.getItem("token")}`,
-            },
-          });
-        }}
-      >
-        {(formProps) => {
-          const { values, handleSubmit, handleReset, setFieldValue } =
-            formProps;
-          return (
-            <div>
-              <Form onSubmit={handleSubmit}>
-                <TextFeild label="First Name" name="firstName" type="text" />
-                <TextFeild label="Last Name" name="lastName" type="text" />
-                <TextFeild label="Email" name="email" type="email" />
-                <TextFeild label="Phone" name="phone" type="text" />
-
-                <label htmlFor="picture">Profile picture</label>
-                <Input
-                  name="photo"
-                  type="file"
-                  onChange={(e) => {
-                    uploadImage(e);
-                  }}
-                />
-                <br />
-
-                <br />
-
-                <label htmlFor="country">Country</label>
-                <Field as="select" name="country" id="country">
-                  <option value="egypt">Egypt</option>
-                </Field>
-
-                <label htmlFor="city">city</label>
-                <Field
-                  id="city"
-                  name="city"
-                  as="select"
-                  value={values.city}
-                  onChange={async (e) => {
-                    const { value } = e.target;
-                    setFieldValue("city", value);
-                  }}
-                >
-                  <option value="None">Select city</option>
-                  <option value="Giza">Giza</option>
-                  <option value="Cairo">Cairo</option>
-                </Field>
-
-                <br />
-
-                <button className="btn mt-3 btn-dark" type="submit">
-                  Save changes
-                </button>
-                <button
-                  className="btn mt-3 ml-3 btn-danger"
-                  type="reset"
-                  onClick={handleReset}
-                >
-                  Reset
-                </button>
-              </Form>
-            </div>
-          );
-        }}
-      </Formik>
+      <Container>
+        <Formik
+          initialValues={{
+            picture: "",
+            firstName: userData.user.first_name,
+            lastName: userData.user.last_name,
+            email: userData.user.email,
+            country: userData.country,
+            city: userData.city,
+            phone: userData.phone,
+          }}
+          validationSchema={validate}
+          onSubmit={(values) => {
+            const data = {
+              ...userData,
+              phone: values.phone,
+              country: values.country,
+              city: values.city,
+              picture: values.picture,
+              user: {
+                ...user,
+                first_name: values.firstName,
+                last_name: values.lastName,
+                email: values.email,
+              },
+            };
+            axiosInstance.put("/users/profilelist", data, {
+              headers: {
+                Authorization: `Token ${localStorage.getItem("token")}`,
+              },
+            });
+          }}
+        >
+          {(formProps) => {
+            const { values, handleSubmit, handleReset, setFieldValue } =
+              formProps;
+            return (
+              <Row>
+                <Col md={8}>
+                  <Form onSubmit={handleSubmit}>
+                    <TextFeild
+                      label="First Name"
+                      name="firstName"
+                      type="text"
+                      mx_status="a"
+                      flex_status="a"
+                    />
+                    <TextFeild label="Last Name" name="lastName" type="text" />
+                    <TextFeild label="Email" name="email" type="email" />
+                    <TextFeild label="Phone" name="phone" type="text" />
+                    <label htmlFor="country">Country</label>
+                    <Field
+                      as="select"
+                      name="country"
+                      id="country"
+                      className="form-select"
+                      disabled
+                    >
+                      <option value="egypt">Egypt</option>
+                    </Field>
+                    <label htmlFor="city" className="mt-3">
+                      city
+                    </label>
+                    <Field
+                      id="city"
+                      name="city"
+                      as="select"
+                      value={values.city}
+                      className="form-select"
+                      onChange={async (e) => {
+                        const { value } = e.target;
+                        setFieldValue("city", value);
+                      }}
+                    >
+                      <option value="None">Select city</option>
+                      <option value="Giza">Giza</option>
+                      <option value="Cairo">Cairo</option>
+                    </Field>
+                    <br />
+                    <Field
+                      component={FileUpload}
+                      name="picture"
+                      label="Profile picture"
+                    />
+                    <div class="d-flex justify-content-between">
+                      <button className="btn mt-3 btn-info" type="submit">
+                        Save changes
+                      </button>
+                    </div>
+                  </Form>
+                </Col>
+              </Row>
+            );
+          }}
+        </Formik>
+      </Container>
     );
   } else {
     return <Spinner animation="border" variant="info" />;

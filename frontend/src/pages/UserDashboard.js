@@ -1,13 +1,21 @@
 import SideBar from "../components/SideBar";
-// import UserAppointments from "../components/UserAppointments";
+import UserAppointments from "../components/UserAppointments";
 import UserManageProfile from "../components/UserManageProfile";
 
-function UserDashboard(props) {
+function UserDashboard() {
   const selections = [
-    // { name: "My appointments", view: <UserAppointments /> },
-    { name: "Manage profile", view: <UserManageProfile /> },
+    {
+      name: "Manage profile",
+      value: "Manage profile",
+      view: <UserManageProfile />,
+    },
+    {
+      name: "My appointments",
+      value: "My appointments",
+      view: <UserAppointments />,
+    },
   ];
-  console.log(selections)
+
   return (
     <div id="clinic-dashbaord">
       <SideBar selections={selections} />

@@ -45,13 +45,17 @@ const getAppointmentInfo = (res, setAppointments) => {
   if (res.status === 200) {
     const appointmentsList = [];
     for (const result of res.data.results) {
-      const { date, appointment_duration } = result.schedule;
-      const { visiting_time, doctor, clinic, address } = result;
-
+      console.log("result", result);
+      const { appointment_duration } = result.schedule;
+      const { visiting_time, doctor, clinic, address, date } = result;
       const { from, to } = getAppointmentJSTimeDuration(
         visiting_time,
         appointment_duration
       );
+      console.log("doctor", doctor);
+      console.log("clinic", clinic);
+      console.log("address", address);
+      console.log("date", date);
       const newAppointment = {
         doctor: doctor,
         clinic: clinic,
@@ -60,14 +64,16 @@ const getAppointmentInfo = (res, setAppointments) => {
         from: from,
         to: to,
       };
+      console.log("newAppointment", newAppointment);
       appointmentsList.push(newAppointment);
     }
+    // console.log("appointmentsList", appointmentsList);
     setAppointments(appointmentsList);
   }
 };
 
-function UserAppointments(props) {
-  const { id } = props.match.params;
+function UserAppointments() {
+  const token = localStorage.getItem("token");
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [prviousAppointments, setPrviousAppointments] = useState([]);
   const userUpcomingAppointments = `users/user-upcoming-appointment/`;
@@ -78,28 +84,29 @@ function UserAppointments(props) {
     axiosInstance
       .get(userUpcomingAppointments, {
         headers: {
-          Authorization: "Token " + localStorage.getItem("token"),
+          Authorization: "Token " + token,
         },
       })
       .then((res) => getAppointmentInfo(res, setUpcomingAppointments));
-  }, [userUpcomingAppointments, id]);
+  }, [userUpcomingAppointments, token]);
 
   // Get previous apponitmnets
   useEffect(() => {
     axiosInstance
       .get(userPreviousAppointments, {
         headers: {
-          Authorization: "Token " + localStorage.getItem("token"),
+          Authorization: "Token " + token,
         },
       })
       .then((res) => getAppointmentInfo(res, setPrviousAppointments));
-  }, [userPreviousAppointments, id]);
+  }, [userPreviousAppointments, token]);
 
+  // console.log("prviousAppointments", prviousAppointments);
   return (
-    <div id="user-appointments" className="mt-5">
-      <div className="h1 text-md-start">Upcoming appointments</div>
+    <div id="user-appointments" className="my-5">
+      <div className="h1 text-md-start my-5">Upcoming appointments</div>
       <DynamicTable tableContent={upcomingAppointments} />
-      <hr className="mt-5" />
+      <hr className="my-5" />
       <div className="h1 text-md-start">Previous appointments</div>
       <DynamicTable tableContent={prviousAppointments} />
     </div>

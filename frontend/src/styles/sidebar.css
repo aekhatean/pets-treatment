@@ -1,9 +1,48 @@
 .sidebar{
     width: 20vw;
-    height: 95vh;
+    height: 100vh;
     background-color: white;
     margin-top:20px;
     border-radius: 25px;
     box-shadow: 3px 3px 10px 1px gray;
     margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+   justify-content: space-around;
+   align-items: center;
+    
+}
+
+.search1{
+display: flex;
+
+}
+
+.sidebar form{
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+height: 100%;
+}
+.formchild{
+    width: 100%;
+    
+}
+
+@media screen and (max-width: 770px) {
+  
+    .sidebar{
+        width: 90vw;
+        height: 90vh;
+        background-color: white;
+        margin-top:20px;
+        border-radius: 25px;
+        box-shadow: 3px 3px 10px 1px gray;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        
+    }
+
 }

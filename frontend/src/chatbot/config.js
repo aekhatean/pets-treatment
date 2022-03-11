@@ -5,50 +5,51 @@ import About from "./widgets/About/About";
 import HowItWorks from "./widgets/HowItWorks/HowItWorks";
 import Search from "./widgets/Search/Search";
 import SingUp from "./widgets/SignUp/SignUp";
-
 const config = {
   initialMessages: [
     createChatBotMessage(
-      `Hi​! I'm a Bot. Let me know if you have any questions regarding our website!`
+      "Select a topic or write your questions below. مرحبا بك كيف يمكننى مساعدتك؟",
+      {
+        withAvatar: false,
+        delay: 1000,
+        widget: "overview",
+      }
     ),
-    createChatBotMessage("Select the topic or write your question below.", {
-      withAvatar: false,
-      delay: 1000,
-      widget: "overview",
-    }),
   ],
   botName: "Petsania's Bot",
   customComponents: {
-    botAvatar: props => <ButtonIcon {...props} />,
+    botAvatar: (props) => <ButtonIcon {...props} />,
   },
   customStyles: {
     botMessageBox: {
-      backgroundColor: "#188b87",
+      backgroundColor: "#67a19c",
     },
     chatButton: {
-      backgroundColor: "#188b87",
+      backgroundColor: "#67a19c",
     },
   },
+
   widgets: [
     {
       widgetName: "overview",
-      widgetFunc: props => <Overview {...props} />,
+      widgetFunc: (props) => <Overview {...props} />,
+      mapStateToProps: ["messages"],
     },
     {
       widgetName: "About",
-      widgetFunc: props => <About {...props} />,
+      widgetFunc: (props) => <About {...props} />,
     },
     {
       widgetName: "How it works",
-      widgetFunc: props => <HowItWorks {...props} />,
+      widgetFunc: (props) => <HowItWorks {...props} />,
     },
     {
       widgetName: "Search",
-      widgetFunc: props => <Search {...props} />,
+      widgetFunc: (props) => <Search {...props} />,
     },
     {
       widgetName: "Sign up",
-      widgetFunc: props => <SingUp {...props} />,
+      widgetFunc: (props) => <SingUp {...props} />,
     },
   ],
 };

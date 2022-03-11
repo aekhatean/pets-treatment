@@ -33,7 +33,8 @@ export default function UserManageProfile(props) {
       .then((res) => getUserData(res, setUserData));
   }, [userInfo]);
 
-  if (viewPanelState === true) {
+  console.log(viewPanelState);
+  if (viewPanelState) {
     return (
       <Container
         dir={lang === "ar" ? "rtl" : "ltr"}
@@ -44,7 +45,7 @@ export default function UserManageProfile(props) {
           <Col>
             <button
               className="secondary-dark-bg rounded border-0 p-3 text-light"
-              onClick={setViewPanelState(!viewPanelState)}
+              onClick={() => setViewPanelState(!viewPanelState)}
             >
               {content[lang].editAccountInfo}
             </button>
@@ -59,6 +60,18 @@ export default function UserManageProfile(props) {
         className="text-md-start mb-5 mt-5"
       >
         <UserProfileEdit userData={userData} />
+        <Container>
+          <Row>
+            <Col>
+              <button
+                className="btn btn-danger rounded border-0 mt-2 text-light"
+                onClick={() => setViewPanelState(!viewPanelState)}
+              >
+                {content[lang].cancel}
+              </button>
+            </Col>
+          </Row>
+        </Container>
       </Container>
     );
   }
