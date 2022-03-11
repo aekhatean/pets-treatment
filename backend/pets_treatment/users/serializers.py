@@ -100,6 +100,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         user_serializer = UserSerializer(instance.user,data=user_data)
         user_serializer.is_valid(raise_exception=True)
         user = user_serializer.save()
+
+        user_picture = validated_data.pop('picture')
+        if user_picture:
+            instance.picture = user_picture
+            
+            
         for key in validated_data:
             if key in self.fields:
                     setattr(instance,key,validated_data.get(key))
