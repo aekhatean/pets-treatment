@@ -20,10 +20,16 @@ export default function UserProfileView(props) {
         className="text-md-start mb-5"
       >
         <Row className="my-5">
-          <Col md={3}>
+          <Col
+            md={3}
+            className={`${lang === "en" ? "text-start" : "text-end"}`}
+          >
             <ProfilePicture src={userData.picture} />
           </Col>
-          <Col md={9} className="mt-4">
+          <Col
+            md={9}
+            className={`mt-4 ${lang === "en" ? "text-start" : "text-end"}`}
+          >
             <div>
               {userData.user.first_name} {userData.user.last_name}
             </div>
@@ -35,7 +41,7 @@ export default function UserProfileView(props) {
         </Row>
         <hr />
         <Row className="my-5">
-          <Col>
+          <Col className={`${lang === "en" ? "text-start" : "text-end"}`}>
             <div className="h3">{content[lang].contactInfo}</div>
             <p>
               <b>{content[lang].phone}: &nbsp;</b>

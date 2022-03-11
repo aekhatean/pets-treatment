@@ -11,6 +11,7 @@ export const content = {
     login: "Login",
     logout: "Logout",
     profile: "Profile",
+    profilePicture: "Profile picture",
     dashboard: "Dashboard",
     guest: "Guest",
     greeting: "Hi!",
@@ -263,6 +264,7 @@ export const content = {
     login: "تسجيل دخول",
     logout: "تسجيل خروج",
     profile: "الملف الشخصي",
+    profilePicture: "الصورة الشخصية",
     dashboard: "لوحة التحكم بالحساب",
     team: "فريقنا",
     team_members: {
