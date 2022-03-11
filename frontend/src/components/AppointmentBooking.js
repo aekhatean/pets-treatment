@@ -9,8 +9,10 @@ import { content } from "../translation/translation";
 import DatePickerField from '../components/DatePicker';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { useHistory } from "react-router-dom";
 
 function AppointmentBooking(props) {
+    let history = useHistory();
     const [token] = useState(() => {
         const savedToken = localStorage.getItem("token");
         return savedToken;
@@ -75,6 +77,7 @@ function AppointmentBooking(props) {
           });
 
           console.log(response)
+          history.push('/dashboard');
         }}
           
     >
