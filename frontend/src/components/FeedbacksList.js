@@ -25,7 +25,11 @@ function FeedbacksList(props) {
   return (
     <Container
       className="p-3 my-5 shadow-sm"
-      style={{ width: "97%", borderRadius: 10 }}
+      style={{
+        width: "97%",
+        borderRadius: "10px 10px 0 0",
+        backgroundColor: colors.bg.primary,
+      }}
     >
       <div className={lang === "ar" ? "text-end m-1" : "text-start m-1"}>
         <SubtitleText subtitle={content[lang].feedbacks} />

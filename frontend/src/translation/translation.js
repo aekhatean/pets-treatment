@@ -228,6 +228,9 @@ export const content = {
     pick_date: "Pick a date",
     invalid_date: "Date cannot be in the past",
     invalid_day_date: "Date must match day",
+    sent: "Sent",
+    support_message_confirm:
+      "Thanks for contacting us, Message is received and one of our support team will check it and contact you as soon as possible.",
   },
   ar: {
     brand: "بيتسانيا",
@@ -456,5 +459,8 @@ export const content = {
     pick_date: "اختر تاريخا",
     invalid_date: "لا يمكن أن يكون التاريح في الماضي",
     invalid_day_date: "يجب أن يطابق التاريخ اليوم",
+    sent: "تم الارسال",
+    support_message_confirm:
+      "نشكرك علي التواصل معانا، احد افراض فريق الدعم سوف يفحص رسالتك ثم يتواصل معك في اقرب وقت ممكن.",
   },
 };
