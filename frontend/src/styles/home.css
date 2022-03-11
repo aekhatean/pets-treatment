@@ -1,0 +1,124 @@
+.site-section {
+  padding: 2.5em 0;
+}
+@media (min-width: 768px) {
+  .site-section {
+    padding: 5em 0;
+  }
+}
+.site-section.site-section-sm {
+  padding: 4em 0;
+}
+
+.site-section-heading {
+  padding-bottom: 20px;
+  margin-bottom: 0px;
+  position: relative;
+  font-size: 2.5rem;
+}
+@media (min-width: 768px) {
+  .site-section-heading {
+    font-size: 3rem;
+  }
+}
+
+.site-blocks-cover {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+  background-position: center center;
+}
+.site-blocks-cover.overlay {
+  position: relative;
+}
+.site-blocks-cover.overlay:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+.site-blocks-cover.overflow-hidden {
+  overflow: hidden;
+}
+.site-blocks-cover .player {
+  position: absolute;
+  bottom: -250px;
+  width: 100%;
+}
+.site-blocks-cover,
+.site-blocks-cover > .container > .row {
+  height: calc(100vh);
+  min-height: 600px;
+}
+.site-blocks-cover.inner-page-cover,
+.site-blocks-cover.inner-page-cover > .container > .row {
+  min-height: 400px;
+  height: calc(20vh);
+}
+@media (max-width: 991.98px) {
+  .site-blocks-cover .intro-text {
+    margin-top: 30%;
+  }
+}
+.site-blocks-cover h1 {
+  font-size: 4rem;
+  color: #000;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+@media (max-width: 991.98px) {
+  .site-blocks-cover h1 {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 991.98px) {
+  .site-blocks-cover .cover-img {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.site-blocks-cover p {
+  color: #999999;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  font-weight: 300;
+}
+.site-blocks-cover .desc {
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+.site-blocks-cover .desc a {
+  color: rgba(255, 255, 255, 0.5);
+  border-bottom: dotted 1px #fff;
+}
+.site-blocks-cover .desc a:hover {
+  color: #fff;
+}
+.site-blocks-cover .intro-text {
+  font-size: 16px;
+  line-height: 1.5;
+}
+@media (max-width: 991.98px) {
+  .site-blocks-cover .display-1 {
+    font-size: 3rem;
+  }
+}
+.heading-section h2 {
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.block_service img {
+  max-width: 100px;
+  margin-bottom: 30px;
+}
+
+.block_service h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #000;
+}

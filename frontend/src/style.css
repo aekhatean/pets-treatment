@@ -70,17 +70,7 @@ li {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.home-img {
-  max-width: 90%;
-  height: auto;
-}
-#city,
-#area,
-#specialization {
-  border-radius: 6px;
-  padding: 4px;
-  margin: 1px;
-}
+
 .search {
   margin-bottom: 10px;
 }
@@ -90,16 +80,12 @@ li {
   padding: 3px;
 }
 .get-started {
-  width: 90%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.get-started > img {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  flex-basis: 40%;
+  background-color: #9eb6d0;
+  height: 300px;
 }
 .btn-1 {
   background: #264653;
@@ -193,41 +179,6 @@ li {
 @media (max-width: 600px) {
   .app-chatbot-container {
     transform: scale(0.9) translateY(26px);
-  }
-}
-
-@media screen and (max-width: 1150px) {
-  .get-started > img {
-    max-width: 300px;
-  }
-  .btn-1,
-  .btn-2 {
-    font-size: 1em;
-  }
-}
-@media screen and (max-width: 700px) {
-  .get-started > img {
-    max-width: 200px;
-  }
-  #city,
-  #area,
-  #specialization {
-    padding: 1px;
-  }
-  .search > input {
-    padding: 1px;
-  }
-  .form-content {
-    top: 50%;
-  }
-  .btn-1,
-  .btn-2 {
-    font-size: 0.8em;
-  }
-}
-@media screen and (max-width: 500px) {
-  .get-started {
-    flex-direction: column;
   }
 }
 
