@@ -20,7 +20,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta, date
 from cryptography.fernet import Fernet
-from .email_utils import send_mail_user
+from .email_utils import send_mail_user, send_mail_user_appointment
 from django.template.loader import render_to_string
 from django.db.models import Q
 from rest_framework import generics
@@ -372,7 +372,8 @@ class AppointmentList(APIView):
     def post(self, request):
         appointment_serializer = AppointmentSerializer(data=request.data,  context={'request':request})
         appointment_serializer.is_valid(raise_exception=True)
-        appointment_serializer.save()
+        vals=appointment_serializer.save()
+        send_mail_user_appointment(vals.user.first_name,vals.schedule.doctor.user.first_name + vals.schedule.doctor.user.last_name,vals.schedule.clinic.name,vals.visiting_time,vals.id,vals.user.email)
         return Response(appointment_serializer.data,status.HTTP_201_CREATED)
 
 

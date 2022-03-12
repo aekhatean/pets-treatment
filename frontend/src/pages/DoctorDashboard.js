@@ -5,9 +5,13 @@ import UserManageProfile from "../components/UserManageProfile";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useContext } from "react";
+import { LogingContext } from "../context/LogingContext";
+import { Redirect } from "react-router-dom";
 
 const DoctorDashboard = () => {
   const { lang } = useContext(LanguageContext);
+  const { is_loged } = useContext(LogingContext);
+
   const selections = [
     {
       name: lang === "en" ? content.en.appointments : content.ar.appointments,
@@ -25,6 +29,9 @@ const DoctorDashboard = () => {
       view: <UserManageProfile />,
     },
   ];
+  if (!is_loged) {
+    <Redirect to="login" />;
+  }
   return <SideBar selections={selections} />;
 };
 

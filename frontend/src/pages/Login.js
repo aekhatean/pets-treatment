@@ -9,9 +9,9 @@ import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { LogingContext } from "../context/LogingContext";
-import { useHistory } from "react-router-dom";
 import login_cat from "../assets/login_cat.png";
 import doctordog from "../assets/doctordog.png";
+import { Redirect, useHistory } from "react-router-dom";
 function Login() {
   let history = useHistory();
   const [isLoginValid, setIsLoginValid] = useState(true);
@@ -23,7 +23,9 @@ function Login() {
       .required(content[lang].required),
     password: Yup.string().required(content[lang].required),
   });
-
+  if (is_loged) {
+    return <Redirect to="/dashboard" />;
+  }
   return (
     <>
     <img src={login_cat} alt="catty" />

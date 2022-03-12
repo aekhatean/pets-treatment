@@ -17,13 +17,13 @@ const ModalFail = (props) => {
           background: "rgba(128, 128, 128, 0.5)",
         },
         content: {
-          top: "25%",
-          left: "20%",
-          right: "20%",
-          bottom: "50%",
+          top: props.withBg ? "0%" : "25%",
+          left: props.withBg ? "0%" : "20%",
+          right: props.withBg ? "0%" : "20%",
+          bottom: props.withBg ? "0%" : "50%",
           textAlign: "center",
-          border: "4px solid red",
-          borderRadius: "10px",
+          border: props.withBg || "4px solid red",
+          borderRadius: props.withBg ? "0px" : "10px",
         },
       }}
     >
@@ -34,7 +34,10 @@ const ModalFail = (props) => {
         <p>{props.errorText}</p>
         <button
           className="btn btn-secondary mx-2"
-          onClick={() => props.setIsModalOpen(false)}
+          onClick={() => {
+            props.setIsModalOpen(false);
+            props.func && props.func();
+          }}
         >
           {lang === "en" ? content.en.close : content.ar.close}
         </button>
