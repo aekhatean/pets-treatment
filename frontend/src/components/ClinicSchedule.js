@@ -143,7 +143,7 @@ function ClinicSchedule(props) {
               borderColor: colors.bg.blond,
             }}
           >
-            Close
+            {content[lang].close}
           </Button>
         </Modal.Body>
       </Modal>
