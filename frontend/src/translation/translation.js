@@ -265,6 +265,9 @@ export const content = {
     search_qoute: " Hi! How can we help You?",
     delete_from_clinic: "Delete From Clinic",
     syndicate_id: "Syndicate ID",
+    activate_account_success:
+      "Your account is successfully activated, you can login now.",
+    link_expired: "Sorry, this link is expired.",
   },
   ar: {
     brand: "بيتسانيا",
@@ -529,5 +532,7 @@ export const content = {
     search_qoute: "  مرحبا! كيف نستطيع مساعدك؟",
     delete_from_clinic: "احذف من العيادة",
     syndicate_id: "كارنيه النقابة",
+    activate_account_success: "تم تفعيل حسابك بنجاح, يمكنك تسجيل الدخول الأن.",
+    link_expired: "عفوا, هذا الرابط منتهي الصلاحية.",
   },
 };

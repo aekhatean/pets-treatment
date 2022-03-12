@@ -20,13 +20,13 @@ const ModalSuccess = (props) => {
           background: "rgba(128, 128, 128, 0.5)",
         },
         content: {
-          top: "25%",
-          left: "20%",
-          right: "20%",
-          bottom: "50%",
+          top: props.withBg ? "0%" : "25%",
+          left: props.withBg ? "0%" : "20%",
+          right: props.withBg ? "0%" : "20%",
+          bottom: props.withBg ? "0%" : "50%",
           textAlign: "center",
-          border: "4px solid #b8d8d6",
-          borderRadius: "10px",
+          border: props.withBg || "4px solid #b8d8d6",
+          borderRadius: props.withBg ? "0px" : "10px",
         },
       }}
     >
