@@ -33,7 +33,6 @@ export default function UserManageProfile(props) {
       .then((res) => getUserData(res, setUserData));
   }, [userInfo]);
 
-  console.log(viewPanelState);
   if (viewPanelState) {
     return (
       <Container

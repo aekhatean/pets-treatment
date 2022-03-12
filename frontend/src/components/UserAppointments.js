@@ -45,19 +45,17 @@ const getAppointmentInfo = (res, setAppointments) => {
   if (res.status === 200) {
     const appointmentsList = [];
     for (const result of res.data.results) {
+      console.log(result.schedule);
       const { appointment_duration } = result.schedule;
-      const { address, area, city } = result.schedule.clinic;
       const { visiting_time, doctor, clinic, date } = result;
       const { from, to } = getAppointmentJSTimeDuration(
         visiting_time,
         appointment_duration
       );
 
-      const fullAddress = `${address}, ${area}, ${city}`;
       const newAppointment = {
         doctor: doctor,
         clinic: clinic,
-        address: fullAddress,
         date: getAppointmentJSDate(date),
         from: from,
         to: to,
@@ -84,9 +82,9 @@ function UserAppointments() {
         },
       })
       .then((res) => getAppointmentInfo(res, setUpcomingAppointments))
-      .catch(
-          error=>{console.log(error.response)}
-      );
+      .catch((error) => {
+        console.log(error.response);
+      });
   }, [userUpcomingAppointments, token]);
 
   // Get previous apponitmnets
