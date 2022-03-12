@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework.authtoken.models import Token
 from cryptography.fernet import Fernet
-from .email_utils import send_mail_user
+from .email_utils import send_mail_doctor_activation
 from clinics.serializers import ClinicSerializer
 from django.db.models import Sum
 import datetime
@@ -181,7 +181,6 @@ class DoctorSerializer(serializers.ModelSerializer):
         # print(2, validated_data)
         profile = validated_data.pop('profile')
         profile_serializer = ProfileSerializer(data=profile)
-        print(profile.get('picture'))
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
         doctor = Doctor.objects.create(user=profile.user,profile=profile,**validated_data)
@@ -194,7 +193,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         fernet = Fernet(key)
         enc_token = fernet.encrypt(token.key.encode())
         activation_link = f"http://127.0.0.1:8000/users/activate/{key.decode()}/{enc_token.decode()}"
-        send_mail_user(doctor.user.first_name,activation_link,doctor.user.email)
+        send_mail_doctor_activation(doctor.user.first_name,activation_link,doctor.user.email)
         newdoctor = Doctor.objects.get(user=profile.user)
         return newdoctor
 

@@ -150,8 +150,7 @@ const ClinicAdder = (props) => {
           const num = "0" + number;
           return num.length === 11;
         }
-      )
-      .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
+      ),
     tax_registration: Yup.mixed()
       .nullable()
       .required(lang === "en" ? content.en.required : content.ar.required)
@@ -321,6 +320,7 @@ const ClinicAdder = (props) => {
                   label={
                     lang === "en" ? content.en.tax_reg : content.ar.tax_reg
                   }
+                  isCardStyles={true}
                 />
               </li>
               <li className="list-group-item">
@@ -330,6 +330,7 @@ const ClinicAdder = (props) => {
                   label={
                     lang === "en" ? content.en.tech_reg : content.ar.tech_reg
                   }
+                  isCardStyles={true}
                 />
               </li>
               <li className="list-group-item">

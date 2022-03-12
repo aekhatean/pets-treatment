@@ -2,25 +2,33 @@ import React, { useEffect, useState, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import TextFeild from "../components/TextField";
 import * as Yup from "yup";
-import { Input } from "reactstrap";
 import { Container } from "react-bootstrap";
 import axios from "axios";
-import imageToBase64 from "image-to-base64/browser";
 import { axiosInstance } from "../api";
 import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { FileUpload } from "../components/Inputs";
 import ModalSuccess from "../components/ModalSuccess";
+import { LogingContext } from "../context/LogingContext";
+import ModalFail from "../components/ModalFail";
+import { useParams } from "react-router-dom";
+import {
+  checkForImageFormat,
+  checkForImageSize,
+} from "../components/ClinicAdder";
 
 function DoctorRegisterClinic() {
+  const { lang, setLang } = useContext(LanguageContext);
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const { is_loged, setLogging } = useContext(LogingContext);
+  const [isModalFailOpen, setIsModalFailOpen] = useState(false);
+  const param = useParams();
   let history = useHistory();
   const redic = () => {
     history.push("/");
   };
-  const { lang, setLang } = useContext(LanguageContext);
-  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, content[lang].invalid_firstname)
@@ -43,10 +51,15 @@ function DoctorRegisterClinic() {
     description: Yup.string()
       .max(1000, content[lang].invalid_description)
       .required(content[lang].required),
-    // numbers not chars
-    national_id: Yup.string()
-      .max(14, content[lang].invalid_national_id_min)
-      .min(14, content[lang].invalid_national_id_max)
+    national_id: Yup.number()
+      .typeError(content[lang].field_number_valid)
+      .test(
+        "nat_id_length",
+        content[lang].invalid_national_id_min,
+        (nat_id) => {
+          return nat_id.toString().length === 14;
+        }
+      )
       .required(content[lang].required),
     username: Yup.string()
       .max(20, content[lang].invalid_username)
@@ -55,13 +68,32 @@ function DoctorRegisterClinic() {
     phone: Yup.string()
       .required(content[lang].required)
       .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
-
-    // specialization:Yup.string()
-    // .required(content[lang].required),
-
-    syndicate_id: Yup.string().required(content[lang].required),
-
-    photo: Yup.string().required(content[lang].required),
+    syndicate_id: Yup.mixed()
+      .nullable()
+      .required(lang === "en" ? content.en.required : content.ar.required)
+      .test(
+        "imageFormat",
+        lang === "en" ? content.en.image_type_err : content.ar.image_type_err,
+        (image) => checkForImageFormat(image)
+      )
+      .test(
+        "imageSize",
+        lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
+        (image) => checkForImageSize(image)
+      ),
+    photo: Yup.mixed()
+      .nullable()
+      .required(lang === "en" ? content.en.required : content.ar.required)
+      .test(
+        "imageFormat",
+        lang === "en" ? content.en.image_type_err : content.ar.image_type_err,
+        (image) => checkForImageFormat(image)
+      )
+      .test(
+        "imageSize",
+        lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
+        (image) => checkForImageSize(image)
+      ),
 
     city: Yup.string().required(content[lang].required),
 
@@ -69,7 +101,6 @@ function DoctorRegisterClinic() {
   });
 
   const getareas = (city) => {
-    // Simulate async call
     return new Promise((resolve, reject) => {
       switch (city) {
         case "Giza":
@@ -104,6 +135,10 @@ function DoctorRegisterClinic() {
         console.log(err);
       });
   }, []);
+
+  if (is_loged) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <Formik
@@ -142,26 +177,32 @@ function DoctorRegisterClinic() {
             area: values.area,
             phone: values.phone,
             picture: values.photo,
+            role: "DR",
           },
           description: values.description,
           syndicate_id: values.syndicate_id,
           national_id: values.national_id,
           specialization: values.special,
         };
-        console.log(values.special);
-        console.log(data);
-
         axios
           .post("http://127.0.0.1:8000/users/doctors/new", data)
-
           .then((response) => {
-            setIsModalSuccessOpen(true);
-            console.log(response);
-            console.log("sucess");
+            axiosInstance
+              .post("clinics/add_external_doctor/", {
+                doctor_id: response.data.data.id,
+                clinic_id: param.id,
+              })
+              .then((res) => {
+                res.status === 201 && setIsModalSuccessOpen(true);
+              })
+              .catch((e) => {
+                console.log("doctor clinic catch", e.response);
+                setIsModalFailOpen(true);
+              });
           })
-
           .catch((e) => {
-            console.error(e.response);
+            console.log("doctor reg", e.response);
+            setIsModalFailOpen(true);
           });
       }}
     >
@@ -227,56 +268,27 @@ function DoctorRegisterClinic() {
                 type="text"
               />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
-
-              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
-                <label className="form-label" htmlFor="photo">
-                  {content[lang].upload_photo}
-                </label>
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+              >
                 <Field
                   name="photo"
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.currentTarget.files[0];
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function (event) {
-                    setFieldValue('photo', event.target.result);
-                    };
-                  }}
+                  component={FileUpload}
+                  label={content[lang].profilePicture}
+                  isCardStyles={false}
                 />
-                <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
-              </div> */}
+              </div>
 
-              <Field name="photo" component={FileUpload} label={"photooo"} />
-              <br></br>
-
-              <Field
-                name="syndicate_id"
-                component={FileUpload}
-                label={"syndicate_idddddd"}
-              />
-              {/* 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
-                <label className="form-label" htmlFor="synd_id">
-                  {content[lang].upload_syndicate}
-                </label>
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+              >
                 <Field
-                  id="synd_id"
                   name="syndicate_id"
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.currentTarget.files[0];
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function (event) {
-                    setFieldValue('syndicate_id', event.target.result);
-                    };
-                  }}
+                  component={FileUpload}
+                  label={content[lang].syndicate_id}
+                  isCardStyles={false}
                 />
-                <ErrorMessage name={'syndicate_id'} component="div" style={{color:"red"}} className="error"/>
-              </div> */}
-              <br></br>
-
+              </div>
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
                 dir={lang === "ar" ? "rtl" : "ltr"}
@@ -299,7 +311,6 @@ function DoctorRegisterClinic() {
                   className="error"
                 />
               </div>
-
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
                 dir={lang === "ar" ? "rtl" : "ltr"}
@@ -337,7 +348,6 @@ function DoctorRegisterClinic() {
                   className="error"
                 />
               </div>
-
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
                 dir={lang === "ar" ? "rtl" : "ltr"}
@@ -368,23 +378,20 @@ function DoctorRegisterClinic() {
                   style={{ color: "red" }}
                   className="error"
                 />
-                <br />
               </div>
-
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
               >
                 <label className="form-label" htmlFor="special">
                   {content[lang].specialization}
                 </label>
-
                 <Field
                   as="select"
                   className="form-select"
                   controlId="validationFormik05"
+                  value={values.special && values.special[0].name}
                   name="special"
                   id="special"
-                  value={values.special && values.special.name}
                   onChange={(e) => {
                     let arr = [];
                     arr.push({ name: e.target.value });
@@ -406,10 +413,8 @@ function DoctorRegisterClinic() {
                 />
               </div>
               <br></br>
-
-              {/* <button className='btn mt-3 btn-dark' type='submit' disabled={isSubmitting} >Submit</button> */}
               <button
-                className="btn mt-3 btn-outline-dark"
+                className="btn mt-3 mx-2 btn-outline-dark"
                 type="submit"
                 style={{
                   marginRight: "10px",
@@ -420,18 +425,22 @@ function DoctorRegisterClinic() {
                 {content[lang].submit}
               </button>
               <button
-                className="btn mt-3 ml-3 btn-danger"
+                className="btn mt-3 mx-2 ml-3 btn-danger"
                 type="reset"
                 onClick={handleReset}
               >
                 {content[lang].reset}
               </button>
-
               <ModalSuccess
                 setIsModalOpen={setIsModalSuccessOpen}
                 isModalOpen={isModalSuccessOpen}
                 successText={content[lang].verify_email}
                 hideFunc={redic}
+              />
+              <ModalFail
+                setIsModalOpen={setIsModalFailOpen}
+                isModalOpen={isModalFailOpen}
+                errorText={content[lang].error_general_msg}
               />
             </Form>
           </Container>
