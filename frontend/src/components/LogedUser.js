@@ -12,7 +12,8 @@ function LogedUser(props) {
   const { lang } = useContext(LanguageContext);
   const { is_loged, setLogging, userRole, setUserRole } =
     useContext(LogingContext);
-  const [user, setUser] = useState({ picture: "", full_name: "" });
+  const [user, setUser] = useState({});
+
   // const [is_loged, setLog] = useState(false);
   const loged_routes = [content[lang].dashboard];
   const unloged_routes = [
@@ -21,20 +22,33 @@ function LogedUser(props) {
     content[lang].petowner_register,
   ];
   useEffect(() => {
-    axiosAuthInstance
-      .get("users/profilelist")
-      .then((res) => {
-        setUser({
-          picture: res.data.data.picture,
-          full_name: `${res.data.data.user.first_name} ${res.data.data.user.last_name}`,
+    if (is_loged) {
+      axiosInstance
+        .get("users/profilelist", {
+          headers: {
+            Authorization: localStorage.getItem("token")
+              ? `Token ${localStorage.getItem("token")}`
+              : "",
+          },
+        })
+        .then((res) => {
+          // if (res.status === 200) {
+
+          setUser({
+            picture: `http://localhost:8000${res.data.data.picture}`,
+            full_name: `${res.data.data.user.first_name} ${res.data.data.user.last_name}`,
+          });
+          setUserRole(res.data.data.role);
+          localStorage.setItem("user_id", res.data.data.user.id);
+
+          // }
+        })
+        .catch((err) => {
+          console.log(err);
+          setUser({});
+          setUserRole("");
         });
-        setUserRole(res.data.data.role);
-      })
-      .catch((err) => {
-        console.log(err);
-        setUser({});
-        setUserRole("");
-      });
+    }
   }, [is_loged]);
 
   const getKeyByValue = (object, value) => {
@@ -42,9 +56,10 @@ function LogedUser(props) {
   };
 
   const logoutHandle = () => {
+    setUser({});
     localStorage.removeItem("token");
     localStorage.removeItem("email");
-    setUser({});
+    localStorage.removeItem("user_id");
     setLogging(false);
   };
   // console.log(user);
@@ -61,7 +76,7 @@ function LogedUser(props) {
             <>
               <img
                 className="shadow-sm"
-                src={`http://localhost:8000${user.picture}`}
+                src={user.picture}
                 alt="profile_pircture"
                 style={{
                   width: 30,

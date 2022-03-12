@@ -20,6 +20,10 @@ import NavBarComponent from "./components/NavBarComponent";
 import DoctorRegister from "./pages/DoctorRegister";
 import PetOwnerRegister from "./pages/PetOwnerRegister";
 import { LogingContext } from "./context/LogingContext";
+import DoctorRegisterClinic from "./pages/DoctorRegisterClinic";
+import ActivateAccount from "./components/ActivateAccount";
+import ExpiredActivation from "./components/ExpiredActivation";
+import MiddleRoute from "./pages/MiddleRoute";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(false);
@@ -36,15 +40,20 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/doctor_register" component={DoctorRegister} />
           <Route exact path="/petowner_register" component={PetOwnerRegister} />
+          <Route exact path="/activate_message" component={ActivateAccount} />
+          <Route
+            exact
+            path="/expired_activation"
+            component={ExpiredActivation}
+          />
           <Route path="/doctors/:id" component={DoctorPublicProfile} />
           <Route path="/doctors" component={Doctors} />
+          <Route
+            path="/register/invitation/:id"
+            component={DoctorRegisterClinic}
+          />
+          <Route exact path="/dashboard" component={MiddleRoute} />
           <Route path="/error404" component={NotFoundPage} />
-          {is_loged &&
-            (userRole === "DR" ? (
-              <Route exact path="/dashboard" component={DoctorDashboard} />
-            ) : (
-              <Route exact path="/dashboard" component={UserDashboard} />
-            ))}
 
           <Redirect to="error404" />
         </Switch>

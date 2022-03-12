@@ -10,46 +10,31 @@ import { axiosInstance } from "../api";
 import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
-import { useHistory } from "react-router-dom";
+
+import { useHistory, Redirect } from "react-router-dom";
+import { FileUpload } from "../components/Inputs";
+import ModalSuccess from "../components/ModalSuccess";
+import { LogingContext } from "../context/LogingContext";
+import ModalFail from "../components/ModalFail";
+import login_cat from "../assets/login_cat.png";
+import {
+  checkForImageFormat,
+  checkForImageSize,
+} from "../components/ClinicAdder";
 
 function DoctorRegister() {
-  let history = useHistory();
   const { lang, setLang } = useContext(LanguageContext);
-  // image
-  const [baseImage, setBaseImage] = useState("");
-  const [syncId, setSyncId] = useState("");
-
-  const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setBaseImage(base64);
-    console.log(baseImage);
-  };
-
-  const uploadSyncId = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setSyncId(base64);
-    console.log(syncId);
-  };
-
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  // end image
   const [modal, setModal] = useState(undefined);
   const [errorModal, setErrorModal] = useState(undefined);
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const { is_loged, setLogging } = useContext(LogingContext);
+
+  const [isModalFailOpen, setIsModalFailOpen] = useState(false);
+
+  let history = useHistory();
+  const redic = () => {
+    history.push("/");
+  };
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, content[lang].invalid_firstname)
@@ -73,9 +58,17 @@ function DoctorRegister() {
       .max(1000, content[lang].invalid_description)
       .required(content[lang].required),
     // numbers not chars
-    national_id: Yup.string()
-      .max(14, content[lang].invalid_national_id_min)
-      .min(14, content[lang].invalid_national_id_max)
+    national_id: Yup.number()
+      .typeError(content[lang].field_number_valid)
+      // .max(14, content[lang].invalid_national_id_min)
+      // .min(14, content[lang].invalid_national_id_max)
+      .test(
+        "nat_id_length",
+        content[lang].invalid_national_id_min,
+        (nat_id) => {
+          return nat_id.toString().length === 14;
+        }
+      )
       .required(content[lang].required),
     username: Yup.string()
       .max(20, content[lang].invalid_username)
@@ -85,11 +78,35 @@ function DoctorRegister() {
       .required(content[lang].required)
       .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
 
-    specialization: Yup.string().required(content[lang].required),
+    // specialization: Yup.array().min(1, content[lang].required),
 
-    syndicate_id: Yup.string().required(content[lang].required),
+    syndicate_id: Yup.mixed()
+      .nullable()
+      .required(lang === "en" ? content.en.required : content.ar.required)
+      .test(
+        "imageFormat",
+        lang === "en" ? content.en.image_type_err : content.ar.image_type_err,
+        (image) => checkForImageFormat(image)
+      )
+      .test(
+        "imageSize",
+        lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
+        (image) => checkForImageSize(image)
+      ),
 
-    photo: Yup.string().required(content[lang].required),
+    photo: Yup.mixed()
+      .nullable()
+      .required(lang === "en" ? content.en.required : content.ar.required)
+      .test(
+        "imageFormat",
+        lang === "en" ? content.en.image_type_err : content.ar.image_type_err,
+        (image) => checkForImageFormat(image)
+      )
+      .test(
+        "imageSize",
+        lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
+        (image) => checkForImageSize(image)
+      ),
 
     city: Yup.string().required(content[lang].required),
 
@@ -132,9 +149,14 @@ function DoctorRegister() {
         console.log(err);
       });
   }, []);
-  console.log(syncId);
-  console.log(baseImage);
+
+  if (is_loged) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
+    <>
+    <img src={login_cat} alt="catty" />
     <Formik
       initialValues={{
         firstName: "",
@@ -157,8 +179,6 @@ function DoctorRegister() {
       validationSchema={validate}
       onSubmit={(values) => {
         console.log(values);
-        // console.log(typeof baseImage)
-        // console.log(syncId)
         const data = {
           profile: {
             user: {
@@ -172,31 +192,24 @@ function DoctorRegister() {
             city: values.city,
             area: values.area,
             phone: values.phone,
-            picture: baseImage,
+            picture: values.photo,
+            role: "DR",
           },
           description: values.description,
-          syndicate_id: syncId,
+          syndicate_id: values.syndicate_id,
           national_id: values.national_id,
           specialization: values.special,
         };
-        console.log(values.special);
-        console.log(data);
-
         axios
           .post("http://127.0.0.1:8000/users/doctors/new", data)
-
           .then((response) => {
-            // setModal(true)
-            console.log(response);
-            console.log("sucess");
+            response.status === 201 && setIsModalSuccessOpen(true);
           })
-
           .catch((e) => {
-            // setErrorModal(true)
-            console.error(e.response);
+            setIsModalFailOpen(true);
           });
 
-        history.push("/");
+        // history.push('/');
       }}
     >
       {(formProps) => {
@@ -210,14 +223,15 @@ function DoctorRegister() {
           setFieldValue,
         } = formProps;
         return (
-          <Container
-            className="p-5 my-5 shadow"
-            dir={lang === "ar" ? "rtl" : "ltr"}
-            style={{ width: "50%" }}
-          >
-            <h1 className="my-4 font-weight-bold-display-4">
-              {content[lang].register_doctor}
+          
+          <Container className="p-5 mb-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%', borderRadius:20}}>
+            <span className="center">
+            
+            <h1 className=" font-weight-bold-display-4" style={{display: "inline"}}>
+                {content[lang].register_doctor}
             </h1>
+            
+          </span>
 
             <Form onSubmit={handleSubmit}>
               <TextFeild
@@ -261,52 +275,28 @@ function DoctorRegister() {
                 type="text"
               />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
-
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
               >
-                <label className="form-label" htmlFor="photo">
-                  {content[lang].upload_photo}
-                </label>
-                <Input
+                <Field
                   name="photo"
-                  type="file"
-                  onChange={(e) => {
-                    uploadImage(e);
-                  }}
-                />
-                <ErrorMessage
-                  name={"photo"}
-                  component="div"
-                  style={{ color: "red" }}
-                  className="error"
+                  component={FileUpload}
+                  label={content[lang].profilePicture}
+                  isCardStyles={false}
                 />
               </div>
-              <br></br>
-              {/* <img src={baseImage} height="200px" /> */}
 
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
               >
-                <label className="form-label" htmlFor="synd_id">
-                  {content[lang].upload_syndicate}
-                </label>
-                <Input
-                  id="synd_id"
+                <Field
                   name="syndicate_id"
-                  type="file"
-                  onChange={(e) => {
-                    uploadSyncId(e);
-                  }}
-                />
-                <ErrorMessage
-                  name={"syndicate_id"}
-                  component="div"
-                  style={{ color: "red" }}
-                  className="error"
+                  component={FileUpload}
+                  label={content[lang].syndicate_id}
+                  isCardStyles={false}
                 />
               </div>
-              <br></br>
+
 
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
@@ -399,7 +389,6 @@ function DoctorRegister() {
                   style={{ color: "red" }}
                   className="error"
                 />
-                <br />
               </div>
 
               <div
@@ -413,6 +402,7 @@ function DoctorRegister() {
                   as="select"
                   className="form-select"
                   controlId="validationFormik05"
+                  value={values.special && values.special[0].name}
                   name="special"
                   id="special"
                   onChange={(e) => {
@@ -456,11 +446,23 @@ function DoctorRegister() {
               >
                 {content[lang].reset}
               </button>
+              <ModalSuccess
+                setIsModalOpen={setIsModalSuccessOpen}
+                isModalOpen={isModalSuccessOpen}
+                successText={content[lang].verify_email}
+                hideFunc={redic}
+              />
+              <ModalFail
+                setIsModalOpen={setIsModalFailOpen}
+                isModalOpen={isModalFailOpen}
+                errorText={content[lang].error_general_msg}
+              />
             </Form>
           </Container>
         );
       }}
     </Formik>
+    </>
   );
 }
 

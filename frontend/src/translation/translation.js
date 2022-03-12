@@ -11,6 +11,7 @@ export const content = {
     login: "Login",
     logout: "Logout",
     profile: "Profile",
+    profilePicture: "Profile picture",
     dashboard: "Dashboard",
     guest: "Guest",
     greeting: "Hi!",
@@ -55,7 +56,7 @@ export const content = {
       },
     ],
     services: "Our Services",
-    informations: "Informations",
+    informations: "Information",
     rights: "© 2022 Petsania EGY, Inc. All Rights Reserved.",
     contact_us: "Contact Us",
     contactInfo: "Contact info",
@@ -107,13 +108,14 @@ export const content = {
     to: "To",
     am: " AM ",
     pm: " PM ",
-    book_appointment: "Book Appointment",
+    book_appointment: "Book",
     feedbacks: "Feedbacks",
     rating: "Rating",
     feedback_details: "What user say's ",
     pagenotfound: "Opps! No Page Found",
     gallary: "Clinic Photos",
     submit: "Submit",
+    selectClinic: "Please select a clinic to display appointments",
     register_doctor: "Register as a Doctor",
     fist_name: "First Name",
     last_name: "Last Name",
@@ -256,6 +258,8 @@ export const content = {
     search_call: "Search For a Clinic",
     name_len_valid: "Name must be at least 3 characters",
     message_len_valid: "Your message must have at least 50 character",
+    wrong_auth_login: "Wrong username or password",
+    verify_email: "Please check your email and verify your account.",
     login_widget:
       "The login page gives you access to your profile and clinic reservation service",
     search_qoute: " Hi! How can we help You?",
@@ -263,6 +267,11 @@ export const content = {
     bot_placeholder: "Write your message here",
     contact_widget:
       "If you have any suggestions, complaints or faced any issues please contact us here",
+    delete_from_clinic: "Delete From Clinic",
+    syndicate_id: "Syndicate ID",
+    activate_account_success:
+      "Your account is successfully activated, you can login now.",
+    link_expired: "Sorry, this link is expired.",
   },
   ar: {
     brand: "بيتسانيا",
@@ -275,6 +284,7 @@ export const content = {
     login: "تسجيل دخول",
     logout: "تسجيل خروج",
     profile: "الملف الشخصي",
+    profilePicture: "الصورة الشخصية",
     dashboard: "لوحة التحكم بالحساب",
     team: "فريقنا",
     team_members: {
@@ -377,6 +387,7 @@ export const content = {
     pagenotfound: "اوبس! هذه الصفحة ليست موجودة",
     gallary: "صور العيادة",
     submit: "تسجيل",
+    selectClinic: "ارجوك قم باختيار عيادة لعرض الحجوزات",
     register_doctor: "إنشاء حساب طبيب",
     fist_name: "الاسم الأول",
     last_name: "الاسم الأخير",
@@ -518,6 +529,8 @@ export const content = {
     search_call: "أبحث عن عيادة",
     name_len_valid: "يجب ان يتكون الاسم من 3 أحرف على الأقل",
     message_len_valid: "يجب أن تتكون الرسالة من 50 حرف على الأقل",
+    wrong_auth_login: "البريد الالكتروني أو كلمة المرور غير صحيح",
+    verify_email: "من فضلك تفقد بريدك الالكتروني وأكد حسابك",
     login_widget:
       "تتيح لك صفحة تسجيل الدخول التحكم فى حسابك الشخصى و أيضا خدمة حجز الكشف للأطباء البيطريين",
     search_qoute: "  مرحبا! كيف نستطيع مساعدك؟",
@@ -525,5 +538,9 @@ export const content = {
     bot_placeholder: "أكتب رسالتك هنا",
     contact_widget:
       "اذا كان لديك أى شكاوى أو مقترحات يمكنك التواصل معنا من هنا",
+    delete_from_clinic: "احذف من العيادة",
+    syndicate_id: "كارنيه النقابة",
+    activate_account_success: "تم تفعيل حسابك بنجاح, يمكنك تسجيل الدخول الأن.",
+    link_expired: "عفوا, هذا الرابط منتهي الصلاحية.",
   },
 };

@@ -1,9 +1,8 @@
-import Saleh from "../assets/saleh.jpg";
 import "../styles/doctor_card.css";
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
-import ScheduleCard from "./Schedulecard";
+import ScheduleCard from "./ScheduleCard";
 import { Link } from "react-router-dom";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";

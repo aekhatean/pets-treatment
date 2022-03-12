@@ -42,9 +42,9 @@ export default function UserManageProfile(props) {
       >
         <UserProfileView userData={userData} />
         <Row>
-          <Col>
+          <Col className={`${lang === "en" ? "text-start" : "text-end"}`}>
             <button
-              className="secondary-dark-bg rounded border-0 p-3 text-light"
+              className={`btn blue-bg text-white rounded border-0 p-3 text-light`}
               onClick={() => setViewPanelState(!viewPanelState)}
             >
               {content[lang].editAccountInfo}
@@ -57,14 +57,20 @@ export default function UserManageProfile(props) {
     return (
       <Container
         dir={lang === "ar" ? "rtl" : "ltr"}
-        className="text-md-start mb-5 mt-5"
+        className={`text-md-start mb-5 mt-5 ${
+          lang === "en" ? "text-start" : "text-end"
+        }`}
       >
         <UserProfileEdit userData={userData} />
-        <Container>
+        <Container
+          className={`text-md-start mb-5 mt-5 ${
+            lang === "en" ? "text-start" : "text-end"
+          }`}
+        >
           <Row>
-            <Col>
+            <Col className={`${lang === "en" ? "text-start" : "text-end"}`}>
               <button
-                className="btn btn-danger rounded border-0 mt-2 text-light"
+                className="btn btn-danger rounded border-0 text-light"
                 onClick={() => setViewPanelState(!viewPanelState)}
               >
                 {content[lang].cancel}

@@ -320,6 +320,7 @@ const ClinicAdder = (props) => {
                   label={
                     lang === "en" ? content.en.tax_reg : content.ar.tax_reg
                   }
+                  isCardStyles={true}
                 />
               </li>
               <li className="list-group-item">
@@ -329,6 +330,7 @@ const ClinicAdder = (props) => {
                   label={
                     lang === "en" ? content.en.tech_reg : content.ar.tech_reg
                   }
+                  isCardStyles={true}
                 />
               </li>
               <li className="list-group-item">

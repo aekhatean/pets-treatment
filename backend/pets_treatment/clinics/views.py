@@ -157,6 +157,8 @@ class AddExternalDoctorClinic(APIView):
     def post(self, request):
         # request.data should have clinic_id , doctor_id
         try:
+            print(request.data.get('clinic_id'))
+            print(request.data.get('doctor_id'))
             clinic = Clinic.objects.get(id=request.data.get('clinic_id'))
             doctor = Doctor.objects.get(id=request.data.get('doctor_id'))
             DoctorClinics.objects.create(doctor=doctor, clinic=clinic, clinic_owner=False)

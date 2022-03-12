@@ -1,11 +1,7 @@
-import Logo from "../assets/Logo.png";
 import "../style.css";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import ContactUs from "./ContactUs";
-import Facebook from "../assets/Facebook.png";
-import Instagram from "../assets/Instagram.png";
-import LinkedIn from "../assets/LinkedIn.png";
 import { content } from "../translation/translation";
 import { useContext } from "react";
 import { LanguageContext } from "../context/LanguageContext";
@@ -50,12 +46,9 @@ const Footer = () => {
                     {lang === "ar" ? content.ar.services : content.en.services}
                   </h4>
                   <ul className="d-flex flex-column align-items-center">
-                    <li>{lang === "ar" ? content.ar.vets : content.en.vets}</li>
-                    <li>
-                      {lang === "ar"
-                        ? content.ar.pets_medicine
-                        : content.en.pets_medicine}
-                    </li>
+                    <li>{content[lang].vet_checkup}</li>
+                    <li>{content[lang].vet_derma}</li>
+                    <li>{content[lang].service_vet}</li>
                   </ul>
                   <hr className="my-3 d-block d-md-none mx-auto" />
 
@@ -67,7 +60,9 @@ const Footer = () => {
                     </h4>
                     <p>
                       <EmailIcon />
-                      <span className="px-2">support@petsania.com</span>
+                      <span className="px-2">
+                        noreply.pets.treatment@gmail.com
+                      </span>
                     </p>
                     <p>
                       <LocalPhoneIcon />
@@ -84,20 +79,9 @@ const Footer = () => {
             </div>
           </div>
           <div className="col-md-5">
-            <Container className="my-4 shadow-sm p-3">
+            <Container className="my-4 p-3">
               <ContactUs />
             </Container>
-          </div>
-          <div className="d-flex justify-content-center my-md-2 my-4">
-            <a href="/#" className="mx-5">
-              <img src={Facebook} alt="Facebook" className="contact-icons" />
-            </a>
-            <a href="/#" className="mx-5">
-              <img src={Instagram} alt="Facebook" className="contact-icons" />
-            </a>
-            <a href="/#" className="mx-5">
-              <img src={LinkedIn} alt="Facebook" className="contact-icons" />
-            </a>
           </div>
           <div
             className="d-flex justify-content-center text-white"

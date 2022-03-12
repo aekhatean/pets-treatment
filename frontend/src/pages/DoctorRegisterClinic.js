@@ -2,31 +2,33 @@ import React, { useEffect, useState, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import TextFeild from "../components/TextField";
 import * as Yup from "yup";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import axios from "axios";
+import { axiosInstance } from "../api";
 import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useHistory, Redirect } from "react-router-dom";
-import ModalSuccess from "../components/ModalSuccess";
-import ModalFail from "../components/ModalFail";
 import { FileUpload } from "../components/Inputs";
-import login_cat from "../assets/login_cat.png";
-import login_cat_side from "../assets/login_cat_side.png";
-import login_cat_right from "../assets/login_cat_right.png";
+import ModalSuccess from "../components/ModalSuccess";
+import { LogingContext } from "../context/LogingContext";
+import ModalFail from "../components/ModalFail";
+import { useParams } from "react-router-dom";
 import {
   checkForImageFormat,
   checkForImageSize,
 } from "../components/ClinicAdder";
 
-function Register() {
+function DoctorRegisterClinic() {
+  const { lang, setLang } = useContext(LanguageContext);
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const { is_loged, setLogging } = useContext(LogingContext);
+  const [isModalFailOpen, setIsModalFailOpen] = useState(false);
+  const param = useParams();
   let history = useHistory();
   const redic = () => {
     history.push("/");
   };
-  const { lang, setLang } = useContext(LanguageContext);
-  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
-  const [isModalFailOpen, setIsModalFailOpen] = useState(false);
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, content[lang].invalid_firstname)
@@ -46,12 +48,39 @@ function Register() {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], content[lang].invalid_matching)
       .required(content[lang].required),
+    description: Yup.string()
+      .max(1000, content[lang].invalid_description)
+      .required(content[lang].required),
+    national_id: Yup.number()
+      .typeError(content[lang].field_number_valid)
+      .test(
+        "nat_id_length",
+        content[lang].invalid_national_id_min,
+        (nat_id) => {
+          return nat_id.toString().length === 14;
+        }
+      )
+      .required(content[lang].required),
     username: Yup.string()
       .max(20, content[lang].invalid_username)
       .required(content[lang].required),
+
     phone: Yup.string()
       .required(content[lang].required)
       .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
+    syndicate_id: Yup.mixed()
+      .nullable()
+      .required(lang === "en" ? content.en.required : content.ar.required)
+      .test(
+        "imageFormat",
+        lang === "en" ? content.en.image_type_err : content.ar.image_type_err,
+        (image) => checkForImageFormat(image)
+      )
+      .test(
+        "imageSize",
+        lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
+        (image) => checkForImageSize(image)
+      ),
     photo: Yup.mixed()
       .nullable()
       .required(lang === "en" ? content.en.required : content.ar.required)
@@ -65,7 +94,9 @@ function Register() {
         lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
         (image) => checkForImageSize(image)
       ),
+
     city: Yup.string().required(content[lang].required),
+
     area: Yup.string().required(content[lang].required),
   });
 
@@ -74,14 +105,14 @@ function Register() {
       switch (city) {
         case "Giza":
           resolve([
-            { value: "dokki", label: "Dokki" },
-            { value: "6th_october", label: "6th October" },
+            { value: "dokki", label: content[lang].dokki },
+            { value: "6th_october", label: content[lang].th_october },
           ]);
           break;
         case "Cairo":
           resolve([
-            { value: "nasr_city", label: "Nasr City" },
-            { value: "shoubra", label: "Shoubra" },
+            { value: "nasr_city", label: content[lang].nasr_city },
+            { value: "shoubra", label: content[lang].shoubra },
           ]);
           break;
         default:
@@ -90,9 +121,26 @@ function Register() {
     });
   };
 
+  const [specializationsList, setSpecialization] = useState([]);
+  useEffect(() => {
+    axiosInstance
+      .get(`users/doctors/specialities/`)
+      .then((res) => {
+        if (res.status === 200) {
+          setSpecialization(res.data);
+          console.log(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  if (is_loged) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
-    <>
-    <img src={login_cat} alt="catty"/>
     <Formik
       initialValues={{
         firstName: "",
@@ -100,38 +148,60 @@ function Register() {
         email: "",
         password: "",
         confirmPassword: "",
+        description: "",
+        national_id: "",
         phone: "",
-        country: "egypt",
+        country: content[lang].egypt,
         city: "",
         area: "",
         areas: [],
-        photo: null,
+        syndicate_id: "",
+        photo: "",
+        specialization: [],
         username: "",
       }}
       validationSchema={validate}
       onSubmit={(values) => {
+        console.log(values);
         const data = {
-          user: {
-            first_name: values.firstName,
-            last_name: values.lastName,
-            password: values.password,
-            email: values.email,
-            username: values.username,
+          profile: {
+            user: {
+              first_name: values.firstName,
+              last_name: values.lastName,
+              password: values.password,
+              email: values.email,
+              username: values.username,
+            },
+            country: values.country,
+            city: values.city,
+            area: values.area,
+            phone: values.phone,
+            picture: values.photo,
+            role: "DR",
           },
-          country: values.country,
-          city: values.city,
-          area: values.area,
-          phone: values.phone,
-          picture: values.photo,
+          description: values.description,
+          syndicate_id: values.syndicate_id,
+          national_id: values.national_id,
+          specialization: values.special,
         };
         axios
-          .post("http://127.0.0.1:8000/users/register/", data)
+          .post("http://127.0.0.1:8000/users/doctors/new", data)
           .then((response) => {
-            console.log(response);
-            setIsModalSuccessOpen(true);
+            axiosInstance
+              .post("clinics/add_external_doctor/", {
+                doctor_id: response.data.data.id,
+                clinic_id: param.id,
+              })
+              .then((res) => {
+                res.status === 201 && setIsModalSuccessOpen(true);
+              })
+              .catch((e) => {
+                console.log("doctor clinic catch", e.response);
+                setIsModalFailOpen(true);
+              });
           })
           .catch((e) => {
-            console.log(e.response);
+            console.log("doctor reg", e.response);
             setIsModalFailOpen(true);
           });
       }}
@@ -139,20 +209,23 @@ function Register() {
       {(formProps) => {
         const {
           values,
+          notValid,
+          isSubmitting,
           handleChange,
           handleSubmit,
           handleReset,
           setFieldValue,
         } = formProps;
         return (
-          <Container className="p-5 mb-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%', borderRadius:20}}>
-          <span className="center">
-          
-          <h1 className=" font-weight-bold-display-4" style={{display: "inline"}}>
-              {content[lang].register_petowner}
-          </h1>
-          
-        </span>
+          <Container
+            className="p-5 my-5 shadow"
+            dir={lang === "ar" ? "rtl" : "ltr"}
+            style={{ width: "50%" }}
+          >
+            <h1 className="my-4 font-weight-bold-display-4">
+              {content[lang].register_doctor}
+            </h1>
+
             <Form onSubmit={handleSubmit}>
               <TextFeild
                 label={content[lang].fist_name}
@@ -184,6 +257,16 @@ function Register() {
                 name="confirmPassword"
                 type="password"
               />
+              <TextFeild
+                label={content[lang].description}
+                name="description"
+                type="text"
+              />
+              <TextFeild
+                label={content[lang].national_id}
+                name="national_id"
+                type="text"
+              />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
@@ -191,12 +274,24 @@ function Register() {
                 <Field
                   name="photo"
                   component={FileUpload}
-                  label={content[lang].upload_photo}
+                  label={content[lang].profilePicture}
+                  isCardStyles={false}
+                />
+              </div>
+
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+              >
+                <Field
+                  name="syndicate_id"
+                  component={FileUpload}
+                  label={content[lang].syndicate_id}
                   isCardStyles={false}
                 />
               </div>
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+                dir={lang === "ar" ? "rtl" : "ltr"}
               >
                 <label className="form-label" htmlFor="country">
                   {content[lang].country}
@@ -218,11 +313,13 @@ function Register() {
               </div>
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+                dir={lang === "ar" ? "rtl" : "ltr"}
               >
                 <label className="form-label" htmlFor="city">
                   {content[lang].city}
                 </label>
                 <Field
+                  dir={lang === "ar" ? "rtl" : "ltr"}
                   id="city"
                   name="city"
                   as="select"
@@ -232,12 +329,15 @@ function Register() {
                   onChange={async (e) => {
                     const { value } = e.target;
                     const _areas = await getareas(value);
+                    // console.log(_areas);
                     setFieldValue("city", value);
                     setFieldValue("area", "");
                     setFieldValue("areas", _areas);
                   }}
                 >
-                  <option value="None">{content[lang].select_city}</option>
+                  <option className="m-2" value="None">
+                    {content[lang].select_city}
+                  </option>
                   <option value="Giza">{content[lang].giza}</option>
                   <option value="Cairo">{content[lang].cairo}</option>
                 </Field>
@@ -250,6 +350,7 @@ function Register() {
               </div>
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+                dir={lang === "ar" ? "rtl" : "ltr"}
               >
                 <label className="form-label" htmlFor="area">
                   {content[lang].area}
@@ -278,6 +379,40 @@ function Register() {
                   className="error"
                 />
               </div>
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+              >
+                <label className="form-label" htmlFor="special">
+                  {content[lang].specialization}
+                </label>
+                <Field
+                  as="select"
+                  className="form-select"
+                  controlId="validationFormik05"
+                  value={values.special && values.special[0].name}
+                  name="special"
+                  id="special"
+                  onChange={(e) => {
+                    let arr = [];
+                    arr.push({ name: e.target.value });
+                    setFieldValue("special", arr);
+                  }}
+                >
+                  <option value="" label="Select a specialization" />
+                  {specializationsList.map((spec) => (
+                    <option key={spec.name} value={spec.value}>
+                      {spec.name}
+                    </option>
+                  ))}
+                </Field>
+                <ErrorMessage
+                  name={"special"}
+                  component="div"
+                  style={{ color: "red" }}
+                  className="error"
+                />
+              </div>
+              <br></br>
               <button
                 className="btn mt-3 mx-2 btn-outline-dark"
                 type="submit"
@@ -312,8 +447,7 @@ function Register() {
         );
       }}
     </Formik>
-    </>
   );
 }
 
-export default Register;
+export default DoctorRegisterClinic;

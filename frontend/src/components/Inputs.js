@@ -106,7 +106,7 @@ export const TextAreaField = ({ label, ...props }) => {
 
 export const FileUpload = (props) => {
   const { lang } = useContext(LanguageContext);
-  const { label, field, form } = props;
+  const { label, field, form, isCardStyles } = props;
 
   const handleChange = (e) => {
     const file = e.currentTarget.files[0];
@@ -118,15 +118,19 @@ export const FileUpload = (props) => {
   };
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center my-2">
-        <label className="flex-one mx-3" htmlFor={field.name}>
+      <div
+        className={`${
+          isCardStyles && "d-flex justify-content-between align-items-center"
+        } my-2`}
+      >
+        <label className={!isCardStyles ? "my-1" : "mx-3"} htmlFor={field.name}>
           {label}
         </label>
         <div className="d-flex flex-column">
           <input
             type={"file"}
             onChange={(o) => handleChange(o)}
-            className={"form-control flex-two"}
+            className={"form-control"}
             accept=".jpg,.jpeg,.png,.gif"
             aria-describedby="imageHelp"
           />

@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework.authtoken.models import Token
 from cryptography.fernet import Fernet
-from .email_utils import send_mail_user
+from .email_utils import send_mail_doctor_activation
 from clinics.serializers import ClinicSerializer
 from django.db.models import Sum
 import datetime
@@ -134,15 +134,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         user_data = validated_data.pop('user')
-        user_serializer = UserSerializer(instance.user,data=user_data)
+        user_serializer = UserSerializer(instance.user,data=user_data, partial=True)
         user_serializer.is_valid(raise_exception=True)
         user = user_serializer.save()
 
         user_picture = validated_data.pop('picture')
         if user_picture:
             instance.picture = user_picture
-            
-            
+                        
         for key in validated_data:
             if key in self.fields:
                     setattr(instance,key,validated_data.get(key))
@@ -182,7 +181,6 @@ class DoctorSerializer(serializers.ModelSerializer):
         # print(2, validated_data)
         profile = validated_data.pop('profile')
         profile_serializer = ProfileSerializer(data=profile)
-        print(profile.get('picture'))
         profile_serializer.is_valid(raise_exception=True)
         profile = profile_serializer.save()
         doctor = Doctor.objects.create(user=profile.user,profile=profile,**validated_data)
@@ -195,7 +193,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         fernet = Fernet(key)
         enc_token = fernet.encrypt(token.key.encode())
         activation_link = f"http://127.0.0.1:8000/users/activate/{key.decode()}/{enc_token.decode()}"
-        send_mail_user(doctor.user.first_name,activation_link,doctor.user.email)
+        send_mail_doctor_activation(doctor.user.first_name,activation_link,doctor.user.email)
         newdoctor = Doctor.objects.get(user=profile.user)
         return newdoctor
 
@@ -265,20 +263,14 @@ class ScheduleSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = ('id','from_time','to_time','day',
         'appointment_duration','doctor','clinic','active','date')
-######### Appointment serialziers ##########
+######### Appointment serialziers ##########filter
 class AppointmentSerializer(serializers.ModelSerializer):
-    doctor = serializers.CharField(source='schedule.doctor', required = False)
-    clinic = serializers.CharField(source='schedule.clinic.name', required = False)
-    address = serializers.SerializerMethodField('get_full_address')
-
-    def get_full_address(self, obj):
-        schedule_id = self.context.get('request').data.get('schedule')
-        schedule = Schedule.objects.filter(id=schedule_id)[0]
-        return f'{schedule.clinic.address}, {schedule.clinic.area}, {schedule.clinic.city}'
+    doctor = serializers.CharField(source='schedule.doctor', required=False)
+    clinic = serializers.CharField(source='schedule.clinic.name', required=False)
 
     class Meta:
         model = Appiontments
-        fields = ('id', 'user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'address', 'date')
+        fields = ('user', 'schedule', 'visiting_time', 'doctor', 'clinic', 'date')
         depth = 1
 
     def create(self, validated_data):
@@ -289,6 +281,15 @@ class AppointmentSerializer(serializers.ModelSerializer):
         appointment = Appiontments.objects.create(**validated_data, schedule=schedule, user=user)
         print(appointment, "hello")
         return appointment
+        
+    def create(self, validated_data):
+        schedule_id = self.context.get('request').data.get('schedule')
+        user_id = self.context.get('request').data.get('user')
+        schedule = Schedule.objects.get(id=schedule_id)
+        user = User.objects.get(id=user_id)
+        appointment = Appiontments.objects.create(**validated_data, schedule=schedule, user=user)
+        return appointment
+
         
         
 #////////////

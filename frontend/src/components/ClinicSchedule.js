@@ -5,17 +5,24 @@ import AppointmentBooking from "./AppointmentBooking";
 import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
+import { useHistory } from "react-router-dom";
+import { LogingContext } from "../context/LogingContext";
 
 function ClinicSchedule(props) {
   const { clinic_id, doctor_id } = props;
   const { lang, setLang } = useContext(LanguageContext);
+  const { is_loged, setLogging } = useContext(LogingContext);
   const [scheduleList, updateScheduleList] = useState([]);
   const [selected_schedule, setSelected_schedule] = useState({});
   const [show, setShow] = useState(false);
-
+  const history = useHistory();
   function handleShow(schedule) {
-    setSelected_schedule(schedule);
-    setShow(true);
+    if (is_loged) {
+      setSelected_schedule(schedule);
+      setShow(true);
+    } else {
+      history.push("/login");
+    }
   }
   function handleHide() {
     setSelected_schedule({});
@@ -100,7 +107,7 @@ function ClinicSchedule(props) {
         dir={lang === "ar" ? "rtl" : "ltr"}
       >
         <Modal.Header closeButton bsPrefix="text-center">
-          <Modal.Title>{content[lang].book_appointment}</Modal.Title>
+          <Modal.Title></Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AppointmentBooking selected_schedule={selected_schedule} />
