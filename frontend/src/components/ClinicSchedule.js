@@ -11,15 +11,21 @@ import { LogingContext } from "../context/LogingContext";
 function ClinicSchedule(props) {
   const { clinic_id, doctor_id } = props;
   const { lang, setLang } = useContext(LanguageContext);
-  const { is_loged, setLogging } = useContext(LogingContext);
+  const { is_loged, setLogging, userRole } = useContext(LogingContext);
   const [scheduleList, updateScheduleList] = useState([]);
   const [selected_schedule, setSelected_schedule] = useState({});
   const [show, setShow] = useState(false);
+  const [notPT, setPT] = useState(false);
   const history = useHistory();
   function handleShow(schedule) {
     if (is_loged) {
-      setSelected_schedule(schedule);
-      setShow(true);
+      if (userRole === "PT") {
+        setPT(false);
+        setSelected_schedule(schedule);
+        setShow(true);
+      } else {
+        setPT(true);
+      }
     } else {
       history.push("/login");
     }
@@ -111,6 +117,34 @@ function ClinicSchedule(props) {
         </Modal.Header>
         <Modal.Body>
           <AppointmentBooking selected_schedule={selected_schedule} />
+        </Modal.Body>
+      </Modal>
+      <Modal
+        show={notPT}
+        onHide={() => setPT(false)}
+        dir={lang === "ar" ? "rtl" : "ltr"}
+      >
+        <Modal.Header bsPrefix="text-center">
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body
+          className="text-center p-5 shadow"
+          style={{
+            backgroundColor: colors.bg.light,
+            borderColor: colors.bg.blond,
+          }}
+        >
+          <p>{content[lang].book_warning}</p>
+          <Button
+            onClick={() => setPT(false)}
+            className="btn-light mt-3 shadow-sm rounded"
+            style={{
+              backgroundColor: colors.bg.primary,
+              borderColor: colors.bg.blond,
+            }}
+          >
+            Close
+          </Button>
         </Modal.Body>
       </Modal>
     </div>
