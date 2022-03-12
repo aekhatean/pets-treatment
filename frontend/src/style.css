@@ -172,13 +172,14 @@ li {
   background-color: #b8d8d6 !important;
   color: #1a2e3b !important;
 }
-.Options_option__drg5a {
+.react-chatbot-kit-chat-message-container > div > div > button {
   transition: 1s all ease;
   background-color: #b8d8d6 !important;
   opacity: 0.7;
   transition: 0.5s;
 }
-.Options_option__drg5a:hover {
+
+.react-chatbot-kit-chat-message-container > div > div > button:hover {
   opacity: 1;
   background-color: #1a2e3b !important;
   color: #f6eebd;
