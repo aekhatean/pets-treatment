@@ -2,7 +2,7 @@ import "../styles/doctor_card.css";
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
-import ScheduleCard from "./ScheduleCard";
+import ScheduleCard from "./Schedulecard";
 import { Link } from "react-router-dom";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
@@ -23,10 +23,10 @@ function DoctorCard(props) {
 
   return (
     <>
-      <div class="container mt-2">
+      <div class="container mt-2 col-sm-12">
         <div class="row d-flex justify-content-center">
           <div className="col-12 text-center my-3">
-            <div className="card mb-3 card_height shadow">
+            <div className="card col-sm-12 mb-3 card_height shadow">
               <div className="row g-0">
                 <div className="col-2 mt-2 ml-2">
                   <Link

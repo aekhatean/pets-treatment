@@ -179,7 +179,7 @@ function Doctors(props) {
                     </h3>
                     <div class="d-flex justify-content-center px-5"></div>
                     <div class="row mt-4 g-1 px-4 mb-5">
-                      <div class="col-md-3">
+                      {/* <div class="col-md-3">
                         <div class="card-inner p-3 d-flex flex-column align-items-center">
                           <img
                             src="https://i.imgur.com/Mb8kaPV.png"
@@ -190,7 +190,7 @@ function Doctors(props) {
                             <span class="mg-text">Account</span>{" "}
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                       {/* <div class="col-md-2">
                         <div class="card-inner p-3 d-flex flex-column align-items-center"> <img src="https://i.imgur.com/ueLEPGq.png" width="50"/>
                             <div class="text-center mg-text"> <span class="mg-text">Payments</span> </div>
@@ -201,7 +201,7 @@ function Doctors(props) {
                             <div class="text-center mg-text"> <span class="mg-text">Delivery</span> </div>
                         </div>
                     </div> */}
-                      <div class="col-md-3">
+                      {/* <div class="col-md-3">
                         <div class="card-inner p-3 d-flex flex-column align-items-center">
                           {" "}
                           <img
@@ -213,8 +213,8 @@ function Doctors(props) {
                             <span class="mg-text">Product</span>{" "}
                           </div>
                         </div>
-                      </div>
-                      <div class="col-md-3">
+                      </div> */}
+                      {/* <div class="col-md-3">
                         <div class="card-inner p-3 d-flex flex-column align-items-center">
                           {" "}
                           <img
@@ -226,8 +226,8 @@ function Doctors(props) {
                             <span class="mg-text">Return</span>{" "}
                           </div>
                         </div>
-                      </div>
-                      <div class="col-md-3">
+                      </div> */}
+                      {/* <div class="col-md-3">
                         <div class="card-inner p-3 d-flex flex-column align-items-center">
                           {" "}
                           <img
@@ -239,7 +239,7 @@ function Doctors(props) {
                             <span class="mg-text">Guarantee</span>{" "}
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
