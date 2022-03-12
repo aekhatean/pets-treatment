@@ -259,6 +259,10 @@ export const content = {
     login_widget:
       "The login page gives you access to your profile and clinic reservation service",
     search_qoute: " Hi! How can we help You?",
+    bot_header: "Chat with Kiwi",
+    bot_placeholder: "Write your message here",
+    contact_widget:
+      "If you have any suggestions, complaints or faced any issues please contact us here",
   },
   ar: {
     brand: "بيتسانيا",
@@ -517,5 +521,9 @@ export const content = {
     login_widget:
       "تتيح لك صفحة تسجيل الدخول التحكم فى حسابك الشخصى و أيضا خدمة حجز الكشف للأطباء البيطريين",
     search_qoute: "  مرحبا! كيف نستطيع مساعدك؟",
+    bot_header: "محادثة مع كيوى",
+    bot_placeholder: "أكتب رسالتك هنا",
+    contact_widget:
+      "اذا كان لديك أى شكاوى أو مقترحات يمكنك التواصل معنا من هنا",
   },
 };

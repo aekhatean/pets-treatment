@@ -5,9 +5,10 @@ import config from "./config.js";
 import MessageParser from "./Messageparser.js";
 import ActionProvider from "./ActionProvider.js";
 import validateInput from "./validateInput.js";
+import { content } from "../translation/translation";
 
 const Bot = () => {
-  const { lang } = useContext(LanguageContext);
+  const { lang, setLang } = useContext(LanguageContext);
   return (
     <div>
       <Chatbot
@@ -15,6 +16,8 @@ const Bot = () => {
         messageParser={MessageParser}
         actionProvider={ActionProvider}
         validator={validateInput}
+        headerText={content[lang].bot_header}
+        placeholderText={content[lang].bot_placeholder}
       />
     </div>
   );

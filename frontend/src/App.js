@@ -13,7 +13,7 @@ import Footer from "./components/Footer";
 import "react-chatbot-kit/build/main.css";
 import Bot from "./chatbot/bot";
 import { ConditionallyRender } from "react-util-kit";
-import { ReactComponent as ButtonIcon } from "./assets/robot.svg";
+import { ReactComponent as ButtonIcon } from "./assets/message.svg";
 import Doctors from "./pages/Doctors";
 import NotFoundPage from "./pages/NotFoundPage";
 import NavBarComponent from "./components/NavBarComponent";
@@ -53,8 +53,7 @@ function App() {
         </div>
         <button
           className="app-chatbot-button"
-          onClick={() => toggleChatbot((prev) => !prev)}
-        >
+          onClick={() => toggleChatbot(prev => !prev)}>
           <ButtonIcon className="app-chatbot-button-icon" />
         </button>
         <Footer />
