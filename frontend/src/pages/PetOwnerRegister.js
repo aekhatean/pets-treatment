@@ -12,6 +12,7 @@ import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useHistory } from "react-router-dom";
 import ModalSuccess from "../components/ModalSuccess";
+import login_cat from "../assets/login_cat.png";
 function Register() {
     let history = useHistory();
     const redic = ()=>{
@@ -83,6 +84,8 @@ function Register() {
       };
 
     return (
+      <>
+    <img src={login_cat} alt="catty" />
         <Formik
             initialValues={{
                 firstName:'',
@@ -150,8 +153,14 @@ function Register() {
             setFieldValue
           } = formProps;
           return (
-                <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
-                    <h1 className='my-4 font-weight-bold-display-4'>{content[lang].register_petowner}</h1>
+            <Container className="p-5 mb-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%', borderRadius:20}}>
+            <span className="center">
+            
+            <h1 className=" font-weight-bold-display-4" style={{display: "inline"}}>
+                {content[lang].register_petowner}
+            </h1>
+            
+          </span>
 
                     <Form onSubmit={handleSubmit}>
                     <TextFeild label={content[lang].fist_name} name="firstName" type="text"/>
@@ -260,6 +269,7 @@ function Register() {
                 </Container>
             )}}
         </Formik>
+        </>
     )
 
 }

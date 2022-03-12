@@ -10,7 +10,8 @@ import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { LogingContext } from "../context/LogingContext";
 import { useHistory } from "react-router-dom";
-import dogheaderPrimary from "../assets/dogheaderPrimary.png";
+import login_cat from "../assets/login_cat.png";
+import doctordog from "../assets/doctordog.png";
 function Login() {
   let history = useHistory();
   const [isLoginValid, setIsLoginValid] = useState(true);
@@ -24,6 +25,9 @@ function Login() {
   });
 
   return (
+    <>
+    <img src={login_cat} alt="catty" />
+    
     <Formik
       initialValues={{
         email: "",
@@ -55,6 +59,7 @@ function Login() {
           });
       }}
     >
+      
       {(formProps) => {
         const {
           values,
@@ -66,16 +71,15 @@ function Login() {
           setFieldValue,
         } = formProps;
         return (
-          <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
-            {/* <h1 className="my-4 font-weight-bold-display-4">
-              {content[lang].login}
-            </h1> */}
-            <div className="center">
-            <img src={dogheaderPrimary} alt="doggy" style={{width:'100%'}}/>
-            <h1 className="my-4 font-weight-bold-display-4">
+          
+          <Container className="p-5 mb-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%', borderRadius:20}}>
+            <span className="center">
+            
+            <h1 className=" font-weight-bold-display-4" style={{display: "inline"}}>
                 {content[lang].login}
             </h1>
-          </div>
+            
+          </span>
 
             <Form onSubmit={handleSubmit}>
               <TextFeild
@@ -112,6 +116,7 @@ function Login() {
         );
       }}
     </Formik>
+    </>
   );
 }
 

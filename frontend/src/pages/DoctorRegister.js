@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import { FileUpload } from "../components/Inputs";
 import ModalSuccess from "../components/ModalSuccess";
 import ModalFail from "../components/ModalFail";
+import login_cat from "../assets/login_cat.png";
 import {
   checkForImageFormat,
   checkForImageSize,
@@ -145,6 +146,8 @@ function DoctorRegister() {
       });
   }, []);
   return (
+    <>
+    <img src={login_cat} alt="catty" />
     <Formik
       initialValues={{
         firstName: "",
@@ -211,14 +214,15 @@ function DoctorRegister() {
           setFieldValue,
         } = formProps;
         return (
-          <Container
-            className="p-5 my-5 shadow"
-            dir={lang === "ar" ? "rtl" : "ltr"}
-            style={{ width: "50%" }}
-          >
-            <h1 className="my-4 font-weight-bold-display-4">
-              {content[lang].register_doctor}
+          
+          <Container className="p-5 mb-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%', borderRadius:20}}>
+            <span className="center">
+            
+            <h1 className=" font-weight-bold-display-4" style={{display: "inline"}}>
+                {content[lang].register_doctor}
             </h1>
+            
+          </span>
 
             <Form onSubmit={handleSubmit}>
               <TextFeild
@@ -283,6 +287,7 @@ function DoctorRegister() {
                   isCardStyles={false}
                 />
               </div>
+
 
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
@@ -448,6 +453,7 @@ function DoctorRegister() {
         );
       }}
     </Formik>
+    </>
   );
 }
 
