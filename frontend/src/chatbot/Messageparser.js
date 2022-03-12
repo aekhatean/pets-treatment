@@ -30,7 +30,11 @@ class MessageParser {
       lowerCase.includes("reserve") ||
       lowerCase.includes(content[lang].doctor_bot) ||
       lowerCase.includes(content[lang].vets) ||
+      lowerCase.includes("pet care") ||
       lowerCase.includes("مريض") ||
+      lowerCase.includes("عيادة") ||
+      lowerCase.includes("طبيب") ||
+      lowerCase.includes("بيطرى") ||
       lowerCase.includes("sick")
     ) {
       this.actionProvider.handleClinicSearch();
@@ -40,12 +44,24 @@ class MessageParser {
       lowerCase.includes("حساب") ||
       lowerCase.includes("Sign up")
     ) {
+      this.actionProvider.handleSignUp();
     } else if (
       lowerCase.includes("login") ||
       lowerCase.includes("دخول") ||
       lowerCase.includes("log in")
     ) {
       this.actionProvider.handleLogin();
+    } else if (
+      lowerCase.includes("contact") ||
+      lowerCase.includes("problem") ||
+      lowerCase.includes("customer service") ||
+      lowerCase.includes("مشكلة") ||
+      lowerCase.includes("شكوى") ||
+      lowerCase.includes("اقتراح") ||
+      lowerCase.includes("خدمة") ||
+      lowerCase.includes("complaint")
+    ) {
+      this.actionProvider.handleContactUs();
     } else return this.actionProvider.handleDefault();
   }
 }

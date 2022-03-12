@@ -106,20 +106,20 @@ li {
   justify-content: center;
   position: fixed;
   right: 40px;
-  bottom: 40px;
+  bottom: 70px;
   z-index: 9999;
   box-shadow: 5px 5px 13px rgba(91, 81, 81, 0.4);
   border-radius: 5px;
 }
 
 .app-chatbot-button {
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   background-color: #1a2e3b;
   border: none;
   position: fixed;
-  bottom: 15px;
+  bottom: 40px;
   z-index: 9999;
   right: 40px;
 }
@@ -129,16 +129,15 @@ li {
   border: 1px solid #f9f7f3;
   text-decoration: none;
   padding: 10px;
-
   display: block;
   margin: 30px auto;
   width: 150px;
 }
 
 .app-chatbot-button-icon {
-  width: 30px;
-  height: 30px;
-  fill: #f9f7f3;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
 }
 
 .app-paragraph {
@@ -155,9 +154,8 @@ li {
 }
 
 .react-chatbot-kit-chat-bot-message-container > svg {
-  width: 48px;
-  fill: #1a2e3b;
-  height: 40px;
+  width: 50px;
+  height: 50px;
 }
 .react-chatbot-kit-chat-message-container {
   background-color: #f9f7f3;
@@ -168,10 +166,22 @@ li {
 .react-chatbot-kit-chat-header {
   background-color: #1a2e3b !important;
   color: #f9f7f3 !important;
+  font-size: 1rem !important;
 }
 .react-chatbot-kit-user-chat-message {
   background-color: #b8d8d6 !important;
   color: #1a2e3b !important;
+}
+.Options_option__drg5a {
+  transition: 1s all ease;
+  background-color: #b8d8d6 !important;
+  opacity: 0.7;
+  transition: 0.5s;
+}
+.Options_option__drg5a:hover {
+  opacity: 1;
+  background-color: #1a2e3b !important;
+  color: #f6eebd;
 }
 
 @media (max-width: 600px) {

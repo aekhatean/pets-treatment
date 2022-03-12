@@ -24,7 +24,7 @@ const ContactUs = () => {
   });
   const submitMessage = (values, actions) => {
     const data = values;
-    axiosAuthInstance.post(`support/`, data).catch((err) => console.error(err));
+    axiosAuthInstance.post(`support/`, data).catch(err => console.error(err));
     actions.resetForm();
     setPopMessage(true);
   };
@@ -38,10 +38,9 @@ const ContactUs = () => {
           message: "",
         }}
         validationSchema={validate}
-        onSubmit={(values, actions) => submitMessage(values, actions)}
-      >
-        {(formik) => (
-          <Form className="mx-3">
+        onSubmit={(values, actions) => submitMessage(values, actions)}>
+        {formik => (
+          <Form className="mx-3" id="contact-us">
             <div className="d-flex flex-column">
               <h4 className="fw-bold py-3">
                 {lang === "ar" ? content.ar.contact_us : content.en.contact_us}
@@ -66,8 +65,7 @@ const ContactUs = () => {
                 className="btn text-white mt-2 w-25 align-self-end"
                 name="submit"
                 type="submit"
-                style={{ backgroundColor: colors.bg.blue }}
-              >
+                style={{ backgroundColor: colors.bg.blue }}>
                 {lang === "ar" ? content.ar.send : content.en.send}
               </button>
             </div>
@@ -77,15 +75,13 @@ const ContactUs = () => {
       <Modal
         show={popMessage}
         dir={lang === "ar" ? "rtl" : "ltr"}
-        className="my-3 "
-      >
+        className="my-3 ">
         <Modal.Body
           className="text-center p-5 shadow"
           style={{
             backgroundColor: colors.bg.light,
             borderColor: colors.bg.blond,
-          }}
-        >
+          }}>
           <p>{content[lang].support_message_confirm}</p>
 
           <Button
@@ -94,8 +90,7 @@ const ContactUs = () => {
             style={{
               backgroundColor: colors.bg.primary,
               borderColor: colors.bg.blond,
-            }}
-          >
+            }}>
             Close
           </Button>
         </Modal.Body>

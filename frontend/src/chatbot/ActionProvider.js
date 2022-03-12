@@ -55,6 +55,14 @@ class ActionProvider {
     });
     this.updateChatbotState(messages);
   };
+  handleContactUs = () => {
+    let lang = localStorage.getItem("lang");
+    const messages = createChatBotMessage(content[lang].contact_widget, {
+      widget: "contact us",
+      withAvatar: true,
+    });
+    this.updateChatbotState(messages);
+  };
 
   updateChatbotState(message) {
     this.setState(state => ({

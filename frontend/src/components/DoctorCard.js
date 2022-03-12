@@ -13,12 +13,12 @@ function DoctorCard(props) {
   useEffect(() => {
     axiosInstance
       .get(`users/schedule/doctor/${props.doctor["id"]}`)
-      .then((res) => {
+      .then(res => {
         if (res.status === 200) {
           setschedule(res.data);
         }
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }, []);
 
   return (
@@ -31,8 +31,7 @@ function DoctorCard(props) {
                 <div className="col-2 mt-2 ml-2">
                   <Link
                     to={`/doctors/${props.doctor["id"]}`}
-                    className="nonlink"
-                  >
+                    className="nonlink">
                     <img
                       src={props.doctor["profile"].picture}
                       className="img-fluid rounded-circle doctor_image"
@@ -47,8 +46,7 @@ function DoctorCard(props) {
                         lang === "ar"
                           ? "card-title text-end"
                           : "card-title text-start"
-                      }
-                    >
+                      }>
                       Dr.{props.doctor["user"].first_name}{" "}
                       {props.doctor["user"].last_name}
                     </h5>
@@ -67,8 +65,7 @@ function DoctorCard(props) {
                         lang === "ar"
                           ? "text-end overdescription"
                           : " text-start overdescription"
-                      }
-                    >
+                      }>
                       {props.doctor["description"]}
                     </p>
                     <p className="card-text">
@@ -80,16 +77,14 @@ function DoctorCard(props) {
                               overflowX: "auto",
                               display: "flex",
                               justifyContent: "space-between",
-                            }}
-                          >
+                            }}>
                             {/* ////////////////////////////////// */}
 
-                            {schedules.map((feed) => (
+                            {schedules.map(feed => (
                               <ScheduleCard
                                 key={feed.id}
                                 schedule={feed}
-                                doctor_id={props.doctor["id"]}
-                              ></ScheduleCard>
+                                doctor_id={props.doctor["id"]}></ScheduleCard>
                             ))}
 
                             {/* /////////////////////////////// */}

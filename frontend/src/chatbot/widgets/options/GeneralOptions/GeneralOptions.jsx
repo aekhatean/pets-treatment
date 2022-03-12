@@ -11,19 +11,24 @@ const GeneralOptions = props => {
       id: 1,
     },
     {
+      name: content[lang].contact_us,
+      handler: props.actionProvider.handleContactUs,
+      id: 7,
+    },
+    {
       name: content[lang].howitworks,
       handler: props.actionProvider.handleHowItWorks,
       id: 2,
     },
     {
-      name: content[lang].register,
-      handler: props.actionProvider.handleSignUp,
-      id: 3,
-    },
-    {
       name: content[lang].about,
       handler: props.actionProvider.handleAboutUs,
       id: 5,
+    },
+    {
+      name: content[lang].register,
+      handler: props.actionProvider.handleSignUp,
+      id: 8,
     },
     {
       name: content[lang].login,

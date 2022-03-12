@@ -1,23 +1,23 @@
 import { createChatBotMessage } from "react-chatbot-kit";
-import { ReactComponent as ButtonIcon } from "../assets/robot.svg";
+import { ReactComponent as ButtonIcon } from "../assets/kwala.svg";
 import Overview from "./widgets/Overview/Overview";
 import About from "./widgets/About/About";
 import HowItWorks from "./widgets/HowItWorks/HowItWorks";
 import Search from "./widgets/Search/Search";
 import SingUp from "./widgets/SignUp/SignUp";
 import Login from "./widgets/login/login";
+import Contact from "./widgets/contact/contact";
 const config = {
   initialMessages: [
     createChatBotMessage(
-      "Select a topic or write your questions below. مرحبا بك كيف يمكننى مساعدتك؟",
+      "Hello I'm Kiwi,  Please select a topic or write your questions below. مرحبا بك أنا كيوى, كيف يمكننى مساعدتك؟",
       {
-        withAvatar: false,
+        withAvatar: true,
         delay: 1000,
         widget: "overview",
       }
     ),
   ],
-  botName: "Petsania's Bot",
   customComponents: {
     botAvatar: props => <ButtonIcon {...props} />,
   },
@@ -55,6 +55,10 @@ const config = {
     {
       widgetName: "Login",
       widgetFunc: props => <Login {...props} />,
+    },
+    {
+      widgetName: "contact us",
+      widgetFunc: props => <Contact {...props} />,
     },
   ],
 };
