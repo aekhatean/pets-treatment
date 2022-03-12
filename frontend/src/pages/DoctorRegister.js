@@ -10,9 +10,11 @@ import { axiosInstance } from "../api";
 import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
-import { useHistory } from "react-router-dom";
+
+import { useHistory, Redirect } from "react-router-dom";
 import { FileUpload } from "../components/Inputs";
 import ModalSuccess from "../components/ModalSuccess";
+import { LogingContext } from "../context/LogingContext";
 import ModalFail from "../components/ModalFail";
 import {
   checkForImageFormat,
@@ -24,6 +26,8 @@ function DoctorRegister() {
   const [modal, setModal] = useState(undefined);
   const [errorModal, setErrorModal] = useState(undefined);
   const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const { is_loged, setLogging } = useContext(LogingContext);
+
   const [isModalFailOpen, setIsModalFailOpen] = useState(false);
 
   let history = useHistory();
@@ -144,6 +148,11 @@ function DoctorRegister() {
         console.log(err);
       });
   }, []);
+
+  if (is_loged) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
     <Formik
       initialValues={{

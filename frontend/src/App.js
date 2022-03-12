@@ -23,6 +23,7 @@ import { LogingContext } from "./context/LogingContext";
 import DoctorRegisterClinic from "./pages/DoctorRegisterClinic";
 import ActivateAccount from "./components/ActivateAccount";
 import ExpiredActivation from "./components/ExpiredActivation";
+import MiddleRoute from "./pages/MiddleRoute";
 
 function App() {
   const [showChatbot, toggleChatbot] = useState(false);
@@ -51,13 +52,8 @@ function App() {
             path="/register/invitation/:id"
             component={DoctorRegisterClinic}
           />
+          <Route exact path="/dashboard" component={MiddleRoute} />
           <Route path="/error404" component={NotFoundPage} />
-          {is_loged &&
-            (userRole === "DR" ? (
-              <Route exact path="/dashboard" component={DoctorDashboard} />
-            ) : (
-              <Route exact path="/dashboard" component={UserDashboard} />
-            ))}
 
           <Redirect to="error404" />
         </Switch>

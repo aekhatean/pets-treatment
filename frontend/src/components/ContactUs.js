@@ -6,7 +6,7 @@ import React, { useContext, useState } from "react";
 import { LanguageContext } from "../context/LanguageContext";
 import { colors } from "../colors/colors";
 import { axiosAuthInstance } from "../api";
-import { Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 
 const ContactUs = () => {
   const { lang } = useContext(LanguageContext);
@@ -76,13 +76,29 @@ const ContactUs = () => {
       </Formik>
       <Modal
         show={popMessage}
-        onHide={() => setPopMessage(false)}
         dir={lang === "ar" ? "rtl" : "ltr"}
+        className="my-3 "
       >
-        <Modal.Header closeButton bsPrefix="text-center">
-          {content[lang].sent}
-        </Modal.Header>
-        <Modal.Body>{content[lang].support_message_confirm}</Modal.Body>
+        <Modal.Body
+          className="text-center p-5 shadow"
+          style={{
+            backgroundColor: colors.bg.light,
+            borderColor: colors.bg.blond,
+          }}
+        >
+          <p>{content[lang].support_message_confirm}</p>
+
+          <Button
+            onClick={() => setPopMessage(false)}
+            className="btn-light mt-3 shadow-sm rounded"
+            style={{
+              backgroundColor: colors.bg.primary,
+              borderColor: colors.bg.blond,
+            }}
+          >
+            Close
+          </Button>
+        </Modal.Body>
       </Modal>
     </>
   );

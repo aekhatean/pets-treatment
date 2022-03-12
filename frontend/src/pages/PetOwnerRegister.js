@@ -7,7 +7,7 @@ import axios from "axios";
 import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import ModalSuccess from "../components/ModalSuccess";
 import ModalFail from "../components/ModalFail";
 import { FileUpload } from "../components/Inputs";

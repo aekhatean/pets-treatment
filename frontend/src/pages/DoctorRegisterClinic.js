@@ -11,14 +11,14 @@ import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useHistory } from "react-router-dom";
-import { FileUpload } from "../components/Inputs"; 
+import { FileUpload } from "../components/Inputs";
 import ModalSuccess from "../components/ModalSuccess";
 
 function DoctorRegisterClinic() {
   let history = useHistory();
-  const redic = ()=>{
-    history.push('/');
-  }
+  const redic = () => {
+    history.push("/");
+  };
   const { lang, setLang } = useContext(LanguageContext);
   const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
   const validate = Yup.object({
@@ -59,18 +59,13 @@ function DoctorRegisterClinic() {
     // specialization:Yup.string()
     // .required(content[lang].required),
 
-    syndicate_id:Yup.string()
-    .required(content[lang].required),
+    syndicate_id: Yup.string().required(content[lang].required),
 
-    photo:Yup.string()
-    .required(content[lang].required),
+    photo: Yup.string().required(content[lang].required),
 
-    city:Yup.string()
-    .required(content[lang].required),
+    city: Yup.string().required(content[lang].required),
 
-    area:Yup.string()
-    .required(content[lang].required),
-
+    area: Yup.string().required(content[lang].required),
   });
 
   const getareas = (city) => {
@@ -109,6 +104,7 @@ function DoctorRegisterClinic() {
         console.log(err);
       });
   }, []);
+
   return (
     <Formik
       initialValues={{
@@ -167,7 +163,6 @@ function DoctorRegisterClinic() {
           .catch((e) => {
             console.error(e.response);
           });
-
       }}
     >
       {(formProps) => {
@@ -181,7 +176,11 @@ function DoctorRegisterClinic() {
           setFieldValue,
         } = formProps;
         return (
-          <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
+          <Container
+            className="p-5 my-5 shadow"
+            dir={lang === "ar" ? "rtl" : "ltr"}
+            style={{ width: "50%" }}
+          >
             <h1 className="my-4 font-weight-bold-display-4">
               {content[lang].register_doctor}
             </h1>
@@ -248,23 +247,15 @@ function DoctorRegisterClinic() {
                 <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
               </div> */}
 
-              <Field
-                  name="photo"
-                  component={FileUpload}
-                  label={
-                    'photooo'
-                  }
-                />
+              <Field name="photo" component={FileUpload} label={"photooo"} />
               <br></br>
 
               <Field
-                  name="syndicate_id"
-                  component={FileUpload}
-                  label={
-                    "syndicate_idddddd"
-                  }
-                />
-{/* 
+                name="syndicate_id"
+                component={FileUpload}
+                label={"syndicate_idddddd"}
+              />
+              {/* 
               <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="synd_id">
                   {content[lang].upload_syndicate}
@@ -286,8 +277,10 @@ function DoctorRegisterClinic() {
               </div> */}
               <br></br>
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"} 
-                dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+                dir={lang === "ar" ? "rtl" : "ltr"}
+              >
                 <label className="form-label" htmlFor="country">
                   {content[lang].country}
                 </label>
@@ -299,16 +292,23 @@ function DoctorRegisterClinic() {
                 >
                   <option value="egypt">{content[lang].egypt}</option>
                 </Field>
-                <ErrorMessage name={'country'} component="div" style={{color:"red"}} className="error"/>
+                <ErrorMessage
+                  name={"country"}
+                  component="div"
+                  style={{ color: "red" }}
+                  className="error"
+                />
               </div>
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"} 
-                dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+                dir={lang === "ar" ? "rtl" : "ltr"}
+              >
                 <label className="form-label" htmlFor="city">
                   {content[lang].city}
                 </label>
                 <Field
-                  dir={lang === 'ar' ? 'rtl' : 'ltr'}
+                  dir={lang === "ar" ? "rtl" : "ltr"}
                   id="city"
                   name="city"
                   as="select"
@@ -324,15 +324,24 @@ function DoctorRegisterClinic() {
                     setFieldValue("areas", _areas);
                   }}
                 >
-                  <option className="m-2" value="None">{content[lang].select_city}</option>
+                  <option className="m-2" value="None">
+                    {content[lang].select_city}
+                  </option>
                   <option value="Giza">{content[lang].giza}</option>
                   <option value="Cairo">{content[lang].cairo}</option>
                 </Field>
-                <ErrorMessage name={'city'} component="div" style={{color:"red"}} className="error"/>
+                <ErrorMessage
+                  name={"city"}
+                  component="div"
+                  style={{ color: "red" }}
+                  className="error"
+                />
               </div>
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}
-                dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+                dir={lang === "ar" ? "rtl" : "ltr"}
+              >
                 <label className="form-label" htmlFor="area">
                   {content[lang].area}
                 </label>
@@ -353,11 +362,18 @@ function DoctorRegisterClinic() {
                       </option>
                     ))}
                 </Field>
-                <ErrorMessage name={'area'} component="div" style={{color:"red"}} className="error"/>
+                <ErrorMessage
+                  name={"area"}
+                  component="div"
+                  style={{ color: "red" }}
+                  className="error"
+                />
                 <br />
               </div>
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+              >
                 <label className="form-label" htmlFor="special">
                   {content[lang].specialization}
                 </label>
@@ -368,7 +384,7 @@ function DoctorRegisterClinic() {
                   controlId="validationFormik05"
                   name="special"
                   id="special"
-                  value={values.special&&values.special.name}
+                  value={values.special && values.special.name}
                   onChange={(e) => {
                     let arr = [];
                     arr.push({ name: e.target.value });
@@ -382,7 +398,12 @@ function DoctorRegisterClinic() {
                     </option>
                   ))}
                 </Field>
-                <ErrorMessage name={'special'} component="div" style={{color:"red"}} className="error"/>
+                <ErrorMessage
+                  name={"special"}
+                  component="div"
+                  style={{ color: "red" }}
+                  className="error"
+                />
               </div>
               <br></br>
 
@@ -406,15 +427,12 @@ function DoctorRegisterClinic() {
                 {content[lang].reset}
               </button>
 
-
               <ModalSuccess
-              setIsModalOpen={setIsModalSuccessOpen}
-              isModalOpen={isModalSuccessOpen}
-              successText={
-                content[lang].verify_email
-              }
-              hideFunc={redic}
-            />
+                setIsModalOpen={setIsModalSuccessOpen}
+                isModalOpen={isModalSuccessOpen}
+                successText={content[lang].verify_email}
+                hideFunc={redic}
+              />
             </Form>
           </Container>
         );
