@@ -280,7 +280,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
         schedule = Schedule.objects.filter(id=schedule_id)[0]
         user = User.objects.filter(id=user_id)[0]
         appointment = Appiontments.objects.create(**validated_data, schedule=schedule, user=user)
-        print(appointment, "hello")
         return appointment
         
     def create(self, validated_data):
