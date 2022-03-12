@@ -23,10 +23,10 @@ function DoctorCard(props) {
 
   return (
     <>
-      <div class="container mt-2 col-sm-12">
-        <div class="row d-flex justify-content-center">
-          <div className="col-12 text-center my-3">
-            <div className="card col-sm-12 mb-3 card_height shadow">
+      <div class="container mt-2 w-100">
+        <div class="row d-flex justify-content-center w-100">
+          <div className="col-12 text-center my-3 w-100">
+            <div className="card mb-3 card_height shadow" >
               <div className="row g-0">
                 <div className="col-2 mt-2 ml-2">
                   <Link
