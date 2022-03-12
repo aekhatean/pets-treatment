@@ -123,7 +123,7 @@ export const FileUpload = (props) => {
           isCardStyles && "d-flex justify-content-between align-items-center"
         } my-2`}
       >
-        <label className={!isCardStyles && "my-1"} htmlFor={field.name}>
+        <label className={!isCardStyles ? "my-1" : "mx-3"} htmlFor={field.name}>
           {label}
         </label>
         <div className="d-flex flex-column">
