@@ -107,7 +107,7 @@ function ClinicSchedule(props) {
         dir={lang === "ar" ? "rtl" : "ltr"}
       >
         <Modal.Header closeButton bsPrefix="text-center">
-          <Modal.Title>{content[lang].book_appointment}</Modal.Title>
+          <Modal.Title></Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AppointmentBooking selected_schedule={selected_schedule} />

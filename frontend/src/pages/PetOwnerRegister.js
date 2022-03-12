@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import TextFeild from "../components/TextField";
 import * as Yup from "yup";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
@@ -11,6 +11,9 @@ import { useHistory, Redirect } from "react-router-dom";
 import ModalSuccess from "../components/ModalSuccess";
 import ModalFail from "../components/ModalFail";
 import { FileUpload } from "../components/Inputs";
+import login_cat from "../assets/login_cat.png";
+import login_cat_side from "../assets/login_cat_side.png";
+import login_cat_right from "../assets/login_cat_right.png";
 import {
   checkForImageFormat,
   checkForImageSize,
@@ -89,7 +92,7 @@ function Register() {
 
   return (
     <>
-    <img src={login_cat} alt="catty" />
+    <img src={login_cat} alt="catty"/>
     <Formik
       initialValues={{
         firstName: "",
