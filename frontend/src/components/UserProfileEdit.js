@@ -1,11 +1,12 @@
 // Packges imports
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
-
+import ModalSuccess from "./ModalSuccess";
+import ModalFail from "./ModalFail";
 // Components
 import TextFeild from "../components/TextField";
 import { FileUpload } from "../components/Inputs";
@@ -15,19 +16,24 @@ import { axiosInstance } from "../api";
 
 export default function UserProfileEdit(props) {
   const { lang } = useContext(LanguageContext);
+  const [isModalFailOpen, setIsModalFailOpen] = useState(false);
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const validate = Yup.object({
     firstName: Yup.string()
-      .max(15, "First Name can't be more than 15 character")
-      .required("First Name is required"),
+      .max(20, content[lang].invalid_firstname)
+      .required(content[lang].required),
     lastName: Yup.string()
-      .max(15, "Last Name can't be more than 15 character")
-      .required("Last Name required"),
-    email: Yup.string().email("Invaild email").required("Email is required"),
+      .max(15, content[lang].invalid_lastname)
+      .required(content[lang].required),
+    email: Yup.string()
+      .email(content[lang].invalid_email)
+      .required(content[lang].required),
     phone: Yup.string()
-      .max(11, "Please enter valid Egyptian phone number")
-      .required("Phone is required")
-      .matches(/^01[0-2,5]\d{8}$/, "Must be an Egyptian phone number"),
+      .max(11, content[lang].phone_count_valid)
+      .required(content[lang].required)
+      .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
   });
 
   const userData = props.userData;
@@ -58,14 +64,21 @@ export default function UserProfileEdit(props) {
                 email: values.email,
               },
             };
+            setIsUpdating(true);
             axiosInstance
               .put("/users/profilelist", data, {
                 headers: {
                   Authorization: `Token ${localStorage.getItem("token")}`,
                 },
               })
-              .then((res) => console.log(res))
-              .catch((e) => console.error(e.response));
+              .then((res) => {
+                setIsUpdating(false);
+                res.status === 200 && setIsModalSuccessOpen(true);
+              })
+              .catch((e) => {
+                setIsUpdating(false);
+                setIsModalFailOpen(true);
+              });
           }}
         >
           {(formProps) => {
@@ -73,12 +86,7 @@ export default function UserProfileEdit(props) {
             return (
               <Row>
                 <Col md={8}>
-                  <Form
-                    onSubmit={handleSubmit}
-                    className={`text-md-start mb-5 mt-5 ${
-                      lang === "en" ? "text-start" : "text-end"
-                    }`}
-                  >
+                  <Form onSubmit={handleSubmit} className={`mb-5 mt-5`}>
                     <TextFeild
                       label={content[lang].fist_name}
                       name="firstName"
@@ -124,24 +132,28 @@ export default function UserProfileEdit(props) {
                     >
                       {content[lang].city}
                     </label>
-                    <Field
-                      id="city"
-                      name="city"
-                      as="select"
-                      value={values.city}
-                      className={`form-select ${
-                        lang === "en" ? "text-start" : "text-end"
-                      }`}
-                      onChange={async (e) => {
-                        const { value } = e.target;
-                        setFieldValue("city", value);
-                      }}
-                    >
-                      <option value="None">{content[lang].select_city}</option>
-                      <option value="Giza">{content[lang].giza}</option>
-                      <option value="Cairo">{content[lang].cairo}</option>
-                    </Field>
-                    <br />
+                    <div>
+                      <Field
+                        id="city"
+                        name="city"
+                        as="select"
+                        value={values.city}
+                        className={`form-select ${
+                          lang === "en" ? "text-start" : "text-end"
+                        }`}
+                        onChange={async (e) => {
+                          const { value } = e.target;
+                          setFieldValue("city", value);
+                        }}
+                      >
+                        <option value="None">
+                          {content[lang].select_city}
+                        </option>
+                        <option value="Giza">{content[lang].giza}</option>
+                        <option value="Cairo">{content[lang].cairo}</option>
+                      </Field>
+                    </div>
+
                     <Field
                       component={FileUpload}
                       name="picture"
@@ -149,9 +161,21 @@ export default function UserProfileEdit(props) {
                       className={`${lang === "en" ? "text-start" : "text-end"}`}
                     />
                     <div class="d-flex justify-content-between">
-                      <button className="btn mt-3 btn-info" type="submit">
+                      <button
+                        className="btn mt-3 blue-bg text-white"
+                        type="submit"
+                        disabled={isUpdating ? true : false}
+                      >
                         {content[lang].save}
                       </button>
+                      {isUpdating && (
+                        <div
+                          className="spinner-border text-dark mx-3"
+                          role="status"
+                        >
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      )}
                     </div>
                   </Form>
                 </Col>
@@ -159,6 +183,25 @@ export default function UserProfileEdit(props) {
             );
           }}
         </Formik>
+        <ModalSuccess
+          setIsModalOpen={setIsModalSuccessOpen}
+          isModalOpen={isModalSuccessOpen}
+          successText={
+            lang === "en"
+              ? content.en.profile_updated
+              : content.ar.profile_updated
+          }
+          hideFunc={props.hideForm}
+        />
+        <ModalFail
+          setIsModalOpen={setIsModalFailOpen}
+          isModalOpen={isModalFailOpen}
+          errorText={
+            lang === "en"
+              ? content.en.error_general_msg
+              : content.ar.error_general_msg
+          }
+        />
       </Container>
     );
   } else {

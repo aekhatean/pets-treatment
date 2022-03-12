@@ -32,6 +32,6 @@ export default function DynamicTable(props) {
       </div>
     );
   } else {
-    return <div>You have no appointments</div>;
+    return <div className="alert primary-bg">You have no appointments</div>;
   }
 }

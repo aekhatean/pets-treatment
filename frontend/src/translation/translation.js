@@ -273,6 +273,7 @@ export const content = {
       "Your account is successfully activated, you can login now.",
     link_expired: "Sorry, this link is expired.",
     book_warning: "Only Pet Owners Can Book Appointment",
+    profile_updated: "Your profile was updated successfully.",
   },
   ar: {
     brand: "بيتسانيا",
@@ -544,5 +545,6 @@ export const content = {
     activate_account_success: "تم تفعيل حسابك بنجاح, يمكنك تسجيل الدخول الأن.",
     link_expired: "عفوا, هذا الرابط منتهي الصلاحية.",
     book_warning: "فقط مالكي الحيوانات الاليفه يمكنهم حجز موعد",
+    profile_updated: "تم تحديث ملفك الشخصي بنجاح.",
   },
 };
