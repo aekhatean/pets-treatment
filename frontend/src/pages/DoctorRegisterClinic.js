@@ -57,7 +57,7 @@ function DoctorRegisterClinic() {
         "nat_id_length",
         content[lang].invalid_national_id_min,
         (nat_id) => {
-          return nat_id.toString().length === 14;
+          return nat_id && nat_id.toString().length === 14;
         }
       )
       .required(content[lang].required),
