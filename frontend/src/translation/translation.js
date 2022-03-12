@@ -56,7 +56,7 @@ export const content = {
       },
     ],
     services: "Our Services",
-    informations: "Informations",
+    informations: "Information",
     rights: "© 2022 Petsania EGY, Inc. All Rights Reserved.",
     contact_us: "Contact Us",
     contactInfo: "Contact info",

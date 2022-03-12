@@ -61,3 +61,22 @@ def send_mail_user_appointment(fname,doctor,clinic,visiting_time,schedule,to_ema
     server.login(settings.EMAIL_HOST_USER,settings.EMAIL_HOST_PASSWORD)
     server.sendmail(from_addr=msg['From'],to_addrs=to_email,msg=msg_str)
     server.quit()
+
+def send_mail_doctor_activation(fname,link,to_email):
+    msg=MIMEMultipart('alternative')
+    msg['From']=formataddr(('Petsania', settings.EMAIL_HOST_USER))
+    msg['To']=to_email
+    msg['Subject']='Petsania Doctor Account Activation'
+    
+    html_email = render_to_string("activation_doctor_email.html", {'first_name': fname,'activation_link': link})
+    html_part = MIMEText(html_email, 'html')
+    msg.attach(html_part)
+    msg_str=msg.as_string()
+
+    server=smtplib.SMTP(host=settings.EMAIL_HOST,port=settings.EMAIL_PORT)
+    server.ehlo()
+    server.starttls()
+    server.login(settings.EMAIL_HOST_USER,settings.EMAIL_HOST_PASSWORD)
+    server.sendmail(from_addr=msg['From'],to_addrs=to_email,msg=msg_str)
+    server.quit()
+    

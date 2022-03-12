@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { axiosInstance } from "../api";
 import ModalDelete from "./ModalDelete";
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
 
 const DoctorDashboardCard = (props) => {
+  const { lang } = useContext(LanguageContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [token] = useState(() => {
     const savedToken = localStorage.getItem("token");
@@ -60,7 +63,7 @@ const DoctorDashboardCard = (props) => {
                   className="btn btn-danger"
                   onClick={() => setIsModalOpen(true)}
                 >
-                  Delete From Clinic
+                  {content[lang].delete_from_clinic}
                 </button>
               </li>
             )}
