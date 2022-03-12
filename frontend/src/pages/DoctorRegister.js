@@ -10,17 +10,20 @@ import { axiosInstance } from "../api";
 import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
-import { useHistory } from "react-router-dom";
-import { FileUpload } from "../components/Inputs"; 
+import { useHistory, Redirect } from "react-router-dom";
+import { FileUpload } from "../components/Inputs";
 import ModalSuccess from "../components/ModalSuccess";
+import { LogingContext } from "../context/LogingContext";
 
 function DoctorRegister() {
   let history = useHistory();
-  const redic = ()=>{
-    history.push('/');
-  }
+  const redic = () => {
+    history.push("/");
+  };
   const { lang, setLang } = useContext(LanguageContext);
   const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const { is_loged, setLogging } = useContext(LogingContext);
+
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, content[lang].invalid_firstname)
@@ -103,7 +106,9 @@ function DoctorRegister() {
         console.log(err);
       });
   }, []);
-
+  if (is_loged) {
+    return <Redirect to="/dashboard" />;
+  }
   return (
     <Formik
       initialValues={{
@@ -162,7 +167,6 @@ function DoctorRegister() {
           .catch((e) => {
             console.error(e.response);
           });
-
       }}
     >
       {(formProps) => {
@@ -228,24 +232,31 @@ function DoctorRegister() {
               />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
-                        <label className="form-label" htmlFor="photo">
-                          {content[lang].upload_photo}
-                        </label>
-                        <Field
-                          name="photo"
-                          type="file"
-                          onChange={(e) => {
-                            const file = e.currentTarget.files[0];
-                            const reader = new FileReader();
-                            reader.readAsDataURL(file);
-                            reader.onload = function (event) {
-                            setFieldValue('photo', event.target.result);
-                            };
-                          }}
-                        />
-                        <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
-                      </div>
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+              >
+                <label className="form-label" htmlFor="photo">
+                  {content[lang].upload_photo}
+                </label>
+                <Field
+                  name="photo"
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.currentTarget.files[0];
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (event) {
+                      setFieldValue("photo", event.target.result);
+                    };
+                  }}
+                />
+                <ErrorMessage
+                  name={"photo"}
+                  component="div"
+                  style={{ color: "red" }}
+                  className="error"
+                />
+              </div>
 
               {/* <Field
                   name="photo"
@@ -265,7 +276,9 @@ function DoctorRegister() {
                   }
                 /> */}
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+              >
                 <label className="form-label" htmlFor="synd_id">
                   {content[lang].upload_syndicate}
                 </label>
@@ -278,11 +291,16 @@ function DoctorRegister() {
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
                     reader.onload = function (event) {
-                    setFieldValue('syndicate_id', event.target.result);
+                      setFieldValue("syndicate_id", event.target.result);
                     };
                   }}
                 />
-                <ErrorMessage name={'syndicate_id'} component="div" style={{color:"red"}} className="error"/>
+                <ErrorMessage
+                  name={"syndicate_id"}
+                  component="div"
+                  style={{ color: "red" }}
+                  className="error"
+                />
               </div>
               <br></br>
 
@@ -393,7 +411,7 @@ function DoctorRegister() {
                   controlId="validationFormik05"
                   name="special"
                   id="special"
-                  value={values.special&&values.special.name}
+                  value={values.special && values.special.name}
                   onChange={(e) => {
                     let arr = [];
                     arr.push({ name: e.target.value });
@@ -436,15 +454,12 @@ function DoctorRegister() {
                 {content[lang].reset}
               </button>
 
-
               <ModalSuccess
-              setIsModalOpen={setIsModalSuccessOpen}
-              isModalOpen={isModalSuccessOpen}
-              successText={
-                content[lang].verify_email
-              }
-              hideFunc={redic}
-            />
+                setIsModalOpen={setIsModalSuccessOpen}
+                isModalOpen={isModalSuccessOpen}
+                successText={content[lang].verify_email}
+                hideFunc={redic}
+              />
             </Form>
           </Container>
         );
