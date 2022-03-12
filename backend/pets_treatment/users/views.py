@@ -24,7 +24,7 @@ from .email_utils import send_mail_user, send_mail_user_appointment
 from django.template.loader import render_to_string
 from django.db.models import Q
 from rest_framework import generics
-
+from copy import deepcopy
 class Login(ObtainAuthToken):
 
     def post(self, request):
@@ -315,8 +315,12 @@ class ViewProfile(APIView):
     
     def put(self, request):
         user = request.user
-        profile=user.profile            
-        profile_serializer= ProfileSerializer(profile,data=request.data, partial=True)
+        profile=user.profile
+        my_request_data=deepcopy(request.data)
+        print(my_request_data)
+        if not my_request_data.get("picture"):
+            my_request_data.pop("picture")
+        profile_serializer= ProfileSerializer(profile,data=my_request_data, partial=True)
         profile=profile_serializer.is_valid(raise_exception=True)
         profile=profile_serializer.save()
         return Response({
