@@ -10,6 +10,7 @@ import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { LogingContext } from "../context/LogingContext";
 import { useHistory } from "react-router-dom";
+import dogheaderPrimary from "../assets/dogheaderPrimary.png";
 function Login() {
   let history = useHistory();
   const [isLoginValid, setIsLoginValid] = useState(true);
@@ -68,9 +69,15 @@ function Login() {
         } = formProps;
         return (
           <Container className="p-5 my-5 shadow" dir={lang === 'ar' ? 'rtl' : 'ltr'} style={{width:'50%'}}>
-            <h1 className="my-4 font-weight-bold-display-4">
+            {/* <h1 className="my-4 font-weight-bold-display-4">
               {content[lang].login}
+            </h1> */}
+            <div className="center">
+            <img src={dogheaderPrimary} alt="doggy" style={{width:'100%'}}/>
+            <h1 className="my-4 font-weight-bold-display-4">
+                {content[lang].login}
             </h1>
+          </div>
 
             <Form onSubmit={handleSubmit}>
               <TextFeild

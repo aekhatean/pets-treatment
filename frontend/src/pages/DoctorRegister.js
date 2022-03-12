@@ -228,7 +228,7 @@ function DoctorRegister() {
               />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                         <label className="form-label" htmlFor="photo">
                           {content[lang].upload_photo}
                         </label>
@@ -245,31 +245,31 @@ function DoctorRegister() {
                           }}
                         />
                         <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
-                      </div>
+                      </div> */}
 
-              {/* <Field
+              <Field
                   name="photo"
                   component={FileUpload}
                   label={
                     'photooo'
                   }
-                /> */}
+                />
               <br></br>
               {/* <img src={baseImage} height="200px" /> */}
 
-              {/* <Field
+              <Field
                   name="syndicate_id"
                   component={FileUpload}
                   label={
                     "syndicate_idddddd"
                   }
-                /> */}
+                />
 
-              <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
+              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
                 <label className="form-label" htmlFor="synd_id">
                   {content[lang].upload_syndicate}
                 </label>
-                <Input
+                <Field
                   id="synd_id"
                   name="syndicate_id"
                   type="file"
@@ -283,7 +283,7 @@ function DoctorRegister() {
                   }}
                 />
                 <ErrorMessage name={'syndicate_id'} component="div" style={{color:"red"}} className="error"/>
-              </div>
+              </div> */}
               <br></br>
 
               <div

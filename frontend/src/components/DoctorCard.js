@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import Saleh from "../assets/saleh.jpg";
-=======
->>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
 import "../styles/doctor_card.css";
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";
@@ -17,21 +13,12 @@ function DoctorCard(props) {
   useEffect(() => {
     axiosInstance
       .get(`users/schedule/doctor/${props.doctor["id"]}`)
-<<<<<<< HEAD
-
-      .then(res => {
-=======
       .then((res) => {
->>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
         if (res.status === 200) {
           setschedule(res.data);
         }
       })
-<<<<<<< HEAD
-      .catch(err => console.log(err));
-=======
       .catch((err) => console.log(err));
->>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
   }, []);
 
   return (
@@ -44,12 +31,8 @@ function DoctorCard(props) {
                 <div className="col-2 mt-2 ml-2">
                   <Link
                     to={`/doctors/${props.doctor["id"]}`}
-<<<<<<< HEAD
-                    className="nonlink">
-=======
                     className="nonlink"
                   >
->>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
                     <img
                       src={props.doctor["profile"].picture}
                       className="img-fluid rounded-circle doctor_image"
@@ -104,12 +87,8 @@ function DoctorCard(props) {
                               <ScheduleCard
                                 key={feed.id}
                                 schedule={feed}
-<<<<<<< HEAD
-                                doctor_id={props.doctor["id"]}></ScheduleCard>
-=======
                                 doctor_id={props.doctor["id"]}
                               ></ScheduleCard>
->>>>>>> cd1435d805eacdf48ccef10592a3a365d2b53f96
                             ))}
 
                             {/* /////////////////////////////// */}

@@ -12,6 +12,7 @@ const DatePickerField = ({ name, value, onChange, label }) => {
         <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
             <label htmlFor={name} className="form-label">{label}</label>
             <DatePicker
+                className="form-control"
                 selected={(value && new Date(value)) || null}
                 onChange={val => {
                 onChange(name, val);

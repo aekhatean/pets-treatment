@@ -101,6 +101,7 @@ function AppointmentBooking(props) {
 
                 <Field
                     type="time" 
+                    className="form-control"
                     name='visiting_time'
                     step={selected_schedule.appointment_duration  * 60}
                     min={selected_schedule.from_time} 
