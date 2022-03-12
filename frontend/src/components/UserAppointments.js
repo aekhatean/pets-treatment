@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import DynamicTable from "../components/DynamicTable";
-
+import { LanguageContext } from "../context/LanguageContext";
+import { content } from "../translation/translation";
 // API consumption
 import { axiosInstance } from "../api";
 
@@ -67,6 +68,7 @@ const getAppointmentInfo = (res, setAppointments) => {
 };
 
 function UserAppointments() {
+  const { lang } = useContext(LanguageContext);
   const token = localStorage.getItem("token");
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [prviousAppointments, setPrviousAppointments] = useState([]);
@@ -95,15 +97,22 @@ function UserAppointments() {
           Authorization: "Token " + token,
         },
       })
-      .then((res) => getAppointmentInfo(res, setPrviousAppointments));
+      .then((res) => {
+        console.log(res);
+        getAppointmentInfo(res, setPrviousAppointments);
+      });
   }, [userPreviousAppointments, token]);
 
   return (
     <div id="user-appointments" className="my-5">
-      <div className="h1 text-md-start my-5">Upcoming appointments</div>
+      <div className={`h1 m-4 ${lang === "en" ? "text-start" : "text-end"}`}>
+        {content[lang].upcoming_appointments}
+      </div>
       <DynamicTable tableContent={upcomingAppointments} />
       <hr className="my-5" />
-      <div className="h1 text-md-start">Previous appointments</div>
+      <div className={`h1 m-4 ${lang === "en" ? "text-start" : "text-end"}`}>
+        {content[lang].history_appointments}
+      </div>
       <DynamicTable tableContent={prviousAppointments} />
     </div>
   );
