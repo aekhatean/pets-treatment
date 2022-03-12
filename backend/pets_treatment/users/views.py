@@ -1,4 +1,5 @@
 from codecs import lookup_error
+from copy import copy
 from re import search
 from unicodedata import name
 # from msilib.schema import Class
@@ -19,7 +20,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta, date
 from cryptography.fernet import Fernet
-from .email_utils import send_mail_user
+from .email_utils import send_mail_user, send_mail_user_appointment
 from django.template.loader import render_to_string
 from django.db.models import Q
 from rest_framework import generics
@@ -77,17 +78,12 @@ class ActivateUser(APIView):
                 user.is_active = True
                 user.save()
                 token.delete()
-                return Response({
-                    'msg':'User Activated Successfully, You can login now'
-                },status=status.HTTP_200_OK)
+                return redirect("http://localhost:3000/activate_message")
             else:
-                    return Response({
-                    'error':'Sorry the link is expired'
-                },status=status.HTTP_400_BAD_REQUEST)                       
+                return redirect("http://localhost:3000/expired_activation")
         except:
-            return Response({
-                    'error':'Sorry the link is expired',
-                },status=status.HTTP_400_BAD_REQUEST)
+            return redirect("http://localhost:3000/expired_activation")
+
 
 
 
@@ -129,10 +125,7 @@ class DoctorProfile(APIView):
     def put(self,request):
         doctor = self.get_object(request)
         serializer = DoctorSerializer(doctor,data=request.data)
-        # print(doctor.profile)
-        # print('from view',doctor.user)
         if serializer.is_valid():
-            # print('from valid',doctor.profile)
             serializer.save()
             return Response({'msg':'Profile has been updated','data':serializer.data},status=status.HTTP_200_OK)
         return Response({'msg':"Error doctor profile cann't be edited, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -322,8 +315,8 @@ class ViewProfile(APIView):
     
     def put(self, request):
         user = request.user
-        profile=user.profile
-        profile_serializer= ProfileSerializer(profile,data=request.data)
+        profile=user.profile            
+        profile_serializer= ProfileSerializer(profile,data=request.data, partial=True)
         profile=profile_serializer.is_valid(raise_exception=True)
         profile=profile_serializer.save()
         return Response({
@@ -379,7 +372,8 @@ class AppointmentList(APIView):
     def post(self, request):
         appointment_serializer = AppointmentSerializer(data=request.data,  context={'request':request})
         appointment_serializer.is_valid(raise_exception=True)
-        appointment_serializer.save()
+        vals=appointment_serializer.save()
+        send_mail_user_appointment(vals.user.first_name,vals.schedule.doctor.user.first_name + vals.schedule.doctor.user.last_name,vals.schedule.clinic.name,vals.visiting_time,vals.id,vals.user.email)
         return Response(appointment_serializer.data,status.HTTP_201_CREATED)
 
 

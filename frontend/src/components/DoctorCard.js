@@ -1,4 +1,3 @@
-import Saleh from "../assets/saleh.jpg";
 import "../styles/doctor_card.css";
 import Ratings from "./Ratings";
 import React, { useEffect, useState, useContext } from "react";

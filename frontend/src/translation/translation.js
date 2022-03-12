@@ -11,6 +11,7 @@ export const content = {
     login: "Login",
     logout: "Logout",
     profile: "Profile",
+    profilePicture: "Profile picture",
     dashboard: "Dashboard",
     guest: "Guest",
     greeting: "Hi!",
@@ -114,6 +115,7 @@ export const content = {
     pagenotfound: "Opps! No Page Found",
     gallary: "Clinic Photos",
     submit: "Submit",
+    selectClinic: "Please select a clinic to display appointments",
     register_doctor: "Register as a Doctor",
     fist_name: "First Name",
     last_name: "Last Name",
@@ -261,6 +263,8 @@ export const content = {
     login_widget:
       "The login page gives you access to your profile and clinic reservation service",
     search_qoute: " Hi! How can we help You?",
+    delete_from_clinic: "Delete From Clinic",
+    syndicate_id: "Syndicate ID",
   },
   ar: {
     brand: "بيتسانيا",
@@ -273,6 +277,7 @@ export const content = {
     login: "تسجيل دخول",
     logout: "تسجيل خروج",
     profile: "الملف الشخصي",
+    profilePicture: "الصورة الشخصية",
     dashboard: "لوحة التحكم بالحساب",
     team: "فريقنا",
     team_members: {
@@ -375,6 +380,7 @@ export const content = {
     pagenotfound: "اوبس! هذه الصفحة ليست موجودة",
     gallary: "صور العيادة",
     submit: "تسجيل",
+    selectClinic: "ارجوك قم باختيار عيادة لعرض الحجوزات",
     register_doctor: "إنشاء حساب طبيب",
     fist_name: "الاسم الأول",
     last_name: "الاسم الأخير",
@@ -521,5 +527,7 @@ export const content = {
     login_widget:
       "تتيح لك صفحة تسجيل الدخول التحكم فى حسابك الشخصى و أيضا خدمة حجز الكشف للأطباء البيطريين",
     search_qoute: "  مرحبا! كيف نستطيع مساعدك؟",
+    delete_from_clinic: "احذف من العيادة",
+    syndicate_id: "كارنيه النقابة",
   },
 };
