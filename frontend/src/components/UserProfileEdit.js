@@ -58,11 +58,14 @@ export default function UserProfileEdit(props) {
                 email: values.email,
               },
             };
-            axiosInstance.put("/users/profilelist", data, {
-              headers: {
-                Authorization: `Token ${localStorage.getItem("token")}`,
-              },
-            });
+            axiosInstance
+              .put("/users/profilelist", data, {
+                headers: {
+                  Authorization: `Token ${localStorage.getItem("token")}`,
+                },
+              })
+              .then((res) => console.log(res))
+              .catch((e) => console.error(e.response));
           }}
         >
           {(formProps) => {

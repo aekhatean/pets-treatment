@@ -18,7 +18,7 @@ const ExpiredActivation = () => {
     <ModalFail
       setIsModalOpen={setIsModalFailOpen}
       isModalOpen={isModalFailOpen}
-      errorText={content[lang].error_general_msg}
+      errorText={content[lang].link_expired}
       func={redirect}
       withBg={true}
     />
