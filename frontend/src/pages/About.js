@@ -5,8 +5,8 @@ import Khaled from "../assets/khaled.jpg";
 import Adham from "../assets/adham.jpg";
 import Alaa from "../assets/alaa.jpg";
 import Saleh from "../assets/saleh.jpg";
-import AyaMaged from "../assets/maged_basha.jpg";
-import AyaMohammed from "../assets/mohammed_basha.jpg";
+import AyaMaged from "../assets/maged_basha.jpeg";
+import AyaMohammed from "../assets/mohammed_basha.jpeg";
 import { Col, Container, Image, Row } from "react-bootstrap";
 import animalsgroup from "../assets/animalsgroup.png";
 import doctorandpets from "../assets/doctorandpets.png";
@@ -72,7 +72,8 @@ function About() {
                 <Image
                   src={member.src}
                   alt={`${member.name}'s Images`}
-                  width={300}
+                  width={250}
+                  height={250}
                   className="rounded-circle"
                 />
                 <p className="fs-5 fw-bold h4 mt-4">{member.name}</p>

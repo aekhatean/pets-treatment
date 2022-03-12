@@ -11,16 +11,25 @@ import { colors } from "../colors/colors";
 import { LanguageContext } from "../context/LanguageContext";
 import { content } from "../translation/translation";
 import { useHistory } from "react-router-dom";
-import { FileUpload } from "../components/Inputs"; 
+import { FileUpload } from "../components/Inputs";
 import ModalSuccess from "../components/ModalSuccess";
+import ModalFail from "../components/ModalFail";
+import {
+  checkForImageFormat,
+  checkForImageSize,
+} from "../components/ClinicAdder";
 
 function DoctorRegister() {
-  let history = useHistory();
-  const redic = ()=>{
-    history.push('/');
-  }
   const { lang, setLang } = useContext(LanguageContext);
+  const [modal, setModal] = useState(undefined);
+  const [errorModal, setErrorModal] = useState(undefined);
   const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const [isModalFailOpen, setIsModalFailOpen] = useState(false);
+
+  let history = useHistory();
+  const redic = () => {
+    history.push("/");
+  };
   const validate = Yup.object({
     firstName: Yup.string()
       .max(15, content[lang].invalid_firstname)
@@ -44,9 +53,17 @@ function DoctorRegister() {
       .max(1000, content[lang].invalid_description)
       .required(content[lang].required),
     // numbers not chars
-    national_id: Yup.string()
-      .max(14, content[lang].invalid_national_id_min)
-      .min(14, content[lang].invalid_national_id_max)
+    national_id: Yup.number()
+      .typeError(content[lang].field_number_valid)
+      // .max(14, content[lang].invalid_national_id_min)
+      // .min(14, content[lang].invalid_national_id_max)
+      .test(
+        "nat_id_length",
+        content[lang].invalid_national_id_min,
+        (nat_id) => {
+          return nat_id.toString().length === 14;
+        }
+      )
       .required(content[lang].required),
     username: Yup.string()
       .max(20, content[lang].invalid_username)
@@ -56,11 +73,35 @@ function DoctorRegister() {
       .required(content[lang].required)
       .matches(/^01[0-2,5]\d{8}$/, content[lang].invalid_phone),
 
-    specialization: Yup.string().required(content[lang].required),
+    // specialization: Yup.array().min(1, content[lang].required),
 
-    // syndicate_id: Yup.string().required(content[lang].required),
+    syndicate_id: Yup.mixed()
+      .nullable()
+      .required(lang === "en" ? content.en.required : content.ar.required)
+      .test(
+        "imageFormat",
+        lang === "en" ? content.en.image_type_err : content.ar.image_type_err,
+        (image) => checkForImageFormat(image)
+      )
+      .test(
+        "imageSize",
+        lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
+        (image) => checkForImageSize(image)
+      ),
 
-    photo: Yup.string().required(content[lang].required),
+    photo: Yup.mixed()
+      .nullable()
+      .required(lang === "en" ? content.en.required : content.ar.required)
+      .test(
+        "imageFormat",
+        lang === "en" ? content.en.image_type_err : content.ar.image_type_err,
+        (image) => checkForImageFormat(image)
+      )
+      .test(
+        "imageSize",
+        lang === "en" ? content.en.image_size_err : content.ar.image_size_err,
+        (image) => checkForImageSize(image)
+      ),
 
     city: Yup.string().required(content[lang].required),
 
@@ -103,7 +144,6 @@ function DoctorRegister() {
         console.log(err);
       });
   }, []);
-
   return (
     <Formik
       initialValues={{
@@ -141,28 +181,23 @@ function DoctorRegister() {
             area: values.area,
             phone: values.phone,
             picture: values.photo,
+            role: "DR",
           },
           description: values.description,
           syndicate_id: values.syndicate_id,
           national_id: values.national_id,
           specialization: values.special,
         };
-        console.log(values.special);
-        console.log(data);
-
         axios
           .post("http://127.0.0.1:8000/users/doctors/new", data)
-
           .then((response) => {
-            setIsModalSuccessOpen(true);
-            console.log(response);
-            console.log("sucess");
+            response.status === 201 && setIsModalSuccessOpen(true);
           })
-
           .catch((e) => {
-            console.error(e.response);
+            setIsModalFailOpen(true);
           });
 
+        // history.push('/');
       }}
     >
       {(formProps) => {
@@ -227,64 +262,27 @@ function DoctorRegister() {
                 type="text"
               />
               <TextFeild label={content[lang].phone} name="phone" type="text" />
-
-              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
-                        <label className="form-label" htmlFor="photo">
-                          {content[lang].upload_photo}
-                        </label>
-                        <Field
-                          name="photo"
-                          type="file"
-                          onChange={(e) => {
-                            const file = e.currentTarget.files[0];
-                            const reader = new FileReader();
-                            reader.readAsDataURL(file);
-                            reader.onload = function (event) {
-                            setFieldValue('photo', event.target.result);
-                            };
-                          }}
-                        />
-                        <ErrorMessage name={'photo'} component="div" style={{color:"red"}} className="error"/>
-                      </div> */}
-
-              <Field
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+              >
+                <Field
                   name="photo"
                   component={FileUpload}
-                  label={
-                    'photooo'
-                  }
+                  label={content[lang].profilePicture}
+                  isCardStyles={false}
                 />
-              <br></br>
-              {/* <img src={baseImage} height="200px" /> */}
+              </div>
 
-              <Field
+              <div
+                className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
+              >
+                <Field
                   name="syndicate_id"
                   component={FileUpload}
-                  label={
-                    "syndicate_idddddd"
-                  }
+                  label={content[lang].syndicate_id}
+                  isCardStyles={false}
                 />
-
-              {/* <div className={lang==='ar'?"mb-3 text-end":"mb-3 text-start"}>
-                <label className="form-label" htmlFor="synd_id">
-                  {content[lang].upload_syndicate}
-                </label>
-                <Field
-                  id="synd_id"
-                  name="syndicate_id"
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.currentTarget.files[0];
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function (event) {
-                    setFieldValue('syndicate_id', event.target.result);
-                    };
-                  }}
-                />
-                <ErrorMessage name={'syndicate_id'} component="div" style={{color:"red"}} className="error"/>
-              </div> */}
-              <br></br>
+              </div>
 
               <div
                 className={lang === "ar" ? "mb-3 text-end" : "mb-3 text-start"}
@@ -377,7 +375,6 @@ function DoctorRegister() {
                   style={{ color: "red" }}
                   className="error"
                 />
-                <br />
               </div>
 
               <div
@@ -391,9 +388,9 @@ function DoctorRegister() {
                   as="select"
                   className="form-select"
                   controlId="validationFormik05"
+                  value={values.special && values.special[0].name}
                   name="special"
                   id="special"
-                  value={values.special&&values.special.name}
                   onChange={(e) => {
                     let arr = [];
                     arr.push({ name: e.target.value });
@@ -435,16 +432,17 @@ function DoctorRegister() {
               >
                 {content[lang].reset}
               </button>
-
-
               <ModalSuccess
-              setIsModalOpen={setIsModalSuccessOpen}
-              isModalOpen={isModalSuccessOpen}
-              successText={
-                content[lang].verify_email
-              }
-              hideFunc={redic}
-            />
+                setIsModalOpen={setIsModalSuccessOpen}
+                isModalOpen={isModalSuccessOpen}
+                successText={content[lang].verify_email}
+                hideFunc={redic}
+              />
+              <ModalFail
+                setIsModalOpen={setIsModalFailOpen}
+                isModalOpen={isModalFailOpen}
+                errorText={content[lang].error_general_msg}
+              />
             </Form>
           </Container>
         );

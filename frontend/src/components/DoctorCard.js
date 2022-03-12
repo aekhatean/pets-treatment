@@ -80,10 +80,11 @@ function DoctorCard(props) {
                               overflowX: "auto",
                               display: "flex",
                               justifyContent: "space-between",
-                            }}>
+                            }}
+                          >
                             {/* ////////////////////////////////// */}
 
-                            {schedules.map(feed => (
+                            {schedules.map((feed) => (
                               <ScheduleCard
                                 key={feed.id}
                                 schedule={feed}

@@ -1,4 +1,5 @@
 from codecs import lookup_error
+from copy import copy
 from re import search
 from unicodedata import name
 # from msilib.schema import Class
@@ -77,17 +78,12 @@ class ActivateUser(APIView):
                 user.is_active = True
                 user.save()
                 token.delete()
-                return Response({
-                    'msg':'User Activated Successfully, You can login now'
-                },status=status.HTTP_200_OK)
+                return redirect("http://localhost:3000/activate_message")
             else:
-                    return Response({
-                    'error':'Sorry the link is expired'
-                },status=status.HTTP_400_BAD_REQUEST)                       
+                return redirect("http://localhost:3000/expired_activation")
         except:
-            return Response({
-                    'error':'Sorry the link is expired',
-                },status=status.HTTP_400_BAD_REQUEST)
+            return redirect("http://localhost:3000/expired_activation")
+
 
 
 
@@ -129,10 +125,7 @@ class DoctorProfile(APIView):
     def put(self,request):
         doctor = self.get_object(request)
         serializer = DoctorSerializer(doctor,data=request.data)
-        # print(doctor.profile)
-        # print('from view',doctor.user)
         if serializer.is_valid():
-            # print('from valid',doctor.profile)
             serializer.save()
             return Response({'msg':'Profile has been updated','data':serializer.data},status=status.HTTP_200_OK)
         return Response({'msg':"Error doctor profile cann't be edited, please recheck your data",'error':serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -322,8 +315,8 @@ class ViewProfile(APIView):
     
     def put(self, request):
         user = request.user
-        profile=user.profile
-        profile_serializer= ProfileSerializer(profile,data=request.data)
+        profile=user.profile            
+        profile_serializer= ProfileSerializer(profile,data=request.data, partial=True)
         profile=profile_serializer.is_valid(raise_exception=True)
         profile=profile_serializer.save()
         return Response({
